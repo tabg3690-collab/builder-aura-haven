@@ -11,7 +11,7 @@ import {
 const Zones = () => {
   // Mock data for zones
   const zonesData = [
-    { zoneName: "Amalsad", numberOfMandals: 3, totalMembers: 104 },
+    { zoneName: "Amalsad", numberOfMandals: 3, totalMembers: 125 },
     { zoneName: "Dharampur", numberOfMandals: 5, totalMembers: 138 },
     { zoneName: "Gandevi", numberOfMandals: 6, totalMembers: 261 },
     { zoneName: "Valsad", numberOfMandals: 2, totalMembers: 62 },
