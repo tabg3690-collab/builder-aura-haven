@@ -7,16 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { getUpcomingBirthdays, getBirthdayInfo, membersData } from "@shared/members";
 
 const Dashboard = () => {
-  // Mock data for upcoming birthdays
-  const upcomingBirthdays = [
-    { name: "John Smith", mandal: "North Zone A", dateOfBirth: "1985-12-15" },
-    { name: "Sarah Johnson", mandal: "South Zone B", dateOfBirth: "1990-12-18" },
-    { name: "Mike Wilson", mandal: "East Zone C", dateOfBirth: "1988-12-20" },
-    { name: "Emily Davis", mandal: "West Zone A", dateOfBirth: "1992-12-22" },
-    { name: "Alex Brown", mandal: "North Zone B", dateOfBirth: "1987-12-25" },
-  ];
+  // Get upcoming birthdays for the next 30 days
+  const upcomingBirthdays = getUpcomingBirthdays(30);
+  
+  // Calculate total mandals from zones data
+  const totalMandals = 3 + 5 + 6 + 2 + 4; // Amalsad + Dharampur + Gandevi + Valsad + Vapi
 
   return (
     <div className="px-4 py-6 sm:px-0">
@@ -47,7 +46,7 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">8</div>
+            <div className="text-2xl font-bold text-primary">5</div>
             <p className="text-xs text-muted-foreground">Active zones across regions</p>
           </CardContent>
         </Card>
@@ -74,7 +73,7 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-secondary">24</div>
+            <div className="text-2xl font-bold text-secondary">{totalMandals}</div>
             <p className="text-xs text-muted-foreground">Local mandals operating</p>
           </CardContent>
         </Card>
@@ -84,27 +83,69 @@ const Dashboard = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Upcoming Birthdays</CardTitle>
-          <p className="text-sm text-muted-foreground">Members celebrating birthdays this month</p>
+          <p className="text-sm text-muted-foreground">
+            Members celebrating birthdays in the next 30 days
+            {upcomingBirthdays.length > 0 && ` (${upcomingBirthdays.length} upcoming)`}
+          </p>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Mandal</TableHead>
-                <TableHead>Date of Birth</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {upcomingBirthdays.map((member, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{member.name}</TableCell>
-                  <TableCell>{member.mandal}</TableCell>
-                  <TableCell>{new Date(member.dateOfBirth).toLocaleDateString()}</TableCell>
+          {upcomingBirthdays.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Mandal</TableHead>
+                  <TableHead>Date of Birth</TableHead>
+                  <TableHead>Days Remaining</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {upcomingBirthdays.map((member) => {
+                  const birthdayInfo = getBirthdayInfo(member);
+                  return (
+                    <TableRow key={member.id}>
+                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell>{member.mandal}</TableCell>
+                      <TableCell>
+                        {birthdayInfo.birthday.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </TableCell>
+                      <TableCell>
+                        {birthdayInfo.isToday ? (
+                          <Badge className="bg-red-500 hover:bg-red-600">
+                            🎉 Today!
+                          </Badge>
+                        ) : birthdayInfo.daysRemaining === 1 ? (
+                          <Badge className="bg-orange-500 hover:bg-orange-600">
+                            Tomorrow
+                          </Badge>
+                        ) : birthdayInfo.daysRemaining <= 7 ? (
+                          <Badge className="bg-yellow-500 hover:bg-yellow-600">
+                            {birthdayInfo.daysRemaining} days
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary">
+                            {birthdayInfo.daysRemaining} days
+                          </Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="text-center py-8">
+              <div className="text-muted-foreground">
+                🎂 No upcoming birthdays in the next 30 days
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">
+                Check back later or add more members to see upcoming celebrations!
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
