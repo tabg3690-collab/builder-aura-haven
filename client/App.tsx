@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Zones from "./pages/Zones";
 import Members from "./pages/Members";
+import AddMember from "./pages/AddMember";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
