@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { membersData, Member } from "@shared/members";
 
