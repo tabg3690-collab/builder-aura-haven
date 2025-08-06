@@ -22,13 +22,23 @@ const Members = () => {
           <h1 className="text-3xl font-bold text-gray-900">Members</h1>
           <p className="mt-2 text-gray-600">Complete member directory</p>
         </div>
-        <Button 
-          onClick={() => navigate('/members/add')}
-          className="bg-primary hover:bg-primary/90"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Member
-        </Button>
+        <div className="flex space-x-3">
+          <Button
+            onClick={() => navigate('/members/import')}
+            variant="outline"
+            className="border-secondary text-secondary hover:bg-secondary hover:text-white"
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            Import Excel
+          </Button>
+          <Button
+            onClick={() => navigate('/members/add')}
+            className="bg-primary hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Member
+          </Button>
+        </div>
       </div>
 
       <Card>
