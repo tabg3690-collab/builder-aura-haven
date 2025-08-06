@@ -27,6 +27,7 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="zones" element={<Zones />} />
             <Route path="members" element={<Members />} />
+            <Route path="members/add" element={<AddMember />} />
             <Route path="feedback" element={<Feedback />} />
           </Route>
           <Route path="*" element={<NotFound />} />
