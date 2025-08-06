@@ -11,10 +11,10 @@ import {
 const Zones = () => {
   // Mock data for zones
   const zonesData = [
-    { zoneName: "Amalsad", numberOfMandals: 6, totalMembers: 342 },
-    { zoneName: "Dharampur", numberOfMandals: 4, totalMembers: 256 },
-    { zoneName: "Gandevi", numberOfMandals: 5, totalMembers: 289 },
-    { zoneName: "Valsad", numberOfMandals: 3, totalMembers: 198 },
+    { zoneName: "Amalsad", numberOfMandals: 3, totalMembers: 342 },
+    { zoneName: "Dharampur", numberOfMandals: 5, totalMembers: 256 },
+    { zoneName: "Gandevi", numberOfMandals: 6, totalMembers: 289 },
+    { zoneName: "Valsad", numberOfMandals: 2, totalMembers: 198 },
     { zoneName: "Vapi", numberOfMandals: 4, totalMembers: 301 },
   ];
 
