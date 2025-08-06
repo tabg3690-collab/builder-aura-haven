@@ -29,6 +29,7 @@ const App = () => (
             <Route path="zones" element={<Zones />} />
             <Route path="members" element={<Members />} />
             <Route path="members/add" element={<AddMember />} />
+            <Route path="members/import" element={<ImportMembers />} />
             <Route path="feedback" element={<Feedback />} />
           </Route>
           <Route path="*" element={<NotFound />} />
