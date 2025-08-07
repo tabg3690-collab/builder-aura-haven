@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import * as XLSX from 'xlsx';
 import { Member } from "@shared/members";
+import { membersAPI } from "@/lib/database";
 
 interface ImportedMember {
   name: string;
