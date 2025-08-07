@@ -14,7 +14,8 @@ import { Info, Loader2, AlertCircle } from "lucide-react";
 import { Member, getBirthdayInfo } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
 import { membersAPI, statsAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 import DatabaseStatus from "@/components/DatabaseStatus";
 
 interface Stats {
@@ -46,7 +47,7 @@ const Dashboard = () => {
       setError(null);
 
       // If database is not configured, use demo/empty data
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         setUpcomingBirthdays([]);
         setStats({
           totalMembers: 0,
