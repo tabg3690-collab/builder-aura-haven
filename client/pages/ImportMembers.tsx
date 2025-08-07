@@ -179,6 +179,13 @@ const ImportMembers = () => {
     setProgress(0);
 
     try {
+      // Check if database is configured
+      if (!isSupabaseConfigured) {
+        setProgress(100);
+        setStatus('success');
+        return;
+      }
+
       // Prepare member data for database
       const membersToImport = validMembers.map(member => ({
         name: member.name,
