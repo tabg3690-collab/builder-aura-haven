@@ -23,17 +23,17 @@ interface FeedbackForm {
   message: string;
 }
 
-type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error';
+type SubmissionStatus = "idle" | "submitting" | "success" | "error";
 
 const Feedback = () => {
   const [formData, setFormData] = useState<FeedbackForm>({
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
-  const [status, setStatus] = useState<SubmissionStatus>('idle');
+  const [status, setStatus] = useState<SubmissionStatus>("idle");
   const [errors, setErrors] = useState<Partial<FeedbackForm>>({});
 
   const subjectOptions = [
@@ -44,20 +44,20 @@ const Feedback = () => {
     "Membership Issue",
     "Event Related",
     "Website Feedback",
-    "Other"
+    "Other",
   ];
 
   const handleInputChange = (field: keyof FeedbackForm, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [field]: undefined
+        [field]: undefined,
       }));
     }
   };
@@ -91,28 +91,28 @@ const Feedback = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
-    setStatus('submitting');
+    setStatus("submitting");
 
     try {
       // Check if database is configured
       if (!isSupabaseConfigured) {
         // In demo mode, just show success without actually saving
-        setStatus('success');
+        setStatus("success");
       } else {
         // Save feedback to database
         await feedbackAPI.create({
           name: formData.name,
           email: formData.email,
           subject: formData.subject,
-          message: formData.message
+          message: formData.message,
         });
 
-        setStatus('success');
+        setStatus("success");
       }
 
       // Reset form after successful submission
@@ -121,14 +121,13 @@ const Feedback = () => {
           name: "",
           email: "",
           subject: "",
-          message: ""
+          message: "",
         });
-        setStatus('idle');
+        setStatus("idle");
       }, 3000);
-
     } catch (error) {
       console.error("Feedback submission error:", error);
-      setStatus('error');
+      setStatus("error");
     }
   };
 
@@ -137,13 +136,13 @@ const Feedback = () => {
       name: "",
       email: "",
       subject: "",
-      message: ""
+      message: "",
     });
     setErrors({});
-    setStatus('idle');
+    setStatus("idle");
   };
 
-  if (status === 'success') {
+  if (status === "success") {
     return (
       <div className="px-4 py-6 sm:px-0">
         <div className="mb-8">
@@ -154,11 +153,17 @@ const Feedback = () => {
         <Card className="max-w-2xl mx-auto text-center py-16">
           <CardContent>
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Thank You!
+            </h2>
             <p className="text-gray-600 mb-6">
-              Your feedback has been submitted successfully. We'll get back to you within 24-48 hours.
+              Your feedback has been submitted successfully. We'll get back to
+              you within 24-48 hours.
             </p>
-            <Button onClick={resetForm} className="bg-primary hover:bg-primary/90">
+            <Button
+              onClick={resetForm}
+              className="bg-primary hover:bg-primary/90"
+            >
               Submit Another Feedback
             </Button>
           </CardContent>
@@ -174,7 +179,7 @@ const Feedback = () => {
         <p className="mt-2 text-gray-600">Submit your queries and feedback</p>
       </div>
 
-      {status === 'error' && (
+      {status === "error" && (
         <Alert className="max-w-2xl mb-6 border-red-200 bg-red-50">
           <AlertCircle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800">
@@ -187,7 +192,8 @@ const Feedback = () => {
         <CardHeader>
           <CardTitle className="text-xl">Contact Us</CardTitle>
           <p className="text-sm text-muted-foreground">
-            We value your feedback and are here to help with any questions or concerns.
+            We value your feedback and are here to help with any questions or
+            concerns.
           </p>
         </CardHeader>
         <CardContent>
@@ -233,11 +239,13 @@ const Feedback = () => {
               <Label htmlFor="subject">
                 Subject <span className="text-red-500">*</span>
               </Label>
-              <Select 
-                value={formData.subject} 
+              <Select
+                value={formData.subject}
                 onValueChange={(value) => handleInputChange("subject", value)}
               >
-                <SelectTrigger className={errors.subject ? "border-red-500" : ""}>
+                <SelectTrigger
+                  className={errors.subject ? "border-red-500" : ""}
+                >
                   <SelectValue placeholder="Select a subject" />
                 </SelectTrigger>
                 <SelectContent>
@@ -276,20 +284,20 @@ const Feedback = () => {
             </div>
 
             <div className="flex justify-end space-x-4 pt-6">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={resetForm}
-                disabled={status === 'submitting'}
+                disabled={status === "submitting"}
               >
                 Clear Form
               </Button>
-              <Button 
-                type="submit" 
-                disabled={status === 'submitting'}
+              <Button
+                type="submit"
+                disabled={status === "submitting"}
                 className="bg-primary hover:bg-primary/90"
               >
-                {status === 'submitting' ? (
+                {status === "submitting" ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     Submitting...
@@ -321,9 +329,7 @@ const Feedback = () => {
             </div>
             <div>
               <h4 className="font-semibold text-primary mb-2">Phone Support</h4>
-              <p className="text-sm text-muted-foreground">
-                +91 XXX XXX XXXX
-              </p>
+              <p className="text-sm text-muted-foreground">+91 XXX XXX XXXX</p>
             </div>
             <div>
               <h4 className="font-semibold text-primary mb-2">Office Hours</h4>

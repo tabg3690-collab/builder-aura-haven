@@ -5,15 +5,18 @@ This guide will help you set up a real Supabase database for your Haricharan Dat
 ## 🚀 Quick Setup
 
 ### 1. Create Supabase Account
+
 1. Go to [https://supabase.com/](https://supabase.com/)
 2. Sign up for a free account
 3. Create a new project
 
 ### 2. Get Database Credentials
+
 1. In your Supabase project dashboard, go to **Settings > API**
 2. Copy your **Project URL** and **anon public key**
 
 ### 3. Configure Environment Variables
+
 1. Create a `.env` file in your project root
 2. Add your Supabase credentials:
 
@@ -23,6 +26,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 ### 4. Create Database Tables
+
 1. In Supabase dashboard, go to **SQL Editor**
 2. Copy and run this SQL script:
 
@@ -79,6 +83,7 @@ CREATE POLICY "Allow all operations for authenticated users" ON feedback FOR ALL
 ```
 
 ### 5. Create Admin User
+
 1. In the Supabase dashboard, go to **Table Editor > users**
 2. Click **Insert > Insert row**
 3. Add your admin user:
@@ -93,6 +98,7 @@ name: Administrator
 **Note:** In production, you should hash passwords properly. This is just for initial setup.
 
 ### 6. Test Your Setup
+
 1. Start your application: `npm run dev`
 2. Try logging in with your admin credentials
 3. Add a test member to verify database connectivity
@@ -100,12 +106,14 @@ name: Administrator
 ## 🔒 Security Notes
 
 ### Production Security (Important!)
+
 - **Password Hashing**: Implement proper bcrypt password hashing
 - **RLS Policies**: Configure proper Row Level Security policies
 - **Environment Variables**: Keep your database credentials secure
 - **HTTPS**: Always use HTTPS in production
 
 ### Recommended Security Updates
+
 1. Install bcrypt: `npm install bcrypt @types/bcrypt`
 2. Update the `usersAPI.hashPassword()` and `usersAPI.verifyPassword()` functions
 3. Configure proper RLS policies based on user roles
@@ -113,6 +121,7 @@ name: Administrator
 ## 📊 Database Features
 
 ### What's Included
+
 - ✅ **Members Management**: Store and manage member data
 - ✅ **Feedback System**: Collect and store user feedback
 - ✅ **User Authentication**: Database-backed user login
@@ -121,6 +130,7 @@ name: Administrator
 - ✅ **Performance Optimization**: Indexes for fast queries
 
 ### Data Storage
+
 - **Members**: Name, zone, mandal, contact info, birthdays
 - **Feedback**: User inquiries and feedback submissions
 - **Users**: Admin and user accounts with role-based access
@@ -128,12 +138,14 @@ name: Administrator
 ## 🆘 Troubleshooting
 
 ### Common Issues
+
 1. **Connection Error**: Check your environment variables
 2. **Table Not Found**: Make sure you ran the SQL script
 3. **Login Failed**: Verify user exists in users table
 4. **Permission Denied**: Check RLS policies
 
 ### Getting Help
+
 - Supabase Documentation: [https://supabase.com/docs](https://supabase.com/docs)
 - Supabase Community: [https://github.com/supabase/supabase/discussions](https://github.com/supabase/supabase/discussions)
 

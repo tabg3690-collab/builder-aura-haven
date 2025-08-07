@@ -24,25 +24,38 @@ const AddMember = () => {
     mandal: "",
     dateOfBirth: "",
     phoneNumber: "",
-    email: ""
+    email: "",
   });
 
   const zones = ["Amalsad", "Dharampur", "Gandevi", "Valsad", "Vapi"];
-  
+
   const mandalsByZone: Record<string, string[]> = {
-    "Amalsad": ["Amalsad Central", "Amalsad North", "Amalsad South"],
-    "Dharampur": ["Dharampur East", "Dharampur West", "Dharampur Central", "Dharampur North", "Dharampur South"],
-    "Gandevi": ["Gandevi North", "Gandevi South", "Gandevi East", "Gandevi West", "Gandevi Central", "Gandevi Industrial"],
-    "Valsad": ["Valsad Central", "Valsad East"],
-    "Vapi": ["Vapi Central", "Vapi Industrial", "Vapi North", "Vapi South"]
+    Amalsad: ["Amalsad Central", "Amalsad North", "Amalsad South"],
+    Dharampur: [
+      "Dharampur East",
+      "Dharampur West",
+      "Dharampur Central",
+      "Dharampur North",
+      "Dharampur South",
+    ],
+    Gandevi: [
+      "Gandevi North",
+      "Gandevi South",
+      "Gandevi East",
+      "Gandevi West",
+      "Gandevi Central",
+      "Gandevi Industrial",
+    ],
+    Valsad: ["Valsad Central", "Valsad East"],
+    Vapi: ["Vapi Central", "Vapi Industrial", "Vapi North", "Vapi South"],
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
       // Reset mandal when zone changes
-      ...(field === 'zone' ? { mandal: '' } : {})
+      ...(field === "zone" ? { mandal: "" } : {}),
     }));
   };
 
@@ -54,7 +67,9 @@ const AddMember = () => {
 
       // Check if database is configured
       if (!isSupabaseConfigured) {
-        alert("Database not configured. Please set up Supabase to save members permanently.");
+        alert(
+          "Database not configured. Please set up Supabase to save members permanently.",
+        );
         navigate("/members");
         return;
       }
@@ -66,7 +81,7 @@ const AddMember = () => {
         mandal: formData.mandal,
         dateOfBirth: formData.dateOfBirth,
         phoneNumber: formData.phoneNumber,
-        email: formData.email
+        email: formData.email,
       });
 
       // Navigate back to members list
@@ -79,14 +94,19 @@ const AddMember = () => {
     }
   };
 
-  const isFormValid = formData.name && formData.zone && formData.mandal && 
-                     formData.dateOfBirth && formData.phoneNumber && formData.email;
+  const isFormValid =
+    formData.name &&
+    formData.zone &&
+    formData.mandal &&
+    formData.dateOfBirth &&
+    formData.phoneNumber &&
+    formData.email;
 
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="mb-8">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           onClick={() => navigate("/members")}
           className="mb-4"
         >
@@ -94,7 +114,9 @@ const AddMember = () => {
           Back to Members
         </Button>
         <h1 className="text-3xl font-bold text-gray-900">Add New Member</h1>
-        <p className="mt-2 text-gray-600">Enter member details to add them to the directory</p>
+        <p className="mt-2 text-gray-600">
+          Enter member details to add them to the directory
+        </p>
       </div>
 
       <Card className="max-w-2xl">
@@ -136,7 +158,9 @@ const AddMember = () => {
                   id="phone"
                   placeholder="Enter phone number"
                   value={formData.phoneNumber}
-                  onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("phoneNumber", e.target.value)
+                  }
                   required
                 />
               </div>
@@ -147,15 +171,17 @@ const AddMember = () => {
                   id="dateOfBirth"
                   type="date"
                   value={formData.dateOfBirth}
-                  onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("dateOfBirth", e.target.value)
+                  }
                   required
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="zone">Zone</Label>
-                <Select 
-                  value={formData.zone} 
+                <Select
+                  value={formData.zone}
                   onValueChange={(value) => handleInputChange("zone", value)}
                 >
                   <SelectTrigger>
@@ -173,8 +199,8 @@ const AddMember = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="mandal">Mandal</Label>
-                <Select 
-                  value={formData.mandal} 
+                <Select
+                  value={formData.mandal}
                   onValueChange={(value) => handleInputChange("mandal", value)}
                   disabled={!formData.zone}
                 >
@@ -182,20 +208,21 @@ const AddMember = () => {
                     <SelectValue placeholder="Select a mandal" />
                   </SelectTrigger>
                   <SelectContent>
-                    {formData.zone && mandalsByZone[formData.zone]?.map((mandal) => (
-                      <SelectItem key={mandal} value={mandal}>
-                        {mandal}
-                      </SelectItem>
-                    ))}
+                    {formData.zone &&
+                      mandalsByZone[formData.zone]?.map((mandal) => (
+                        <SelectItem key={mandal} value={mandal}>
+                          {mandal}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="flex justify-end space-x-4 pt-6">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => navigate("/members")}
               >
                 Cancel

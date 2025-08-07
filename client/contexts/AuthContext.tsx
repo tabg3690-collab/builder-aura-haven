@@ -1,7 +1,13 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AuthUser } from '@shared/users';
-import { usersAPI } from '@/lib/database';
-import { isSupabaseConfigured } from '@/lib/supabase';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { AuthUser } from "@shared/users";
+import { usersAPI } from "@/lib/database";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -24,14 +30,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // Load user from localStorage on app start
   useEffect(() => {
-    const savedUser = localStorage.getItem('haricharan_auth_user');
+    const savedUser = localStorage.getItem("haricharan_auth_user");
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
         setUser(parsedUser);
       } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('haricharan_auth_user');
+        console.error("Error parsing saved user:", error);
+        localStorage.removeItem("haricharan_auth_user");
       }
     }
     setIsLoading(false);
@@ -44,26 +50,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       // If database is not configured, use demo authentication
       if (!isSupabaseConfigured) {
         // Demo credentials for testing
-        if (email === 'admin@gmail.com' && password === 'admin123') {
+        if (email === "admin@gmail.com" && password === "admin123") {
           const demoAdmin: AuthUser = {
-            id: 'demo-admin',
-            email: 'admin@gmail.com',
-            role: 'admin',
-            name: 'Demo Administrator'
+            id: "demo-admin",
+            email: "admin@gmail.com",
+            role: "admin",
+            name: "Demo Administrator",
           };
           setUser(demoAdmin);
-          localStorage.setItem('haricharan_auth_user', JSON.stringify(demoAdmin));
+          localStorage.setItem(
+            "haricharan_auth_user",
+            JSON.stringify(demoAdmin),
+          );
           setIsLoading(false);
           return true;
-        } else if (email === 'user@gmail.com' && password === 'user123') {
+        } else if (email === "user@gmail.com" && password === "user123") {
           const demoUser: AuthUser = {
-            id: 'demo-user',
-            email: 'user@gmail.com',
-            role: 'user',
-            name: 'Demo User'
+            id: "demo-user",
+            email: "user@gmail.com",
+            role: "user",
+            name: "Demo User",
           };
           setUser(demoUser);
-          localStorage.setItem('haricharan_auth_user', JSON.stringify(demoUser));
+          localStorage.setItem(
+            "haricharan_auth_user",
+            JSON.stringify(demoUser),
+          );
           setIsLoading(false);
           return true;
         } else {
@@ -77,7 +89,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (authenticatedUser) {
         setUser(authenticatedUser);
-        localStorage.setItem('haricharan_auth_user', JSON.stringify(authenticatedUser));
+        localStorage.setItem(
+          "haricharan_auth_user",
+          JSON.stringify(authenticatedUser),
+        );
         setIsLoading(false);
         return true;
       } else {
@@ -85,7 +100,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return false;
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       setIsLoading(false);
       return false;
     }
@@ -93,11 +108,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('haricharan_auth_user');
+    localStorage.removeItem("haricharan_auth_user");
   };
 
-  const isAdmin = user?.role === 'admin';
-  const canEdit = user?.role === 'admin';
+  const isAdmin = user?.role === "admin";
+  const canEdit = user?.role === "admin";
 
   const value: AuthContextType = {
     user,
@@ -105,20 +120,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     isLoading,
     isAdmin,
-    canEdit
+    canEdit,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

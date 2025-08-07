@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 // Get Supabase credentials from environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -38,7 +38,7 @@ export interface DatabaseUser {
   id: string;
   email: string;
   password_hash: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   name: string;
   created_at: string;
   last_login: string | null;
@@ -99,8 +99,8 @@ CREATE POLICY "Allow all operations for authenticated users" ON feedback FOR ALL
 
 // Initial admin user (to be inserted manually in Supabase)
 export const initialAdminUser = {
-  email: 'admin@gmail.com',
-  password_hash: '$2b$10$rBV2wHRV3FthCrKzpAhOoeHBLJ5TQZx4PZOGHPJwBOQCFGKxUFRYG', // hashed "admin123"
-  role: 'admin',
-  name: 'Administrator'
+  email: "admin@gmail.com",
+  password_hash: "$2b$10$rBV2wHRV3FthCrKzpAhOoeHBLJ5TQZx4PZOGHPJwBOQCFGKxUFRYG", // hashed "admin123"
+  role: "admin",
+  name: "Administrator",
 };

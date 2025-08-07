@@ -44,8 +44,11 @@ const Members = () => {
       const data = await membersAPI.getAll();
       setMembers(data);
     } catch (err) {
-      console.error('Error loading members:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load members. Please check your database connection.';
+      console.error("Error loading members:", err);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to load members. Please check your database connection.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -72,14 +75,12 @@ const Members = () => {
           <h1 className="text-3xl font-bold text-gray-900">Members</h1>
           <p className="mt-2 text-gray-600">Complete member directory</p>
         </div>
-        
+
         <Alert className="border-red-200 bg-red-50">
           <AlertCircle className="h-4 w-4 text-red-600" />
-          <AlertDescription className="text-red-800">
-            {error}
-          </AlertDescription>
+          <AlertDescription className="text-red-800">{error}</AlertDescription>
         </Alert>
-        
+
         <div className="mt-4">
           <Button onClick={loadMembers} variant="outline">
             Try Again
@@ -99,16 +100,16 @@ const Members = () => {
         </div>
         {canEdit ? (
           <div className="flex space-x-3">
-            <Button 
-              onClick={() => navigate('/members/import')}
+            <Button
+              onClick={() => navigate("/members/import")}
               variant="outline"
               className="border-secondary text-secondary hover:bg-secondary hover:text-white"
             >
               <Upload className="h-4 w-4 mr-2" />
               Import Excel
             </Button>
-            <Button 
-              onClick={() => navigate('/members/add')}
+            <Button
+              onClick={() => navigate("/members/add")}
               className="bg-primary hover:bg-primary/90"
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -118,7 +119,9 @@ const Members = () => {
         ) : (
           <div className="text-right">
             <p className="text-sm text-muted-foreground">Read-only access</p>
-            <p className="text-xs text-muted-foreground">Contact admin to edit members</p>
+            <p className="text-xs text-muted-foreground">
+              Contact admin to edit members
+            </p>
           </div>
         )}
       </div>
@@ -127,10 +130,9 @@ const Members = () => {
         <CardHeader>
           <CardTitle className="text-xl">Member Directory</CardTitle>
           <p className="text-sm text-muted-foreground">
-            {members.length > 0 
+            {members.length > 0
               ? `Complete list of all registered members (${members.length} total)`
-              : "No members found in the database"
-            }
+              : "No members found in the database"}
           </p>
         </CardHeader>
         <CardContent>
@@ -150,10 +152,14 @@ const Members = () => {
                 <TableBody>
                   {members.map((member) => (
                     <TableRow key={member.id}>
-                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {member.name}
+                      </TableCell>
                       <TableCell>{member.zone}</TableCell>
                       <TableCell>{member.mandal}</TableCell>
-                      <TableCell>{new Date(member.dateOfBirth).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        {new Date(member.dateOfBirth).toLocaleDateString()}
+                      </TableCell>
                       <TableCell>{member.phoneNumber}</TableCell>
                       <TableCell>{member.email}</TableCell>
                     </TableRow>
@@ -167,22 +173,21 @@ const Members = () => {
                 📝 No members found in the database
               </div>
               <p className="text-sm text-muted-foreground mb-6">
-                {canEdit 
+                {canEdit
                   ? "Start by adding your first member or importing from Excel"
-                  : "Contact an administrator to add members to the database"
-                }
+                  : "Contact an administrator to add members to the database"}
               </p>
               {canEdit && (
                 <div className="space-x-4">
-                  <Button 
-                    onClick={() => navigate('/members/add')}
+                  <Button
+                    onClick={() => navigate("/members/add")}
                     className="bg-primary hover:bg-primary/90"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Add First Member
                   </Button>
-                  <Button 
-                    onClick={() => navigate('/members/import')}
+                  <Button
+                    onClick={() => navigate("/members/import")}
                     variant="outline"
                   >
                     <Upload className="h-4 w-4 mr-2" />

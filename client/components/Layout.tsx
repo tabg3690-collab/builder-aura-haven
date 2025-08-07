@@ -87,11 +87,17 @@ const Layout = () => {
             <div className="flex items-center">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-2">
+                  <Button
+                    variant="ghost"
+                    className="flex items-center space-x-2"
+                  >
                     <User className="h-4 w-4" />
                     <span className="hidden sm:block">{user?.name}</span>
-                    {user?.role === 'admin' && (
-                      <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    {user?.role === "admin" && (
+                      <Badge
+                        variant="secondary"
+                        className="bg-primary/10 text-primary"
+                      >
                         Admin
                       </Badge>
                     )}
@@ -100,12 +106,16 @@ const Layout = () => {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.name}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user?.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.email}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {user?.role === 'admin' && (
+                  {user?.role === "admin" && (
                     <>
                       <DropdownMenuItem className="flex items-center">
                         <Shield className="mr-2 h-4 w-4" />

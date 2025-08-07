@@ -31,24 +31,33 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/setup" element={<Setup />} />
-            <Route path="/" element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Dashboard />} />
               <Route path="zones" element={<Zones />} />
               <Route path="members" element={<Members />} />
-              <Route path="members/add" element={
-                <ProtectedRoute requireAdmin>
-                  <AddMember />
-                </ProtectedRoute>
-              } />
-              <Route path="members/import" element={
-                <ProtectedRoute requireAdmin>
-                  <ImportMembers />
-                </ProtectedRoute>
-              } />
+              <Route
+                path="members/add"
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <AddMember />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="members/import"
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <ImportMembers />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="feedback" element={<Feedback />} />
             </Route>
             <Route path="*" element={<NotFound />} />

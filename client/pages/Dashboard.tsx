@@ -31,7 +31,7 @@ const Dashboard = () => {
     totalMembers: 0,
     totalZones: 5,
     totalMandals: 20,
-    totalFeedback: 0
+    totalFeedback: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +52,7 @@ const Dashboard = () => {
           totalMembers: 0,
           totalZones: 5,
           totalMandals: 20,
-          totalFeedback: 0
+          totalFeedback: 0,
         });
         setLoading(false);
         return;
@@ -60,14 +60,17 @@ const Dashboard = () => {
 
       const [birthdaysData, statsData] = await Promise.all([
         membersAPI.getUpcomingBirthdays(30),
-        statsAPI.getStats()
+        statsAPI.getStats(),
       ]);
 
       setUpcomingBirthdays(birthdaysData);
       setStats(statsData);
     } catch (err) {
-      console.error('Error loading dashboard data:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load dashboard data. Please check your database connection.';
+      console.error("Error loading dashboard data:", err);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to load dashboard data. Please check your database connection.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -92,14 +95,14 @@ const Dashboard = () => {
       <div className="px-4 py-6 sm:px-0">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-2 text-gray-600">Overview of zones, mandals, and member activities</p>
+          <p className="mt-2 text-gray-600">
+            Overview of zones, mandals, and member activities
+          </p>
         </div>
-        
+
         <Alert className="border-red-200 bg-red-50">
           <AlertCircle className="h-4 w-4 text-red-600" />
-          <AlertDescription className="text-red-800">
-            {error}
-          </AlertDescription>
+          <AlertDescription className="text-red-800">{error}</AlertDescription>
         </Alert>
       </div>
     );
@@ -110,13 +113,16 @@ const Dashboard = () => {
       <DatabaseStatus />
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-gray-600">Overview of zones, mandals, and member activities</p>
-        
+        <p className="mt-2 text-gray-600">
+          Overview of zones, mandals, and member activities
+        </p>
+
         {!canEdit && (
           <Alert className="mt-4 border-blue-200 bg-blue-50">
             <Info className="h-4 w-4 text-blue-600" />
             <AlertDescription className="text-blue-800">
-              You have read-only access to the database. Contact an administrator to edit member data.
+              You have read-only access to the database. Contact an
+              administrator to edit member data.
             </AlertDescription>
           </Alert>
         )}
@@ -126,7 +132,9 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-primary">Total Zones</CardTitle>
+            <CardTitle className="text-sm font-medium text-primary">
+              Total Zones
+            </CardTitle>
             <div className="h-4 w-4 text-primary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -144,14 +152,20 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.totalZones}</div>
-            <p className="text-xs text-muted-foreground">Active zones across regions</p>
+            <div className="text-2xl font-bold text-primary">
+              {stats.totalZones}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Active zones across regions
+            </p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-secondary">Total Members</CardTitle>
+            <CardTitle className="text-sm font-medium text-secondary">
+              Total Members
+            </CardTitle>
             <div className="h-4 w-4 text-secondary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +185,9 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-secondary">{stats.totalMembers}</div>
+            <div className="text-2xl font-bold text-secondary">
+              {stats.totalMembers}
+            </div>
             <p className="text-xs text-muted-foreground">Registered members</p>
           </CardContent>
         </Card>
@@ -183,7 +199,8 @@ const Dashboard = () => {
           <CardTitle className="text-xl">Upcoming Birthdays</CardTitle>
           <p className="text-sm text-muted-foreground">
             Members celebrating birthdays in the next 30 days
-            {upcomingBirthdays.length > 0 && ` (${upcomingBirthdays.length} upcoming)`}
+            {upcomingBirthdays.length > 0 &&
+              ` (${upcomingBirthdays.length} upcoming)`}
           </p>
         </CardHeader>
         <CardContent>
@@ -202,12 +219,14 @@ const Dashboard = () => {
                   const birthdayInfo = getBirthdayInfo(member);
                   return (
                     <TableRow key={member.id}>
-                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {member.name}
+                      </TableCell>
                       <TableCell>{member.mandal}</TableCell>
                       <TableCell>
-                        {birthdayInfo.birthday.toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric'
+                        {birthdayInfo.birthday.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
                         })}
                       </TableCell>
                       <TableCell>
@@ -240,10 +259,9 @@ const Dashboard = () => {
                 🎂 No upcoming birthdays in the next 30 days
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                {stats.totalMembers > 0 
+                {stats.totalMembers > 0
                   ? "Check back later for upcoming celebrations!"
-                  : "Add members to the database to see upcoming birthdays."
-                }
+                  : "Add members to the database to see upcoming birthdays."}
               </p>
             </div>
           )}
