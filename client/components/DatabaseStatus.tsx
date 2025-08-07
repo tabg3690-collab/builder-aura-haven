@@ -19,7 +19,7 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (isSupabaseConfigured) {
+  if (isNeonConfigured) {
     return null; // Don't show anything if database is configured
   }
 
