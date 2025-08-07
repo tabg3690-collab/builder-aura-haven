@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import { membersAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 const AddMember = () => {
   const navigate = useNavigate();
@@ -66,9 +67,9 @@ const AddMember = () => {
       setLoading(true);
 
       // Check if database is configured
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         alert(
-          "Database not configured. Please set up Supabase to save members permanently.",
+          "Database not configured. Please set up your Neon database connection.",
         );
         navigate("/members");
         return;
