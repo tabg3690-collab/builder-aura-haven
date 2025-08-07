@@ -1,19 +1,15 @@
-import {
-  supabase,
-  DatabaseMember,
-  DatabaseFeedback,
-  DatabaseUser,
-  isSupabaseConfigured,
-} from "./supabase";
-import { Member } from "@shared/members";
-import { AuthUser } from "@shared/users";
+import { Member } from '@shared/members';
+import { AuthUser } from '@shared/users';
+
+// Check if running in development or production
+const isDev = import.meta.env.DEV;
+const baseURL = isDev ? 'http://localhost:8888' : '';
 
 // Helper function to check if database is available
 const checkDatabaseConnection = () => {
-  if (!isSupabaseConfigured || !supabase) {
-    throw new Error(
-      "Database not configured. Please set up your Supabase credentials in the .env file.",
-    );
+  const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
+  if (!neonUrl) {
+    throw new Error('Database not configured. Please set up your Neon database credentials.');
   }
 };
 
@@ -22,211 +18,107 @@ export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
     checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("members")
-      .select("*")
-      .order("name");
-
-    if (error) {
-      console.error("Error fetching members:", error);
-      throw new Error("Failed to fetch members");
+    const response = await fetch(`${baseURL}/api/members`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch members');
     }
-
-    return (data || []).map(this.transformMember);
+    const data = await response.json();
+    return data.map(this.transformMember);
   },
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
     checkDatabaseConnection();
-    const today = new Date();
-    const futureDate = new Date();
-    futureDate.setDate(today.getDate() + days);
-
-    const { data, error } = await supabase!
-      .from("members")
-      .select("*")
-      .order("date_of_birth");
-
-    if (error) {
-      console.error("Error fetching upcoming birthdays:", error);
-      throw new Error("Failed to fetch upcoming birthdays");
+    const response = await fetch(`${baseURL}/api/members?upcoming=true&days=${days}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch upcoming birthdays');
     }
-
-    if (!data) return [];
-
-    // Filter birthdays in the next specified days
-    return data
-      .map(this.transformMember)
-      .filter((member) => {
-        const birthDate = new Date(member.dateOfBirth);
-        const currentYear = today.getFullYear();
-        const thisYearBirthday = new Date(
-          currentYear,
-          birthDate.getMonth(),
-          birthDate.getDate(),
-        );
-        const nextYearBirthday = new Date(
-          currentYear + 1,
-          birthDate.getMonth(),
-          birthDate.getDate(),
-        );
-
-        const daysUntilThisYear = Math.ceil(
-          (thisYearBirthday.getTime() - today.getTime()) /
-            (1000 * 60 * 60 * 24),
-        );
-        const daysUntilNextYear = Math.ceil(
-          (nextYearBirthday.getTime() - today.getTime()) /
-            (1000 * 60 * 60 * 24),
-        );
-
-        return (
-          (daysUntilThisYear >= 0 && daysUntilThisYear <= days) ||
-          (daysUntilThisYear < 0 && daysUntilNextYear <= days)
-        );
-      })
-      .sort((a, b) => {
-        const birthDateA = new Date(a.dateOfBirth);
-        const birthDateB = new Date(b.dateOfBirth);
-        const currentYear = today.getFullYear();
-        const thisYearBirthdayA = new Date(
-          currentYear,
-          birthDateA.getMonth(),
-          birthDateA.getDate(),
-        );
-        const thisYearBirthdayB = new Date(
-          currentYear,
-          birthDateB.getMonth(),
-          birthDateB.getDate(),
-        );
-
-        const effectiveDateA =
-          thisYearBirthdayA < today
-            ? new Date(
-                currentYear + 1,
-                birthDateA.getMonth(),
-                birthDateA.getDate(),
-              )
-            : thisYearBirthdayA;
-        const effectiveDateB =
-          thisYearBirthdayB < today
-            ? new Date(
-                currentYear + 1,
-                birthDateB.getMonth(),
-                birthDateB.getDate(),
-              )
-            : thisYearBirthdayB;
-
-        return effectiveDateA.getTime() - effectiveDateB.getTime();
-      });
+    const data = await response.json();
+    return data.map(this.transformMember);
   },
 
   // Add new member
-  async create(member: Omit<Member, "id">): Promise<Member> {
+  async create(member: Omit<Member, 'id'>): Promise<Member> {
     checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("members")
-      .insert([
-        {
-          name: member.name,
-          zone: member.zone,
-          mandal: member.mandal,
-          date_of_birth: member.dateOfBirth,
-          phone_number: member.phoneNumber,
-          email: member.email,
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Error creating member:", error);
-      throw new Error("Failed to create member");
+    const response = await fetch(`${baseURL}/api/members`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: member.name,
+        zone: member.zone,
+        mandal: member.mandal,
+        dateOfBirth: member.dateOfBirth,
+        phoneNumber: member.phoneNumber,
+        email: member.email
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to create member');
     }
-
+    
+    const data = await response.json();
     return this.transformMember(data);
   },
 
   // Bulk import members
-  async bulkCreate(members: Omit<Member, "id">[]): Promise<Member[]> {
+  async bulkCreate(members: Omit<Member, 'id'>[]): Promise<Member[]> {
     checkDatabaseConnection();
-    const membersData = members.map((member) => ({
-      name: member.name,
-      zone: member.zone,
-      mandal: member.mandal,
-      date_of_birth: member.dateOfBirth,
-      phone_number: member.phoneNumber,
-      email: member.email,
-    }));
-
-    const { data, error } = await supabase!
-      .from("members")
-      .insert(membersData)
-      .select();
-
-    if (error) {
-      console.error("Error bulk creating members:", error);
-      throw new Error("Failed to import members");
+    const results = [];
+    
+    for (const member of members) {
+      const result = await this.create(member);
+      results.push(result);
     }
-
-    return (data || []).map(this.transformMember);
+    
+    return results;
   },
 
   // Update member
-  async update(
-    id: string,
-    member: Partial<Omit<Member, "id">>,
-  ): Promise<Member> {
+  async update(id: string, member: Partial<Omit<Member, 'id'>>): Promise<Member> {
     checkDatabaseConnection();
-    const updateData: Partial<DatabaseMember> = {};
-
-    if (member.name) updateData.name = member.name;
-    if (member.zone) updateData.zone = member.zone;
-    if (member.mandal) updateData.mandal = member.mandal;
-    if (member.dateOfBirth) updateData.date_of_birth = member.dateOfBirth;
-    if (member.phoneNumber) updateData.phone_number = member.phoneNumber;
-    if (member.email) updateData.email = member.email;
-
-    updateData.updated_at = new Date().toISOString();
-
-    const { data, error } = await supabase!
-      .from("members")
-      .update(updateData)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Error updating member:", error);
-      throw new Error("Failed to update member");
+    const response = await fetch(`${baseURL}/api/members?id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(member)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to update member');
     }
-
+    
+    const data = await response.json();
     return this.transformMember(data);
   },
 
   // Delete member
   async delete(id: string): Promise<void> {
     checkDatabaseConnection();
-    const { error } = await supabase!.from("members").delete().eq("id", id);
-
-    if (error) {
-      console.error("Error deleting member:", error);
-      throw new Error("Failed to delete member");
+    const response = await fetch(`${baseURL}/api/members?id=${id}`, {
+      method: 'DELETE'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete member');
     }
   },
 
   // Transform database member to frontend member
-  transformMember(dbMember: DatabaseMember): Member {
+  transformMember(dbMember: any): Member {
     return {
-      id: parseInt(dbMember.id.replace(/-/g, "").substring(0, 8), 16), // Convert UUID to number for compatibility
+      id: parseInt(dbMember.id.replace(/-/g, '').substring(0, 8), 16), // Convert UUID to number for compatibility
       name: dbMember.name,
       zone: dbMember.zone,
       mandal: dbMember.mandal,
       dateOfBirth: dbMember.date_of_birth,
       phoneNumber: dbMember.phone_number,
-      email: dbMember.email,
+      email: dbMember.email
     };
-  },
+  }
 };
 
 // Feedback API
@@ -237,160 +129,88 @@ export const feedbackAPI = {
     email: string;
     subject: string;
     message: string;
-  }): Promise<DatabaseFeedback> {
+  }): Promise<any> {
     checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("feedback")
-      .insert([feedback])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Error creating feedback:", error);
-      throw new Error("Failed to submit feedback");
+    const response = await fetch(`${baseURL}/api/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(feedback)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to submit feedback');
     }
-
-    return data;
+    
+    return response.json();
   },
 
   // Get all feedback (admin only)
-  async getAll(): Promise<DatabaseFeedback[]> {
+  async getAll(): Promise<any[]> {
     checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("feedback")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching feedback:", error);
-      throw new Error("Failed to fetch feedback");
+    const response = await fetch(`${baseURL}/api/feedback`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch feedback');
     }
-
-    return data || [];
-  },
+    return response.json();
+  }
 };
 
 // Users API
 export const usersAPI = {
   // Authenticate user
-  async authenticate(
-    email: string,
-    password: string,
-  ): Promise<AuthUser | null> {
+  async authenticate(email: string, password: string): Promise<AuthUser | null> {
     checkDatabaseConnection();
-    // In a real implementation, you would hash the password and compare
-    // For now, we'll use a simple comparison (NOT SECURE - implement proper hashing)
-    const { data, error } = await supabase!
-      .from("users")
-      .select("*")
-      .eq("email", email)
-      .single();
-
-    if (error || !data) {
+    const response = await fetch(`${baseURL}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    });
+    
+    if (response.status === 401) {
       return null;
     }
-
-    // TODO: Implement proper password hashing comparison
-    // For demo purposes, we'll compare plain text (NEVER do this in production)
-    if (this.verifyPassword(password, data.password_hash)) {
-      // Update last login
-      await supabase!
-        .from("users")
-        .update({ last_login: new Date().toISOString() })
-        .eq("id", data.id);
-
-      return {
-        id: data.id,
-        email: data.email,
-        role: data.role,
-        name: data.name,
-      };
+    
+    if (!response.ok) {
+      throw new Error('Authentication failed');
     }
-
-    return null;
+    
+    return response.json();
   },
 
   // Create new user (admin only)
   async create(user: {
     email: string;
     password: string;
-    role: "admin" | "user";
+    role: 'admin' | 'user';
     name: string;
   }): Promise<AuthUser> {
-    checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("users")
-      .insert([
-        {
-          email: user.email,
-          password_hash: this.hashPassword(user.password), // TODO: Implement proper hashing
-          role: user.role,
-          name: user.name,
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Error creating user:", error);
-      throw new Error("Failed to create user");
-    }
-
-    return {
-      id: data.id,
-      email: data.email,
-      role: data.role,
-      name: data.name,
-    };
+    // This would need to be implemented as a separate function
+    throw new Error('User creation not implemented yet');
   },
 
   // Get all users (admin only)
   async getAll(): Promise<AuthUser[]> {
     checkDatabaseConnection();
-    const { data, error } = await supabase!
-      .from("users")
-      .select("id, email, role, name, created_at")
-      .order("created_at");
-
-    if (error) {
-      console.error("Error fetching users:", error);
-      throw new Error("Failed to fetch users");
+    const response = await fetch(`${baseURL}/api/auth/users`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch users');
     }
-
-    return data || [];
-  },
-
-  // Simple password hashing (implement proper bcrypt in production)
-  hashPassword(password: string): string {
-    // TODO: Implement proper password hashing with bcrypt
-    return password; // NEVER do this in production
-  },
-
-  // Simple password verification (implement proper bcrypt in production)
-  verifyPassword(password: string, hash: string): boolean {
-    // TODO: Implement proper password verification with bcrypt
-    return password === hash; // NEVER do this in production
-  },
+    return response.json();
+  }
 };
 
 // Stats API
 export const statsAPI = {
   async getStats() {
     checkDatabaseConnection();
-    const [membersCount, zonesCount, feedbackCount] = await Promise.all([
-      supabase!.from("members").select("id", { count: "exact" }),
-      supabase!
-        .from("members")
-        .select("zone", { count: "exact" })
-        .group("zone"),
-      supabase!.from("feedback").select("id", { count: "exact" }),
-    ]);
-
-    return {
-      totalMembers: membersCount.count || 0,
-      totalZones: 5, // Fixed number as we have specific zones
-      totalMandals: 20, // Fixed number as calculated before
-      totalFeedback: feedbackCount.count || 0,
-    };
-  },
+    const response = await fetch(`${baseURL}/api/stats`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch stats');
+    }
+    return response.json();
+  }
 };
