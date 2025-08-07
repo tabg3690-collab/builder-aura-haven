@@ -99,15 +99,21 @@ const Feedback = () => {
     setStatus('submitting');
 
     try {
-      // Save feedback to database
-      await feedbackAPI.create({
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message
-      });
+      // Check if database is configured
+      if (!isSupabaseConfigured) {
+        // In demo mode, just show success without actually saving
+        setStatus('success');
+      } else {
+        // Save feedback to database
+        await feedbackAPI.create({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        });
 
-      setStatus('success');
+        setStatus('success');
+      }
 
       // Reset form after successful submission
       setTimeout(() => {
