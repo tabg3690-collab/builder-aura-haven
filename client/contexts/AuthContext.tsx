@@ -7,7 +7,8 @@ import {
 } from "react";
 import { AuthUser } from "@shared/users";
 import { usersAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -48,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     try {
       // If database is not configured, use demo authentication
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         // Demo credentials for testing
         if (email === "admin@gmail.com" && password === "admin123") {
           const demoAdmin: AuthUser = {
