@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { AuthUser } from '@shared/users';
 import { usersAPI } from '@/lib/database';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 interface AuthContextType {
   user: AuthUser | null;
