@@ -26,6 +26,7 @@ import {
 import * as XLSX from 'xlsx';
 import { Member } from "@shared/members";
 import { membersAPI } from "@/lib/database";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 interface ImportedMember {
   name: string;
