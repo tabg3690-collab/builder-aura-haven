@@ -79,7 +79,8 @@ export const membersAPI = {
 
   // Add new member
   async create(member: Omit<Member, 'id'>): Promise<Member> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('members')
       .insert([{
         name: member.name,
