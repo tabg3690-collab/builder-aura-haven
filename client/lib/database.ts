@@ -13,7 +13,8 @@ const checkDatabaseConnection = () => {
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('members')
       .select('*')
       .order('name');
