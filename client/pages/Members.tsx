@@ -36,7 +36,8 @@ const Members = () => {
       setMembers(data);
     } catch (err) {
       console.error('Error loading members:', err);
-      setError('Failed to load members. Please check your database connection.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load members. Please check your database connection.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
