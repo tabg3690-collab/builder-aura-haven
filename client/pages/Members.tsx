@@ -11,6 +11,7 @@ import {
 import { Plus, Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { membersData, Member } from "@shared/members";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Members = () => {
   const navigate = useNavigate();
