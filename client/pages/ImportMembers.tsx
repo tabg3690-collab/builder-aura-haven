@@ -176,17 +176,24 @@ const ImportMembers = () => {
   const handleImport = async () => {
     setStatus('importing');
     setProgress(0);
-    
+
     try {
-      // Simulate import process
-      for (let i = 0; i <= 100; i += 10) {
-        setProgress(i);
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      
-      // Here you would typically save to your backend/database
-      console.log('Importing members:', validMembers);
-      
+      // Prepare member data for database
+      const membersToImport = validMembers.map(member => ({
+        name: member.name,
+        zone: member.zone,
+        mandal: member.mandal,
+        dateOfBirth: member.dateOfBirth,
+        phoneNumber: member.phoneNumber,
+        email: member.email
+      }));
+
+      setProgress(25);
+
+      // Save to database
+      await membersAPI.bulkCreate(membersToImport);
+
+      setProgress(100);
       setStatus('success');
     } catch (error) {
       console.error('Import error:', error);
