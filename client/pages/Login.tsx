@@ -8,7 +8,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Shield, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { isValidEmail } from "@shared/users";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -184,7 +185,7 @@ const Login = () => {
         {/* Information Card */}
         <Card className="mt-6 bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
-            {!isSupabaseConfigured ? (
+            {!isNeonConfigured ? (
               <>
                 <h3 className="font-semibold text-blue-900 mb-2">
                   Demo Mode Credentials:
@@ -198,8 +199,7 @@ const Login = () => {
                   </div>
                 </div>
                 <p className="text-xs text-blue-600 mt-3">
-                  Database not configured - using demo mode. Set up Supabase for
-                  full functionality.
+                  Database not configured - using demo mode. Set up your Neon database connection.
                 </p>
               </>
             ) : (
