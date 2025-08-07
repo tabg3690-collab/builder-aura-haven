@@ -7,13 +7,16 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 import Zones from "./pages/Zones";
 import Members from "./pages/Members";
 import AddMember from "./pages/AddMember";
 import ImportMembers from "./pages/ImportMembers";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
