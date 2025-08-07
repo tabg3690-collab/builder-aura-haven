@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { Member } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
 import { membersAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 import DatabaseStatus from "@/components/DatabaseStatus";
 
 const Members = () => {
@@ -35,7 +36,7 @@ const Members = () => {
       setError(null);
 
       // If database is not configured, show empty state
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         setMembers([]);
         setLoading(false);
         return;
