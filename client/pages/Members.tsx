@@ -82,6 +82,7 @@ const Members = () => {
 
   return (
     <div className="px-4 py-6 sm:px-0">
+      <DatabaseStatus />
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Members</h1>
