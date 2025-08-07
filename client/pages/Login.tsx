@@ -173,13 +173,28 @@ const Login = () => {
         {/* Information Card */}
         <Card className="mt-6 bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
-            <h3 className="font-semibold text-blue-900 mb-2">Access Information:</h3>
-            <div className="text-sm text-blue-800 space-y-2">
-              <p>• Only @gmail.com email addresses are accepted</p>
-              <p>• Admin users can edit data and manage members</p>
-              <p>• Regular users have read-only access</p>
-              <p>• Contact your administrator for login credentials</p>
-            </div>
+            {!isSupabaseConfigured ? (
+              <>
+                <h3 className="font-semibold text-blue-900 mb-2">Demo Mode Credentials:</h3>
+                <div className="text-sm text-blue-800 space-y-2">
+                  <div><strong>Admin:</strong> admin@gmail.com / admin123</div>
+                  <div><strong>User:</strong> user@gmail.com / user123</div>
+                </div>
+                <p className="text-xs text-blue-600 mt-3">
+                  Database not configured - using demo mode. Set up Supabase for full functionality.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="font-semibold text-blue-900 mb-2">Access Information:</h3>
+                <div className="text-sm text-blue-800 space-y-2">
+                  <p>• Only @gmail.com email addresses are accepted</p>
+                  <p>• Admin users can edit data and manage members</p>
+                  <p>• Regular users have read-only access</p>
+                  <p>• Contact your administrator for login credentials</p>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
