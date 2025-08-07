@@ -11,7 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { membersAPI } from "@/lib/database";
 
 const AddMember = () => {
   const navigate = useNavigate();
