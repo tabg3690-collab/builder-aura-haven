@@ -113,7 +113,7 @@ export const membersAPI = {
       email: member.email
     }));
 
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('members')
       .insert(membersData)
       .select();
@@ -128,6 +128,7 @@ export const membersAPI = {
 
   // Update member
   async update(id: string, member: Partial<Omit<Member, 'id'>>): Promise<Member> {
+    checkDatabaseConnection();
     const updateData: Partial<DatabaseMember> = {};
     
     if (member.name) updateData.name = member.name;
