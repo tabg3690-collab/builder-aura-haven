@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, Shield, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { isValidEmail } from '@shared/users';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 const Login = () => {
   const navigate = useNavigate();
