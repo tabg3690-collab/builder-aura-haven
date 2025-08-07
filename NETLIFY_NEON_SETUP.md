@@ -18,7 +18,9 @@ Since you've already created the database on Netlify using Neon, you just need t
 ### **Step 2: Set Environment Variable**
 
 In your Netlify site settings:
+
 1. **Add Environment Variable**:
+
    - **Key**: `NEON_DATABASE_URL`
    - **Value**: Your Neon PostgreSQL connection string
 
@@ -73,11 +75,11 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_feedback_created_at ON feedback(created_at);
 
 -- Insert initial admin users
-INSERT INTO users (email, password_hash, role, name) 
+INSERT INTO users (email, password_hash, role, name)
 SELECT 'admin@gmail.com', 'admin123', 'admin', 'Administrator'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@gmail.com');
 
-INSERT INTO users (email, password_hash, role, name) 
+INSERT INTO users (email, password_hash, role, name)
 SELECT 'haricharan@gmail.com', 'hari123', 'admin', 'Haricharan'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'haricharan@gmail.com');
 ```
@@ -93,7 +95,7 @@ WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'haricharan@gmail.com');
 ✅ **Netlify Hosting**: Your frontend is hosted on Netlify  
 ✅ **Neon Database**: PostgreSQL database for data storage  
 ✅ **Serverless Functions**: Netlify functions handle API calls  
-✅ **Code Updated**: All code now works with Neon instead of Supabase  
+✅ **Code Updated**: All code now works with Neon instead of Supabase
 
 ## ��� **What I've Updated in Your Code**
 

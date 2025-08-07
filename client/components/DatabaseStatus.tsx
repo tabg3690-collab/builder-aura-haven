@@ -28,7 +28,8 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
       <Alert className="border-orange-200 bg-orange-50">
         <AlertTriangle className="h-4 w-4 text-orange-600" />
         <AlertDescription className="text-orange-800">
-          <strong>Database Not Configured:</strong> Using demo mode. Your Netlify + Neon database needs the connection URL.
+          <strong>Database Not Configured:</strong> Using demo mode. Your
+          Netlify + Neon database needs the connection URL.
           {!showFullSetup && (
             <Button
               variant="link"

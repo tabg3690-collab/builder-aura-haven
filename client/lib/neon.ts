@@ -1,4 +1,4 @@
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 
 // Get Neon database URL from environment variables
 const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
@@ -35,7 +35,7 @@ export interface DatabaseUser {
   id: string;
   email: string;
   password_hash: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   name: string;
   created_at: string;
   last_login: string | null;

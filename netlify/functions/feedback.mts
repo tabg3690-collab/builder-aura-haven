@@ -1,18 +1,18 @@
 import type { Context, Config } from "@netlify/functions";
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
 
-const sql = neon(Netlify.env.get('NEON_DATABASE_URL') || '');
+const sql = neon(Netlify.env.get("NEON_DATABASE_URL") || "");
 
 export default async (req: Request, context: Context) => {
   // Add CORS headers
   const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   };
 
   // Handle preflight requests
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers });
   }
 
@@ -20,12 +20,13 @@ export default async (req: Request, context: Context) => {
     const method = req.method;
 
     switch (method) {
-      case 'GET':
+      case "GET":
         // Get all feedback (admin only)
-        const feedback = await sql`SELECT * FROM feedback ORDER BY created_at DESC`;
+        const feedback =
+          await sql`SELECT * FROM feedback ORDER BY created_at DESC`;
         return new Response(JSON.stringify(feedback), { headers });
 
-      case 'POST':
+      case "POST":
         const feedbackData = await req.json();
         const newFeedback = await sql`
           INSERT INTO feedback (name, email, subject, message)
@@ -36,17 +37,17 @@ export default async (req: Request, context: Context) => {
         return new Response(JSON.stringify(newFeedback[0]), { headers });
 
       default:
-        return new Response('Method not allowed', { status: 405, headers });
+        return new Response("Method not allowed", { status: 405, headers });
     }
   } catch (error) {
-    console.error('Feedback API error:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { 
-      status: 500, 
-      headers 
+    console.error("Feedback API error:", error);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers,
     });
   }
 };
 
 export const config: Config = {
-  path: "/api/feedback"
+  path: "/api/feedback",
 };

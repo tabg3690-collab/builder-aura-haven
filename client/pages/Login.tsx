@@ -199,7 +199,8 @@ const Login = () => {
                   </div>
                 </div>
                 <p className="text-xs text-blue-600 mt-3">
-                  Database not configured - using demo mode. Set up your Neon database connection.
+                  Database not configured - using demo mode. Set up your Neon
+                  database connection.
                 </p>
               </>
             ) : (
