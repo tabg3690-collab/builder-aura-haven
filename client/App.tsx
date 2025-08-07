@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Setup from "./pages/Setup";
 import Zones from "./pages/Zones";
 import Members from "./pages/Members";
 import AddMember from "./pages/AddMember";
