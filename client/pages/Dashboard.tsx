@@ -14,9 +14,11 @@ import { getUpcomingBirthdays, getBirthdayInfo, membersData } from "@shared/memb
 import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
+  const { user, canEdit } = useAuth();
+
   // Get upcoming birthdays for the next 30 days
   const upcomingBirthdays = getUpcomingBirthdays(30);
-  
+
   // Calculate total mandals from zones data
   const totalMandals = 3 + 5 + 6 + 2 + 4; // Amalsad + Dharampur + Gandevi + Valsad + Vapi
 
