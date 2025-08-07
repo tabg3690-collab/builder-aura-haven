@@ -14,6 +14,8 @@ import { User, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Layout = () => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="bg-white border-b border-border shadow-sm">
