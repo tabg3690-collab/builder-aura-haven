@@ -53,7 +53,8 @@ const Dashboard = () => {
       setStats(statsData);
     } catch (err) {
       console.error('Error loading dashboard data:', err);
-      setError('Failed to load dashboard data. Please check your database connection.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load dashboard data. Please check your database connection.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
