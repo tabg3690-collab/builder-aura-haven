@@ -192,13 +192,22 @@ const AddMember = () => {
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={!isFormValid}
+              <Button
+                type="submit"
+                disabled={!isFormValid || loading}
                 className="bg-primary hover:bg-primary/90"
               >
-                <Save className="h-4 w-4 mr-2" />
-                Add Member
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Adding Member...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Add Member
+                  </>
+                )}
               </Button>
             </div>
           </form>
