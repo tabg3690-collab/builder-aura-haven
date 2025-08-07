@@ -41,6 +41,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     try {
+      // If database is not configured, use demo authentication
+      if (!isSupabaseConfigured) {
+        // Demo credentials for testing
+        if (email === 'admin@gmail.com' && password === 'admin123') {
+          const demoAdmin: AuthUser = {
+            id: 'demo-admin',
+            email: 'admin@gmail.com',
+            role: 'admin',
+            name: 'Demo Administrator'
+          };
+          setUser(demoAdmin);
+          localStorage.setItem('haricharan_auth_user', JSON.stringify(demoAdmin));
+          setIsLoading(false);
+          return true;
+        } else if (email === 'user@gmail.com' && password === 'user123') {
+          const demoUser: AuthUser = {
+            id: 'demo-user',
+            email: 'user@gmail.com',
+            role: 'user',
+            name: 'Demo User'
+          };
+          setUser(demoUser);
+          localStorage.setItem('haricharan_auth_user', JSON.stringify(demoUser));
+          setIsLoading(false);
+          return true;
+        } else {
+          setIsLoading(false);
+          return false;
+        }
+      }
+
+      // Use database authentication
       const authenticatedUser = await usersAPI.authenticate(email, password);
 
       if (authenticatedUser) {
