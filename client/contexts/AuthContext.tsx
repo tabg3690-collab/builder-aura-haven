@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AuthUser, authenticateUser } from '@shared/users';
+import { AuthUser } from '@shared/users';
+import { usersAPI } from '@/lib/database';
 
 interface AuthContextType {
   user: AuthUser | null;
