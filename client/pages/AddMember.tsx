@@ -16,6 +16,7 @@ import { membersAPI } from "@/lib/database";
 
 const AddMember = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     zone: "",
