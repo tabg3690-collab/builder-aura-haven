@@ -43,14 +43,30 @@ const AddMember = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically save the data to a database or state management
-    console.log("New member data:", formData);
-    
-    // For now, just show an alert and navigate back
-    alert("Member added successfully!");
-    navigate("/members");
+
+    try {
+      setLoading(true);
+
+      // Save member to database
+      await membersAPI.create({
+        name: formData.name,
+        zone: formData.zone,
+        mandal: formData.mandal,
+        dateOfBirth: formData.dateOfBirth,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email
+      });
+
+      // Navigate back to members list
+      navigate("/members");
+    } catch (error) {
+      console.error("Error adding member:", error);
+      alert("Failed to add member. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isFormValid = formData.name && formData.zone && formData.mandal && 
