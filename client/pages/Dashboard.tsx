@@ -44,12 +44,25 @@ const Dashboard = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
+      // If database is not configured, use demo/empty data
+      if (!isSupabaseConfigured) {
+        setUpcomingBirthdays([]);
+        setStats({
+          totalMembers: 0,
+          totalZones: 5,
+          totalMandals: 20,
+          totalFeedback: 0
+        });
+        setLoading(false);
+        return;
+      }
+
       const [birthdaysData, statsData] = await Promise.all([
         membersAPI.getUpcomingBirthdays(30),
         statsAPI.getStats()
       ]);
-      
+
       setUpcomingBirthdays(birthdaysData);
       setStats(statsData);
     } catch (err) {
