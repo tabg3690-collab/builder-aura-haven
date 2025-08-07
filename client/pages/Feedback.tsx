@@ -98,14 +98,16 @@ const Feedback = () => {
     setStatus('submitting');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Here you would typically send the data to your backend
-      console.log("Feedback submitted:", formData);
-      
+      // Save feedback to database
+      await feedbackAPI.create({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message
+      });
+
       setStatus('success');
-      
+
       // Reset form after successful submission
       setTimeout(() => {
         setFormData({
@@ -116,7 +118,7 @@ const Feedback = () => {
         });
         setStatus('idle');
       }, 3000);
-      
+
     } catch (error) {
       console.error("Feedback submission error:", error);
       setStatus('error');
