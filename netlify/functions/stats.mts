@@ -1,0 +1,49 @@
+import type { Context, Config } from "@netlify/functions";
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(Netlify.env.get('NEON_DATABASE_URL') || '');
+
+export default async (req: Request, context: Context) => {
+  // Add CORS headers
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  };
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
+  }
+
+  try {
+    if (req.method === 'GET') {
+      // Get statistics
+      const [membersCount, feedbackCount] = await Promise.all([
+        sql`SELECT COUNT(*) as count FROM members`,
+        sql`SELECT COUNT(*) as count FROM feedback`
+      ]);
+
+      const stats = {
+        totalMembers: parseInt(membersCount[0].count),
+        totalZones: 5, // Fixed number
+        totalMandals: 20, // Fixed number as calculated
+        totalFeedback: parseInt(feedbackCount[0].count)
+      };
+
+      return new Response(JSON.stringify(stats), { headers });
+    }
+
+    return new Response('Method not allowed', { status: 405, headers });
+  } catch (error) {
+    console.error('Stats API error:', error);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), { 
+      status: 500, 
+      headers 
+    });
+  }
+};
+
+export const config: Config = {
+  path: "/api/stats"
+};
