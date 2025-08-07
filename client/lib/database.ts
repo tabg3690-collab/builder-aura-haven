@@ -103,6 +103,7 @@ export const membersAPI = {
 
   // Bulk import members
   async bulkCreate(members: Omit<Member, 'id'>[]): Promise<Member[]> {
+    checkDatabaseConnection();
     const membersData = members.map(member => ({
       name: member.name,
       zone: member.zone,
