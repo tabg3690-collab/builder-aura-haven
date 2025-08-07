@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -9,25 +10,91 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info } from "lucide-react";
-import { getUpcomingBirthdays, getBirthdayInfo, membersData } from "@shared/members";
+import { Info, Loader2, AlertCircle } from "lucide-react";
+import { Member, getBirthdayInfo } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
+import { membersAPI, statsAPI } from "@/lib/database";
+
+interface Stats {
+  totalMembers: number;
+  totalZones: number;
+  totalMandals: number;
+  totalFeedback: number;
+}
 
 const Dashboard = () => {
   const { user, canEdit } = useAuth();
+  const [upcomingBirthdays, setUpcomingBirthdays] = useState<Member[]>([]);
+  const [stats, setStats] = useState<Stats>({
+    totalMembers: 0,
+    totalZones: 5,
+    totalMandals: 20,
+    totalFeedback: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Get upcoming birthdays for the next 30 days
-  const upcomingBirthdays = getUpcomingBirthdays(30);
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
 
-  // Calculate total mandals from zones data
-  const totalMandals = 3 + 5 + 6 + 2 + 4; // Amalsad + Dharampur + Gandevi + Valsad + Vapi
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const [birthdaysData, statsData] = await Promise.all([
+        membersAPI.getUpcomingBirthdays(30),
+        statsAPI.getStats()
+      ]);
+      
+      setUpcomingBirthdays(birthdaysData);
+      setStats(statsData);
+    } catch (err) {
+      console.error('Error loading dashboard data:', err);
+      setError('Failed to load dashboard data. Please check your database connection.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="px-4 py-6 sm:px-0">
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-muted-foreground">Loading dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="px-4 py-6 sm:px-0">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="mt-2 text-gray-600">Overview of zones, mandals, and member activities</p>
+        </div>
+        
+        <Alert className="border-red-200 bg-red-50">
+          <AlertCircle className="h-4 w-4 text-red-600" />
+          <AlertDescription className="text-red-800">
+            {error}
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="mt-2 text-gray-600">Overview of zones, mandals, and member activities</p>
-
+        
         {!canEdit && (
           <Alert className="mt-4 border-blue-200 bg-blue-50">
             <Info className="h-4 w-4 text-blue-600" />
@@ -60,14 +127,14 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">5</div>
+            <div className="text-2xl font-bold text-primary">{stats.totalZones}</div>
             <p className="text-xs text-muted-foreground">Active zones across regions</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-secondary">Total Mandals</CardTitle>
+            <CardTitle className="text-sm font-medium text-secondary">Total Members</CardTitle>
             <div className="h-4 w-4 text-secondary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,8 +154,8 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-secondary">{totalMandals}</div>
-            <p className="text-xs text-muted-foreground">Local mandals operating</p>
+            <div className="text-2xl font-bold text-secondary">{stats.totalMembers}</div>
+            <p className="text-xs text-muted-foreground">Registered members</p>
           </CardContent>
         </Card>
       </div>
@@ -156,7 +223,10 @@ const Dashboard = () => {
                 🎂 No upcoming birthdays in the next 30 days
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Check back later or add more members to see upcoming celebrations!
+                {stats.totalMembers > 0 
+                  ? "Check back later for upcoming celebrations!"
+                  : "Add members to the database to see upcoming birthdays."
+                }
               </p>
             </div>
           )}
