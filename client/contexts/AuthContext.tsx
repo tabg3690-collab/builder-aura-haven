@@ -38,13 +38,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
+
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const authenticatedUser = authenticateUser(email, password);
-      
+      const authenticatedUser = await usersAPI.authenticate(email, password);
+
       if (authenticatedUser) {
         setUser(authenticatedUser);
         localStorage.setItem('haricharan_auth_user', JSON.stringify(authenticatedUser));
