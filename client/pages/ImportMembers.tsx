@@ -26,7 +26,8 @@ import {
 import * as XLSX from "xlsx";
 import { Member } from "@shared/members";
 import { membersAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 interface ImportedMember {
   name: string;
@@ -211,7 +212,7 @@ const ImportMembers = () => {
 
     try {
       // Check if database is configured
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         setProgress(100);
         setStatus("success");
         return;
