@@ -33,6 +33,14 @@ const Members = () => {
     try {
       setLoading(true);
       setError(null);
+
+      // If database is not configured, show empty state
+      if (!isSupabaseConfigured) {
+        setMembers([]);
+        setLoading(false);
+        return;
+      }
+
       const data = await membersAPI.getAll();
       setMembers(data);
     } catch (err) {
