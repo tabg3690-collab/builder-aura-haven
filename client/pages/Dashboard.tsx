@@ -27,6 +27,15 @@ const Dashboard = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="mt-2 text-gray-600">Overview of zones, mandals, and member activities</p>
+
+        {!canEdit && (
+          <Alert className="mt-4 border-blue-200 bg-blue-50">
+            <Info className="h-4 w-4 text-blue-600" />
+            <AlertDescription className="text-blue-800">
+              You have read-only access to the database. Contact an administrator to edit member data.
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
 
       {/* Summary Cards */}
