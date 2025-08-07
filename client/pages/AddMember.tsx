@@ -52,6 +52,13 @@ const AddMember = () => {
     try {
       setLoading(true);
 
+      // Check if database is configured
+      if (!isSupabaseConfigured) {
+        alert("Database not configured. Please set up Supabase to save members permanently.");
+        navigate("/members");
+        return;
+      }
+
       // Save member to database
       await membersAPI.create({
         name: formData.name,
