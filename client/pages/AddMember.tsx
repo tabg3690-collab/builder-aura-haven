@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import { membersAPI } from "@/lib/database";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 const AddMember = () => {
   const navigate = useNavigate();
