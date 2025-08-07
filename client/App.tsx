@@ -22,23 +22,38 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="zones" element={<Zones />} />
-            <Route path="members" element={<Members />} />
-            <Route path="members/add" element={<AddMember />} />
-            <Route path="members/import" element={<ImportMembers />} />
-            <Route path="feedback" element={<Feedback />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }>
+              <Route index element={<Dashboard />} />
+              <Route path="zones" element={<Zones />} />
+              <Route path="members" element={<Members />} />
+              <Route path="members/add" element={
+                <ProtectedRoute requireAdmin>
+                  <AddMember />
+                </ProtectedRoute>
+              } />
+              <Route path="members/import" element={
+                <ProtectedRoute requireAdmin>
+                  <ImportMembers />
+                </ProtectedRoute>
+              } />
+              <Route path="feedback" element={<Feedback />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
