@@ -1,6 +1,13 @@
-import { supabase, DatabaseMember, DatabaseFeedback, DatabaseUser } from './supabase';
+import { supabase, DatabaseMember, DatabaseFeedback, DatabaseUser, isSupabaseConfigured } from './supabase';
 import { Member } from '@shared/members';
 import { AuthUser } from '@shared/users';
+
+// Helper function to check if database is available
+const checkDatabaseConnection = () => {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error('Database not configured. Please set up your Supabase credentials in the .env file.');
+  }
+};
 
 // Members API
 export const membersAPI = {
