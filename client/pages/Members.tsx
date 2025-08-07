@@ -15,6 +15,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const Members = () => {
   const navigate = useNavigate();
+  const { canEdit } = useAuth();
 
   return (
     <div className="px-4 py-6 sm:px-0">
