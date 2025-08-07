@@ -30,6 +30,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/setup" element={<Setup />} />
             <Route path="/" element={
               <ProtectedRoute>
                 <Layout />
