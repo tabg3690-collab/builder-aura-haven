@@ -140,7 +140,7 @@ export const membersAPI = {
     
     updateData.updated_at = new Date().toISOString();
 
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('members')
       .update(updateData)
       .eq('id', id)
@@ -157,7 +157,8 @@ export const membersAPI = {
 
   // Delete member
   async delete(id: string): Promise<void> {
-    const { error } = await supabase
+    checkDatabaseConnection();
+    const { error } = await supabase!
       .from('members')
       .delete()
       .eq('id', id);
@@ -191,7 +192,8 @@ export const feedbackAPI = {
     subject: string;
     message: string;
   }): Promise<DatabaseFeedback> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('feedback')
       .insert([feedback])
       .select()
@@ -207,7 +209,8 @@ export const feedbackAPI = {
 
   // Get all feedback (admin only)
   async getAll(): Promise<DatabaseFeedback[]> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('feedback')
       .select('*')
       .order('created_at', { ascending: false });
@@ -225,9 +228,10 @@ export const feedbackAPI = {
 export const usersAPI = {
   // Authenticate user
   async authenticate(email: string, password: string): Promise<AuthUser | null> {
+    checkDatabaseConnection();
     // In a real implementation, you would hash the password and compare
     // For now, we'll use a simple comparison (NOT SECURE - implement proper hashing)
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('users')
       .select('*')
       .eq('email', email)
@@ -241,7 +245,7 @@ export const usersAPI = {
     // For demo purposes, we'll compare plain text (NEVER do this in production)
     if (this.verifyPassword(password, data.password_hash)) {
       // Update last login
-      await supabase
+      await supabase!
         .from('users')
         .update({ last_login: new Date().toISOString() })
         .eq('id', data.id);
@@ -264,7 +268,8 @@ export const usersAPI = {
     role: 'admin' | 'user';
     name: string;
   }): Promise<AuthUser> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('users')
       .insert([{
         email: user.email,
@@ -290,7 +295,8 @@ export const usersAPI = {
 
   // Get all users (admin only)
   async getAll(): Promise<AuthUser[]> {
-    const { data, error } = await supabase
+    checkDatabaseConnection();
+    const { data, error } = await supabase!
       .from('users')
       .select('id, email, role, name, created_at')
       .order('created_at');
@@ -319,10 +325,11 @@ export const usersAPI = {
 // Stats API
 export const statsAPI = {
   async getStats() {
+    checkDatabaseConnection();
     const [membersCount, zonesCount, feedbackCount] = await Promise.all([
-      supabase.from('members').select('id', { count: 'exact' }),
-      supabase.from('members').select('zone', { count: 'exact' }).group('zone'),
-      supabase.from('feedback').select('id', { count: 'exact' })
+      supabase!.from('members').select('id', { count: 'exact' }),
+      supabase!.from('members').select('zone', { count: 'exact' }).group('zone'),
+      supabase!.from('feedback').select('id', { count: 'exact' })
     ]);
 
     return {
