@@ -9,7 +9,7 @@ const Layout = () => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
+                <h1 className="text-2xl font-bold text-primary">Haricharan Database</h1>
               </div>
               <div className="ml-6 flex space-x-8">
                 <NavLink
