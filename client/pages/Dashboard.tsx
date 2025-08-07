@@ -8,7 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 import { getUpcomingBirthdays, getBirthdayInfo, membersData } from "@shared/members";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
   // Get upcoming birthdays for the next 30 days
