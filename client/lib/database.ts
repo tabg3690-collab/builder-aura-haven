@@ -29,11 +29,12 @@ export const membersAPI = {
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
+    checkDatabaseConnection();
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + days);
 
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('members')
       .select('*')
       .order('date_of_birth');
