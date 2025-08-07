@@ -14,7 +14,8 @@ import {
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { feedbackAPI } from "@/lib/database";
-import { isSupabaseConfigured } from "@/lib/supabase";
+// Check if Neon database is configured
+const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 interface FeedbackForm {
   name: string;
@@ -100,7 +101,7 @@ const Feedback = () => {
 
     try {
       // Check if database is configured
-      if (!isSupabaseConfigured) {
+      if (!isNeonConfigured) {
         // In demo mode, just show success without actually saving
         setStatus("success");
       } else {
