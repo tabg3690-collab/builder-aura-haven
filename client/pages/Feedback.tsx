@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { feedbackAPI } from "@/lib/database";
 
 interface FeedbackForm {
   name: string;
