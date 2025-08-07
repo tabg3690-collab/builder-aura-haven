@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Member } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
 import { membersAPI } from "@/lib/database";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import DatabaseStatus from "@/components/DatabaseStatus";
 
 const Members = () => {
