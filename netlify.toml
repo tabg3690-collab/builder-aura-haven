@@ -3,6 +3,12 @@
   functions = "netlify/functions"
   publish = "dist/spa"
 
+[dev]
+  command = "vite"
+  targetPort = 8080
+  port = 8888
+  publish = "dist/spa"
+  functions = "netlify/functions"
 
 [functions]
   external_node_modules = ["express"]
