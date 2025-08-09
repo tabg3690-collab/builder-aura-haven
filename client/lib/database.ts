@@ -16,6 +16,12 @@ const checkDatabaseConnection = () => {
 };
 
 // Demo data for fallback
+const getNextWeekDate = () => {
+  const date = new Date();
+  date.setDate(date.getDate() + 7);
+  return date.toISOString().split('T')[0];
+};
+
 const demoMembers: Member[] = [
   {
     id: 1,
@@ -31,7 +37,7 @@ const demoMembers: Member[] = [
     name: "Priya Shah",
     zone: "Gandevi",
     mandal: "Gandevi North",
-    dateOfBirth: "1990-07-22",
+    dateOfBirth: getNextWeekDate(), // This will show as upcoming birthday
     phoneNumber: "+91 87654 32109",
     email: "priya.shah@gmail.com",
   },
@@ -43,6 +49,24 @@ const demoMembers: Member[] = [
     dateOfBirth: "1988-11-08",
     phoneNumber: "+91 76543 21098",
     email: "amit.kumar@gmail.com",
+  },
+  {
+    id: 4,
+    name: "Kavita Desai",
+    zone: "Dharampur",
+    mandal: "Dharampur West",
+    dateOfBirth: "1992-12-03",
+    phoneNumber: "+91 65432 10987",
+    email: "kavita.desai@gmail.com",
+  },
+  {
+    id: 5,
+    name: "Suresh Mehta",
+    zone: "Amalsad",
+    mandal: "Amalsad South",
+    dateOfBirth: "1987-05-18",
+    phoneNumber: "+91 54321 09876",
+    email: "suresh.mehta@gmail.com",
   },
 ];
 
