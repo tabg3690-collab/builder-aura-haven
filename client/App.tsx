@@ -17,6 +17,7 @@ import AddMember from "./pages/AddMember";
 import ImportMembers from "./pages/ImportMembers";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import DebugTest from "./pages/DebugTest";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
