@@ -1,8 +1,6 @@
 import type { Context, Config } from "@netlify/functions";
 import { neon } from "@neondatabase/serverless";
 
-const sql = neon(Netlify.env.get("NEON_DATABASE_URL") || "");
-
 export default async (req: Request, context: Context) => {
   // Add CORS headers
   const headers = {
