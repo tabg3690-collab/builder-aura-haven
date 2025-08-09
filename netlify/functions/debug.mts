@@ -1,6 +1,10 @@
 import type { Context, Config } from "@netlify/functions";
 
 export default async (req: Request, context: Context) => {
+  console.log("🔥 DEBUG FUNCTION CALLED!");
+  console.log("Method:", req.method);
+  console.log("URL:", req.url);
+
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
@@ -8,12 +12,14 @@ export default async (req: Request, context: Context) => {
   };
 
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight");
     return new Response(null, { status: 200, headers });
   }
 
   try {
     // Check environment variables
     const neonUrl = Netlify.env.get("NEON_DATABASE_URL");
+    console.log("Neon URL exists:", !!neonUrl);
 
     const debugInfo = {
       timestamp: new Date().toISOString(),
