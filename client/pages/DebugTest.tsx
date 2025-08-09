@@ -31,11 +31,35 @@ const DebugTest = () => {
   const testDebug = async () => {
     setLoading(true);
     try {
+      console.log("Testing /api/debug endpoint...");
       const response = await fetch("/api/debug");
-      const data = await response.json();
-      setResult(data);
+      console.log("Response status:", response.status);
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
+      const text = await response.text();
+      console.log("Raw response:", text);
+
+      try {
+        const data = JSON.parse(text);
+        setResult({
+          status: response.status,
+          headers: Object.fromEntries(response.headers.entries()),
+          data
+        });
+      } catch (parseError) {
+        setResult({
+          status: response.status,
+          headers: Object.fromEntries(response.headers.entries()),
+          rawResponse: text,
+          parseError: parseError.message
+        });
+      }
     } catch (error) {
-      setResult({ error: error.message });
+      console.error("Fetch error:", error);
+      setResult({
+        error: error.message,
+        stack: error.stack
+      });
     }
     setLoading(false);
   };
