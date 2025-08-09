@@ -33,6 +33,7 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/setup" element={<Setup />} />
+            <Route path="/api-test" element={<ApiTest />} />
             <Route
               path="/"
               element={
