@@ -8,12 +8,39 @@ const baseURL = isDev ? "http://localhost:8888" : "";
 // Helper function to check if database is available
 const checkDatabaseConnection = () => {
   const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
-  if (!neonUrl) {
-    throw new Error(
-      "Database not configured. Please set up your Neon database credentials.",
-    );
-  }
+  return !!neonUrl;
 };
+
+// Demo data for fallback
+const demoMembers: Member[] = [
+  {
+    id: 1,
+    name: "Rajesh Patel",
+    zone: "Vapi",
+    mandal: "Vapi Central",
+    dateOfBirth: "1985-03-15",
+    phoneNumber: "+91 98765 43210",
+    email: "rajesh.patel@gmail.com"
+  },
+  {
+    id: 2,
+    name: "Priya Shah",
+    zone: "Gandevi",
+    mandal: "Gandevi North",
+    dateOfBirth: "1990-07-22",
+    phoneNumber: "+91 87654 32109",
+    email: "priya.shah@gmail.com"
+  },
+  {
+    id: 3,
+    name: "Amit Kumar",
+    zone: "Valsad",
+    mandal: "Valsad East",
+    dateOfBirth: "1988-11-08",
+    phoneNumber: "+91 76543 21098",
+    email: "amit.kumar@gmail.com"
+  }
+];
 
 // Members API
 export const membersAPI = {
