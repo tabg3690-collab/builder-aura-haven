@@ -83,6 +83,22 @@ const ApiTest = () => {
         >
           {loading === "test" ? "Testing..." : "Test Function"}
         </button>
+
+        <button
+          onClick={() => testEndpoint("/.netlify/functions/debug", "direct-debug")}
+          disabled={loading === "direct-debug"}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
+        >
+          {loading === "direct-debug" ? "Testing..." : "Direct Debug Function"}
+        </button>
+
+        <button
+          onClick={() => testEndpoint("/.netlify/functions/stats", "direct-stats")}
+          disabled={loading === "direct-stats"}
+          className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 disabled:opacity-50"
+        >
+          {loading === "direct-stats" ? "Testing..." : "Direct Stats Function"}
+        </button>
       </div>
 
       <div className="space-y-4">
