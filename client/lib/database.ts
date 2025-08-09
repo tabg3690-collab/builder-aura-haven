@@ -66,15 +66,32 @@ export const membersAPI = {
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
-    checkDatabaseConnection();
-    const response = await fetch(
-      `${baseURL}/api/members?upcoming=true&days=${days}`,
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch upcoming birthdays");
+    if (!checkDatabaseConnection()) {
+      // Return demo upcoming birthdays
+      const today = new Date();
+      const futureDate = new Date();
+      futureDate.setDate(today.getDate() + days);
+
+      return demoMembers.filter(member => {
+        const birthDate = new Date(member.dateOfBirth);
+        const thisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+        return thisYear >= today && thisYear <= futureDate;
+      });
     }
-    const data = await response.json();
-    return data.map(this.transformMember);
+
+    try {
+      const response = await fetch(
+        `${baseURL}/api/members?upcoming=true&days=${days}`,
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch upcoming birthdays");
+      }
+      const data = await response.json();
+      return data.map(this.transformMember);
+    } catch (error) {
+      console.warn("Database API failed, falling back to demo data:", error);
+      return [];
+    }
   },
 
   // Add new member
