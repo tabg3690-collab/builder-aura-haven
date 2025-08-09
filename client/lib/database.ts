@@ -7,9 +7,12 @@ const baseURL = isDev ? "http://localhost:8888" : "";
 
 // Helper function to check if database is available
 const checkDatabaseConnection = () => {
-  // Temporarily test API endpoints
-  const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
-  return !!neonUrl;
+  // Temporarily force demo mode until database is set up
+  return false;
+
+  // TODO: Uncomment this line after setting up Neon database:
+  // const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
+  // return !!neonUrl;
 };
 
 // Demo data for fallback
