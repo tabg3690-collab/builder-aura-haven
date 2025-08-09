@@ -28,6 +28,18 @@ const DebugTest = () => {
     setLoading(false);
   };
 
+  const testDebug = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/debug");
+      const data = await response.json();
+      setResult(data);
+    } catch (error) {
+      setResult({ error: error.message });
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Database Debug Test</h1>
