@@ -198,10 +198,11 @@ const Login = () => {
                     <strong>User:</strong> user@gmail.com / user123
                   </div>
                 </div>
-                <p className="text-xs text-blue-600 mt-3">
-                  Database not configured - using demo mode. Set up your Neon
-                  database connection.
-                </p>
+                <div className="text-xs text-blue-800 mt-3 space-y-1">
+                  <p className="font-semibold">Demo Mode - Use these credentials:</p>
+                  <p>Admin: admin@gmail.com / admin123</p>
+                  <p>User: user@gmail.com / user123</p>
+                </div>
               </>
             ) : (
               <>
