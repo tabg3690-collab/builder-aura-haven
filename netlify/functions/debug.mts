@@ -21,8 +21,12 @@ export default async (req: Request, context: Context) => {
       url: req.url,
       hasNeonUrl: !!neonUrl,
       neonUrlLength: neonUrl?.length || 0,
+      neonUrlPrefix: neonUrl?.substring(0, 20) + "..." || "N/A",
       environmentKeys: Object.keys(Netlify.env.getAll() || {}),
+      allEnvVars: Netlify.env.getAll(),
       message: "Function is working",
+      nodeVersion: process.version,
+      platform: process.platform
     };
 
     return new Response(JSON.stringify(debugInfo, null, 2), {
