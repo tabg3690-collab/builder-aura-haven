@@ -309,26 +309,34 @@ export const usersAPI = {
 // Stats API
 export const statsAPI = {
   async getStats() {
+    const getDemoStats = () => ({
+      totalMembers: demoMembers.length,
+      totalFeedback: 0,
+    });
+
     if (!checkDatabaseConnection()) {
-      // Return demo stats
-      return {
-        totalMembers: demoMembers.length,
-        totalFeedback: 0,
-      };
+      return getDemoStats();
     }
 
     try {
       const response = await fetch(`${baseURL}/api/stats`);
       if (!response.ok) {
-        throw new Error("Failed to fetch stats");
+        console.warn("Stats API returned error status:", response.status);
+        return getDemoStats();
       }
-      return response.json();
+
+      const data = await response.json();
+
+      // Check if API returned an error object
+      if (data.error) {
+        console.warn("Stats API returned error:", data.error);
+        return getDemoStats();
+      }
+
+      return data;
     } catch (error) {
-      console.warn("Database API failed, falling back to demo stats:", error);
-      return {
-        totalMembers: demoMembers.length,
-        totalFeedback: 0,
-      };
+      console.warn("Stats API failed, falling back to demo stats:", error);
+      return getDemoStats();
     }
   },
 };
