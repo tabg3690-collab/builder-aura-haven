@@ -46,13 +46,22 @@ const demoMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/members`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch members");
+    if (!checkDatabaseConnection()) {
+      // Return demo data if database not configured
+      return demoMembers;
     }
-    const data = await response.json();
-    return data.map(this.transformMember);
+
+    try {
+      const response = await fetch(`${baseURL}/api/members`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch members");
+      }
+      const data = await response.json();
+      return data.map(this.transformMember);
+    } catch (error) {
+      console.warn("Database API failed, falling back to demo data:", error);
+      return demoMembers;
+    }
   },
 
   // Get upcoming birthdays
