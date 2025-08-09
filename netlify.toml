@@ -43,3 +43,9 @@
   from = "/api/test"
   status = 200
   to = "/.netlify/functions/test"
+
+[[redirects]]
+  force = true
+  from = "/api/debug"
+  status = 200
+  to = "/.netlify/functions/debug"
