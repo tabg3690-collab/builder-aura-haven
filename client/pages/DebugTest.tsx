@@ -22,7 +22,10 @@ const DebugTest = () => {
       console.log("Testing /api/members endpoint...");
       const response = await fetch("/api/members");
       console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+      console.log(
+        "Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
 
       const text = await response.text();
       console.log("Raw response:", text);
@@ -32,21 +35,21 @@ const DebugTest = () => {
         setResult({
           status: response.status,
           headers: Object.fromEntries(response.headers.entries()),
-          data
+          data,
         });
       } catch (parseError) {
         setResult({
           status: response.status,
           headers: Object.fromEntries(response.headers.entries()),
           rawResponse: text,
-          parseError: parseError.message
+          parseError: parseError.message,
         });
       }
     } catch (error) {
       console.error("Fetch error:", error);
       setResult({
         error: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
     }
     setLoading(false);
@@ -58,7 +61,10 @@ const DebugTest = () => {
       console.log("Testing /api/debug endpoint...");
       const response = await fetch("/api/debug");
       console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+      console.log(
+        "Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
 
       const text = await response.text();
       console.log("Raw response:", text);
@@ -68,21 +74,21 @@ const DebugTest = () => {
         setResult({
           status: response.status,
           headers: Object.fromEntries(response.headers.entries()),
-          data
+          data,
         });
       } catch (parseError) {
         setResult({
           status: response.status,
           headers: Object.fromEntries(response.headers.entries()),
           rawResponse: text,
-          parseError: parseError.message
+          parseError: parseError.message,
         });
       }
     } catch (error) {
       console.error("Fetch error:", error);
       setResult({
         error: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
     }
     setLoading(false);

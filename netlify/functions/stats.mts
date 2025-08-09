@@ -49,7 +49,7 @@ export default async (req: Request, context: Context) => {
 
         console.log("Returning stats:", stats);
         return new Response(JSON.stringify(stats), {
-          headers: { ...headers, "Content-Type": "application/json" }
+          headers: { ...headers, "Content-Type": "application/json" },
         });
       } catch (dbError) {
         console.error("Database query error:", dbError);
@@ -60,10 +60,10 @@ export default async (req: Request, context: Context) => {
           totalMandals: 20,
           totalFeedback: 0,
           error: "Database query failed",
-          message: "Using fallback data"
+          message: "Using fallback data",
         };
         return new Response(JSON.stringify(fallbackStats), {
-          headers: { ...headers, "Content-Type": "application/json" }
+          headers: { ...headers, "Content-Type": "application/json" },
         });
       }
     }

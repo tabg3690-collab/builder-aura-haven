@@ -26,7 +26,7 @@ export default async (req: Request, context: Context) => {
       allEnvVars: Netlify.env.getAll(),
       message: "Function is working",
       nodeVersion: process.version,
-      platform: process.platform
+      platform: process.platform,
     };
 
     return new Response(JSON.stringify(debugInfo, null, 2), {

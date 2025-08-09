@@ -59,7 +59,7 @@ export default async (req: Request, context: Context) => {
             `;
             console.log("Found upcoming birthdays:", members.length);
             return new Response(JSON.stringify(members), {
-              headers: { ...headers, "Content-Type": "application/json" }
+              headers: { ...headers, "Content-Type": "application/json" },
             });
           } else {
             console.log("Getting all members...");
@@ -67,18 +67,21 @@ export default async (req: Request, context: Context) => {
             const members = await sql`SELECT * FROM members ORDER BY name`;
             console.log("Found members:", members.length);
             return new Response(JSON.stringify(members), {
-              headers: { ...headers, "Content-Type": "application/json" }
+              headers: { ...headers, "Content-Type": "application/json" },
             });
           }
         } catch (dbError) {
           console.error("Database query error in members:", dbError);
-          return new Response(JSON.stringify({
-            error: "Database query failed",
-            message: dbError.message,
-            members: []
-          }), {
-            headers: { ...headers, "Content-Type": "application/json" }
-          });
+          return new Response(
+            JSON.stringify({
+              error: "Database query failed",
+              message: dbError.message,
+              members: [],
+            }),
+            {
+              headers: { ...headers, "Content-Type": "application/json" },
+            },
+          );
         }
 
       case "POST":
