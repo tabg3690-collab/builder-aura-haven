@@ -24,11 +24,10 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
 
   return (
     <div className="mb-6">
-      <Alert className="border-orange-200 bg-orange-50">
-        <AlertTriangle className="h-4 w-4 text-orange-600" />
-        <AlertDescription className="text-orange-800">
-          <strong>Database Not Configured:</strong> Using demo mode. Your
-          Netlify + Neon database needs the connection URL.
+      <Alert className="border-blue-200 bg-blue-50">
+        <AlertTriangle className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <strong>Demo Mode:</strong> Currently showing demo data. Your app is ready for deployment once you set up the Neon database.
           {!showFullSetup && (
             <Button
               variant="link"
