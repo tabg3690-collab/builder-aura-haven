@@ -130,6 +130,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
+    // During development hot reload, context might be temporarily undefined
+    console.warn("useAuth called outside AuthProvider - this might be a hot reload issue");
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
