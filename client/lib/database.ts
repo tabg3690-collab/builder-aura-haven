@@ -20,7 +20,7 @@ const demoMembers: Member[] = [
     mandal: "Vapi Central",
     dateOfBirth: "1985-03-15",
     phoneNumber: "+91 98765 43210",
-    email: "rajesh.patel@gmail.com"
+    email: "rajesh.patel@gmail.com",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const demoMembers: Member[] = [
     mandal: "Gandevi North",
     dateOfBirth: "1990-07-22",
     phoneNumber: "+91 87654 32109",
-    email: "priya.shah@gmail.com"
+    email: "priya.shah@gmail.com",
   },
   {
     id: 3,
@@ -38,8 +38,8 @@ const demoMembers: Member[] = [
     mandal: "Valsad East",
     dateOfBirth: "1988-11-08",
     phoneNumber: "+91 76543 21098",
-    email: "amit.kumar@gmail.com"
-  }
+    email: "amit.kumar@gmail.com",
+  },
 ];
 
 // Members API
@@ -72,9 +72,13 @@ export const membersAPI = {
       const futureDate = new Date();
       futureDate.setDate(today.getDate() + days);
 
-      return demoMembers.filter(member => {
+      return demoMembers.filter((member) => {
         const birthDate = new Date(member.dateOfBirth);
-        const thisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+        const thisYear = new Date(
+          today.getFullYear(),
+          birthDate.getMonth(),
+          birthDate.getDate(),
+        );
         return thisYear >= today && thisYear <= futureDate;
       });
     }
@@ -273,7 +277,7 @@ export const statsAPI = {
       // Return demo stats
       return {
         totalMembers: demoMembers.length,
-        totalFeedback: 0
+        totalFeedback: 0,
       };
     }
 
@@ -287,7 +291,7 @@ export const statsAPI = {
       console.warn("Database API failed, falling back to demo stats:", error);
       return {
         totalMembers: demoMembers.length,
-        totalFeedback: 0
+        totalFeedback: 0,
       };
     }
   },
