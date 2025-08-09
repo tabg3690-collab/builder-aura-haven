@@ -42,24 +42,43 @@ export default async (req: Request, context: Context) => {
 
     switch (method) {
       case "GET":
-        if (url.searchParams.get("upcoming") === "true") {
-          // Get upcoming birthdays
-          const days = parseInt(url.searchParams.get("days") || "30");
-          const members = await sql`
-            SELECT * FROM members 
-            ORDER BY 
-              CASE 
-                WHEN EXTRACT(DOY FROM date_of_birth) >= EXTRACT(DOY FROM CURRENT_DATE)
-                THEN EXTRACT(DOY FROM date_of_birth) - EXTRACT(DOY FROM CURRENT_DATE)
-                ELSE (365 - EXTRACT(DOY FROM CURRENT_DATE)) + EXTRACT(DOY FROM date_of_birth)
-              END
-            LIMIT 10
-          `;
-          return new Response(JSON.stringify(members), { headers });
-        } else {
-          // Get all members
-          const members = await sql`SELECT * FROM members ORDER BY name`;
-          return new Response(JSON.stringify(members), { headers });
+        try {
+          if (url.searchParams.get("upcoming") === "true") {
+            console.log("Getting upcoming birthdays...");
+            // Get upcoming birthdays
+            const days = parseInt(url.searchParams.get("days") || "30");
+            const members = await sql`
+              SELECT * FROM members
+              ORDER BY
+                CASE
+                  WHEN EXTRACT(DOY FROM date_of_birth) >= EXTRACT(DOY FROM CURRENT_DATE)
+                  THEN EXTRACT(DOY FROM date_of_birth) - EXTRACT(DOY FROM CURRENT_DATE)
+                  ELSE (365 - EXTRACT(DOY FROM CURRENT_DATE)) + EXTRACT(DOY FROM date_of_birth)
+                END
+              LIMIT 10
+            `;
+            console.log("Found upcoming birthdays:", members.length);
+            return new Response(JSON.stringify(members), {
+              headers: { ...headers, "Content-Type": "application/json" }
+            });
+          } else {
+            console.log("Getting all members...");
+            // Get all members
+            const members = await sql`SELECT * FROM members ORDER BY name`;
+            console.log("Found members:", members.length);
+            return new Response(JSON.stringify(members), {
+              headers: { ...headers, "Content-Type": "application/json" }
+            });
+          }
+        } catch (dbError) {
+          console.error("Database query error in members:", dbError);
+          return new Response(JSON.stringify({
+            error: "Database query failed",
+            message: dbError.message,
+            members: []
+          }), {
+            headers: { ...headers, "Content-Type": "application/json" }
+          });
         }
 
       case "POST":
