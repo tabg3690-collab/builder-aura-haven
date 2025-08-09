@@ -4,7 +4,7 @@ export default async (req: Request, context: Context) => {
   console.log("🎯 SIMPLE TEST FUNCTION CALLED!");
   console.log("Method:", req.method);
   console.log("URL:", req.url);
-  
+
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
@@ -21,17 +21,17 @@ export default async (req: Request, context: Context) => {
       message: "Simple test function works!",
       timestamp: new Date().toISOString(),
       method: req.method,
-      url: req.url
+      url: req.url,
     };
 
     console.log("Returning response:", responseData);
-    
+
     return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: {
         ...headers,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
   } catch (error) {
     console.error("Simple test error:", error);
@@ -39,8 +39,8 @@ export default async (req: Request, context: Context) => {
       status: 500,
       headers: {
         ...headers,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
   }
 };

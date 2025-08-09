@@ -7,7 +7,9 @@ const ApiTest = () => {
   const testEndpoint = async (endpoint: string, name: string) => {
     setLoading(name);
     try {
-      const fullUrl = endpoint.startsWith('http') ? endpoint : `${window.location.origin}${endpoint}`;
+      const fullUrl = endpoint.startsWith("http")
+        ? endpoint
+        : `${window.location.origin}${endpoint}`;
       console.log(`Testing ${name} at URL: ${fullUrl}`);
       const response = await fetch(endpoint);
       console.log(`${name} Status:`, response.status);
@@ -86,7 +88,9 @@ const ApiTest = () => {
         </button>
 
         <button
-          onClick={() => testEndpoint("/.netlify/functions/debug", "direct-debug")}
+          onClick={() =>
+            testEndpoint("/.netlify/functions/debug", "direct-debug")
+          }
           disabled={loading === "direct-debug"}
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
         >
@@ -94,7 +98,9 @@ const ApiTest = () => {
         </button>
 
         <button
-          onClick={() => testEndpoint("/.netlify/functions/stats", "direct-stats")}
+          onClick={() =>
+            testEndpoint("/.netlify/functions/stats", "direct-stats")
+          }
           disabled={loading === "direct-stats"}
           className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 disabled:opacity-50"
         >
