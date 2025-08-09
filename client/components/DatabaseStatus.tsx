@@ -19,9 +19,8 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (isNeonConfigured) {
-    return null; // Don't show anything if database is configured
-  }
+  // Always show demo mode message for now
+  const showDemoMode = true;
 
   return (
     <div className="mb-6">
