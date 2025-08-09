@@ -30,20 +30,42 @@ export default async (req: Request, context: Context) => {
     const sql = neon(dbUrl);
 
     if (req.method === "GET") {
-      // Get statistics
-      const [membersCount, feedbackCount] = await Promise.all([
-        sql`SELECT COUNT(*) as count FROM members`,
-        sql`SELECT COUNT(*) as count FROM feedback`,
-      ]);
+      try {
+        console.log("Executing database queries for stats...");
+        // Get statistics
+        const [membersCount, feedbackCount] = await Promise.all([
+          sql`SELECT COUNT(*) as count FROM members`,
+          sql`SELECT COUNT(*) as count FROM feedback`,
+        ]);
 
-      const stats = {
-        totalMembers: parseInt(membersCount[0].count),
-        totalZones: 5, // Fixed number
-        totalMandals: 20, // Fixed number as calculated
-        totalFeedback: parseInt(feedbackCount[0].count),
-      };
+        console.log("Query results:", { membersCount, feedbackCount });
 
-      return new Response(JSON.stringify(stats), { headers });
+        const stats = {
+          totalMembers: parseInt(membersCount[0].count),
+          totalZones: 5, // Fixed number
+          totalMandals: 20, // Fixed number as calculated
+          totalFeedback: parseInt(feedbackCount[0].count),
+        };
+
+        console.log("Returning stats:", stats);
+        return new Response(JSON.stringify(stats), {
+          headers: { ...headers, "Content-Type": "application/json" }
+        });
+      } catch (dbError) {
+        console.error("Database query error:", dbError);
+        // Return fallback stats if database queries fail
+        const fallbackStats = {
+          totalMembers: 0,
+          totalZones: 5,
+          totalMandals: 20,
+          totalFeedback: 0,
+          error: "Database query failed",
+          message: "Using fallback data"
+        };
+        return new Response(JSON.stringify(fallbackStats), {
+          headers: { ...headers, "Content-Type": "application/json" }
+        });
+      }
     }
 
     return new Response("Method not allowed", { status: 405, headers });
