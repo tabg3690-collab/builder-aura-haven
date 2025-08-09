@@ -41,6 +41,7 @@ const App = () => (
               }
             >
               <Route index element={<Dashboard />} />
+              <Route path="debug" element={<DebugTest />} />
               <Route path="zones" element={<Zones />} />
               <Route path="members" element={<Members />} />
               <Route
