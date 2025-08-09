@@ -10,6 +10,30 @@
   
 [[redirects]]
   force = true
-  from = "/api/*"
+  from = "/api/members"
   status = 200
-  to = "/.netlify/functions/api/:splat"
+  to = "/.netlify/functions/members"
+
+[[redirects]]
+  force = true
+  from = "/api/auth/*"
+  status = 200
+  to = "/.netlify/functions/auth"
+
+[[redirects]]
+  force = true
+  from = "/api/feedback"
+  status = 200
+  to = "/.netlify/functions/feedback"
+
+[[redirects]]
+  force = true
+  from = "/api/stats"
+  status = 200
+  to = "/.netlify/functions/stats"
+
+[[redirects]]
+  force = true
+  from = "/api/test"
+  status = 200
+  to = "/.netlify/functions/test"
