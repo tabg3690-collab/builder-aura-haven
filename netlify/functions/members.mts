@@ -2,6 +2,8 @@ import type { Context, Config } from "@netlify/functions";
 import { neon } from "@neondatabase/serverless";
 
 export default async (req: Request, context: Context) => {
+  console.log("Members function called:", req.method, req.url);
+
   // Add CORS headers
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -11,6 +13,7 @@ export default async (req: Request, context: Context) => {
 
   // Handle preflight requests
   if (req.method === "OPTIONS") {
+    console.log("CORS preflight request");
     return new Response(null, { status: 200, headers });
   }
 
