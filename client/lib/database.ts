@@ -287,20 +287,20 @@ export const usersAPI = {
   ): Promise<AuthUser | null> {
     if (!checkDatabaseConnection()) {
       // Demo mode authentication
-      if (email === 'admin@gmail.com' && password === 'admin123') {
+      if (email === "admin@gmail.com" && password === "admin123") {
         return {
-          id: '1',
-          email: 'admin@gmail.com',
-          name: 'Admin User',
-          role: 'admin'
+          id: "1",
+          email: "admin@gmail.com",
+          name: "Admin User",
+          role: "admin",
         };
       }
-      if (email === 'user@gmail.com' && password === 'user123') {
+      if (email === "user@gmail.com" && password === "user123") {
         return {
-          id: '2',
-          email: 'user@gmail.com',
-          name: 'Demo User',
-          role: 'user'
+          id: "2",
+          email: "user@gmail.com",
+          name: "Demo User",
+          role: "user",
         };
       }
       return null; // Invalid credentials in demo mode
@@ -326,14 +326,17 @@ export const usersAPI = {
 
       return response.json();
     } catch (error) {
-      console.warn("Authentication API failed, falling back to demo auth:", error);
+      console.warn(
+        "Authentication API failed, falling back to demo auth:",
+        error,
+      );
       // Fallback to demo authentication if API fails
-      if (email === 'admin@gmail.com' && password === 'admin123') {
+      if (email === "admin@gmail.com" && password === "admin123") {
         return {
-          id: '1',
-          email: 'admin@gmail.com',
-          name: 'Admin User',
-          role: 'admin'
+          id: "1",
+          email: "admin@gmail.com",
+          name: "Admin User",
+          role: "admin",
         };
       }
       return null;
