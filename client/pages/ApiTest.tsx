@@ -7,7 +7,8 @@ const ApiTest = () => {
   const testEndpoint = async (endpoint: string, name: string) => {
     setLoading(name);
     try {
-      console.log(`Testing ${endpoint}...`);
+      const fullUrl = endpoint.startsWith('http') ? endpoint : `${window.location.origin}${endpoint}`;
+      console.log(`Testing ${name} at URL: ${fullUrl}`);
       const response = await fetch(endpoint);
       console.log(`${name} Status:`, response.status);
       console.log(
