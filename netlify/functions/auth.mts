@@ -2,6 +2,10 @@ import type { Context, Config } from "@netlify/functions";
 import { neon } from "@neondatabase/serverless";
 
 export default async (req: Request, context: Context) => {
+  console.log("🔐 AUTH FUNCTION CALLED!");
+  console.log("Method:", req.method);
+  console.log("URL:", req.url);
+
   // Add CORS headers
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -11,6 +15,7 @@ export default async (req: Request, context: Context) => {
 
   // Handle preflight requests
   if (req.method === "OPTIONS") {
+    console.log("Auth CORS preflight");
     return new Response(null, { status: 200, headers });
   }
 
