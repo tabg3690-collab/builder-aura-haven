@@ -27,7 +27,8 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
       <Alert className="border-blue-200 bg-blue-50">
         <AlertTriangle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
-          <strong>Demo Mode:</strong> Currently showing demo data. Your app is ready for deployment once you set up the Neon database.
+          <strong>Demo Mode:</strong> Currently showing demo data. Your app is
+          ready for deployment once you set up the Neon database.
           {!showFullSetup && (
             <Button
               variant="link"
