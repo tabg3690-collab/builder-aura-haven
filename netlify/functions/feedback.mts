@@ -18,10 +18,13 @@ export default async (req: Request, context: Context) => {
     // Initialize database connection
     const dbUrl = Netlify.env.get("NEON_DATABASE_URL");
     if (!dbUrl) {
-      return new Response(JSON.stringify({ error: "Database not configured" }), {
-        status: 500,
-        headers: { ...headers, "Content-Type": "application/json" }
-      });
+      return new Response(
+        JSON.stringify({ error: "Database not configured" }),
+        {
+          status: 500,
+          headers: { ...headers, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const sql = neon(dbUrl);
