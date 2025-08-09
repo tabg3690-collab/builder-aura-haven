@@ -45,12 +45,13 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_feedback_created_at ON feedback(created_at);
 
 -- 5. Insert initial admin users (only if they don't exist)
-INSERT INTO users (email, password_hash, role, name) 
-SELECT 'admin@gmail.com', 'admin123', 'admin', 'Administrator'
+-- SECURITY NOTE: Change these passwords after setup!
+INSERT INTO users (email, password_hash, role, name)
+SELECT 'admin@gmail.com', 'TempPass123!', 'admin', 'Administrator'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@gmail.com');
 
-INSERT INTO users (email, password_hash, role, name) 
-SELECT 'haricharan@gmail.com', 'hari123', 'admin', 'Haricharan'
+INSERT INTO users (email, password_hash, role, name)
+SELECT 'haricharan@gmail.com', 'TempPass456!', 'admin', 'Haricharan'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'haricharan@gmail.com');
 
 -- 6. Insert some sample members (only if table is empty)
