@@ -4,7 +4,6 @@
   publish = "dist/spa"
 
 [dev]
-  command = "vite"
   targetPort = 8080
   port = 8888
   publish = "dist/spa"
