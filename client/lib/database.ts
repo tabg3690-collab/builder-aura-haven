@@ -99,7 +99,7 @@ export const membersAPI = {
     }
 
     try {
-      const response = await fetch(`${baseURL}/api/members`);
+      const response = await apiCall(`${baseURL}/api/members`);
       if (!response.ok) {
         console.warn("Members API returned error status:", response.status);
         return demoMembers;
@@ -143,7 +143,7 @@ export const membersAPI = {
     }
 
     try {
-      const response = await fetch(
+      const response = await apiCall(
         `${baseURL}/api/members?upcoming=true&days=${days}`,
       );
       if (!response.ok) {
@@ -168,7 +168,7 @@ export const membersAPI = {
   // Add new member
   async create(member: Omit<Member, "id">): Promise<Member> {
     checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/members`, {
+    const response = await apiCall(`${baseURL}/api/members`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -210,7 +210,7 @@ export const membersAPI = {
     member: Partial<Omit<Member, "id">>,
   ): Promise<Member> {
     checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/members?id=${id}`, {
+    const response = await apiCall(`${baseURL}/api/members?id=${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ export const membersAPI = {
   // Delete member
   async delete(id: string): Promise<void> {
     checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/members?id=${id}`, {
+    const response = await apiCall(`${baseURL}/api/members?id=${id}`, {
       method: "DELETE",
     });
 
@@ -268,7 +268,7 @@ export const feedbackAPI = {
     }
 
     try {
-      const response = await fetch(`${baseURL}/api/feedback`, {
+      const response = await apiCall(`${baseURL}/api/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -291,7 +291,7 @@ export const feedbackAPI = {
   // Get all feedback (admin only)
   async getAll(): Promise<any[]> {
     checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/feedback`);
+    const response = await apiCall(`${baseURL}/api/feedback`);
     if (!response.ok) {
       throw new Error("Failed to fetch feedback");
     }
@@ -328,7 +328,7 @@ export const usersAPI = {
     }
 
     try {
-      const response = await fetch(`${baseURL}/api/auth/login`, {
+      const response = await apiCall(`${baseURL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -378,7 +378,7 @@ export const usersAPI = {
   // Get all users (admin only)
   async getAll(): Promise<AuthUser[]> {
     checkDatabaseConnection();
-    const response = await fetch(`${baseURL}/api/auth/users`);
+    const response = await apiCall(`${baseURL}/api/auth/users`);
     if (!response.ok) {
       throw new Error("Failed to fetch users");
     }
@@ -399,7 +399,7 @@ export const statsAPI = {
     }
 
     try {
-      const response = await fetch(`${baseURL}/api/stats`);
+      const response = await apiCall(`${baseURL}/api/stats`);
       if (!response.ok) {
         console.warn("Stats API returned error status:", response.status);
         return getDemoStats();
