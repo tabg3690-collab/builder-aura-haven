@@ -3,7 +3,7 @@ import { AuthUser } from "@shared/users";
 
 // Check if running in development or production
 const isDev = import.meta.env.DEV;
-const baseURL = isDev ? "http://localhost:8888" : "";
+const baseURL = isDev ? "http://localhost:8888" : window.location.origin;
 
 // Helper function to check if database is available
 const checkDatabaseConnection = () => {
