@@ -5,6 +5,27 @@ import { AuthUser } from "@shared/users";
 const isDev = import.meta.env.DEV;
 const baseURL = isDev ? "http://localhost:8888" : window.location.origin;
 
+// Helper function to make API calls with retry logic
+const apiCall = async (url: string, options?: RequestInit, retries = 2): Promise<Response> => {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: AbortSignal.timeout(10000), // 10 second timeout
+      });
+      return response;
+    } catch (error) {
+      console.warn(`API call attempt ${i + 1} failed:`, error);
+      if (i === retries) {
+        throw error;
+      }
+      // Wait 1 second before retry
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+  throw new Error('All retry attempts failed');
+};
+
 // Helper function to check if database is available
 const checkDatabaseConnection = () => {
   // Database is working now, re-enabled
