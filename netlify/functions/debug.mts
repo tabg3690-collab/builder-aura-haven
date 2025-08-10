@@ -18,7 +18,7 @@ export default async (req: Request, context: Context) => {
 
   try {
     // Check environment variables
-    const neonUrl = Netlify.env.get("NEON_DATABASE_URL");
+    const neonUrl = process.env.NEON_DATABASE_URL;
     console.log("Neon URL exists:", !!neonUrl);
 
     const debugInfo = {
@@ -28,8 +28,7 @@ export default async (req: Request, context: Context) => {
       hasNeonUrl: !!neonUrl,
       neonUrlLength: neonUrl?.length || 0,
       neonUrlPrefix: neonUrl?.substring(0, 20) + "..." || "N/A",
-      environmentKeys: Object.keys(Netlify.env.getAll() || {}),
-      allEnvVars: Netlify.env.getAll(),
+      environmentKeys: Object.keys(process.env),
       message: "Function is working",
       nodeVersion: process.version,
       platform: process.platform,
