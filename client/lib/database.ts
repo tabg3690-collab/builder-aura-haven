@@ -114,28 +114,12 @@ export const membersAPI = {
 
   // Add new member
   async create(member: Omit<Member, "id">): Promise<Member> {
-    checkDatabaseConnection();
-    const response = await apiCall(`${baseURL}/api/members`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: member.name,
-        zone: member.zone,
-        mandal: member.mandal,
-        dateOfBirth: member.dateOfBirth,
-        phoneNumber: member.phoneNumber,
-        email: member.email,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to create member");
-    }
-
-    const data = await response.json();
-    return this.transformMember(data);
+    const newMember: Member = {
+      ...member,
+      id: Math.floor(Math.random() * 1000000), // Generate random ID
+    };
+    demoMembers.push(newMember);
+    return newMember;
   },
 
   // Bulk import members
