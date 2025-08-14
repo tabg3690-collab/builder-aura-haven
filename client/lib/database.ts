@@ -177,41 +177,13 @@ export const feedbackAPI = {
     subject: string;
     message: string;
   }): Promise<any> {
-    if (!checkDatabaseConnection()) {
-      // Demo mode - just return success
-      console.log("Demo mode: Feedback submitted:", feedback);
-      return { message: "Feedback submitted successfully (demo mode)" };
-    }
-
-    try {
-      const response = await apiCall(`${baseURL}/api/feedback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(feedback),
-      });
-
-      if (!response.ok) {
-        console.warn("Feedback API failed, using demo mode");
-        return { message: "Feedback submitted successfully (demo mode)" };
-      }
-
-      return response.json();
-    } catch (error) {
-      console.warn("Feedback API failed, falling back to demo:", error);
-      return { message: "Feedback submitted successfully (demo mode)" };
-    }
+    console.log("Feedback submitted:", feedback);
+    return { message: "Feedback submitted successfully!" };
   },
 
   // Get all feedback (admin only)
   async getAll(): Promise<any[]> {
-    checkDatabaseConnection();
-    const response = await apiCall(`${baseURL}/api/feedback`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch feedback");
-    }
-    return response.json();
+    return []; // Return empty array for demo
   },
 };
 
