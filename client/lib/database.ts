@@ -30,13 +30,8 @@ const apiCall = async (
   throw new Error("All retry attempts failed");
 };
 
-// Helper function to check if database is available
-const checkDatabaseConnection = () => {
-  // Database is working now, re-enabled
-  const neonUrl = import.meta.env.VITE_NEON_DATABASE_URL;
-  console.log("Database URL available:", !!neonUrl);
-  return !!neonUrl;
-};
+// Using demo data only - no database connectivity needed
+const useDemoData = true;
 
 // Demo data for fallback
 const getNextWeekDate = () => {
