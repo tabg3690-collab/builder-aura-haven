@@ -137,33 +137,21 @@ export const membersAPI = {
     id: string,
     member: Partial<Omit<Member, "id">>,
   ): Promise<Member> {
-    checkDatabaseConnection();
-    const response = await apiCall(`${baseURL}/api/members?id=${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(member),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to update member");
+    const index = demoMembers.findIndex((m) => m.id === parseInt(id));
+    if (index === -1) {
+      throw new Error("Member not found");
     }
-
-    const data = await response.json();
-    return this.transformMember(data);
+    demoMembers[index] = { ...demoMembers[index], ...member };
+    return demoMembers[index];
   },
 
   // Delete member
   async delete(id: string): Promise<void> {
-    checkDatabaseConnection();
-    const response = await apiCall(`${baseURL}/api/members?id=${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete member");
+    const index = demoMembers.findIndex((m) => m.id === parseInt(id));
+    if (index === -1) {
+      throw new Error("Member not found");
     }
+    demoMembers.splice(index, 1);
   },
 
   // Transform database member to frontend member
