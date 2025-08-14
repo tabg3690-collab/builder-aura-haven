@@ -124,14 +124,11 @@ export const membersAPI = {
 
   // Bulk import members
   async bulkCreate(members: Omit<Member, "id">[]): Promise<Member[]> {
-    checkDatabaseConnection();
     const results = [];
-
     for (const member of members) {
       const result = await this.create(member);
       results.push(result);
     }
-
     return results;
   },
 
