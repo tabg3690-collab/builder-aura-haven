@@ -97,47 +97,19 @@ export const membersAPI = {
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
-    const getDemoUpcomingBirthdays = () => {
-      const today = new Date();
-      const futureDate = new Date();
-      futureDate.setDate(today.getDate() + days);
+    const today = new Date();
+    const futureDate = new Date();
+    futureDate.setDate(today.getDate() + days);
 
-      return demoMembers.filter((member) => {
-        const birthDate = new Date(member.dateOfBirth);
-        const thisYear = new Date(
-          today.getFullYear(),
-          birthDate.getMonth(),
-          birthDate.getDate(),
-        );
-        return thisYear >= today && thisYear <= futureDate;
-      });
-    };
-
-    if (!checkDatabaseConnection()) {
-      return getDemoUpcomingBirthdays();
-    }
-
-    try {
-      const response = await apiCall(
-        `${baseURL}/api/members?upcoming=true&days=${days}`,
+    return demoMembers.filter((member) => {
+      const birthDate = new Date(member.dateOfBirth);
+      const thisYear = new Date(
+        today.getFullYear(),
+        birthDate.getMonth(),
+        birthDate.getDate(),
       );
-      if (!response.ok) {
-        console.warn("API returned error status:", response.status);
-        return getDemoUpcomingBirthdays();
-      }
-      const data = await response.json();
-
-      // Check if API returned an error object
-      if (data.error) {
-        console.warn("API returned error:", data.error);
-        return getDemoUpcomingBirthdays();
-      }
-
-      return data.map(this.transformMember);
-    } catch (error) {
-      console.warn("Database API failed, falling back to demo data:", error);
-      return getDemoUpcomingBirthdays();
-    }
+      return thisYear >= today && thisYear <= futureDate;
+    });
   },
 
   // Add new member
