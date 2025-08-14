@@ -246,34 +246,11 @@ export const usersAPI = {
 // Stats API
 export const statsAPI = {
   async getStats() {
-    const getDemoStats = () => ({
+    return {
       totalMembers: demoMembers.length,
+      totalZones: 5,
+      totalMandals: 20,
       totalFeedback: 0,
-    });
-
-    if (!checkDatabaseConnection()) {
-      return getDemoStats();
-    }
-
-    try {
-      const response = await apiCall(`${baseURL}/api/stats`);
-      if (!response.ok) {
-        console.warn("Stats API returned error status:", response.status);
-        return getDemoStats();
-      }
-
-      const data = await response.json();
-
-      // Check if API returned an error object
-      if (data.error) {
-        console.warn("Stats API returned error:", data.error);
-        return getDemoStats();
-      }
-
-      return data;
-    } catch (error) {
-      console.warn("Stats API failed, falling back to demo stats:", error);
-      return getDemoStats();
-    }
+    };
   },
 };
