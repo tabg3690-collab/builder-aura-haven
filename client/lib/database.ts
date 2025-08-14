@@ -92,31 +92,7 @@ const demoMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    if (!checkDatabaseConnection()) {
-      // Return demo data if database not configured
-      return demoMembers;
-    }
-
-    try {
-      const response = await apiCall(`${baseURL}/api/members`);
-      if (!response.ok) {
-        console.warn("Members API returned error status:", response.status);
-        return demoMembers;
-      }
-
-      const data = await response.json();
-
-      // Check if API returned an error object
-      if (data.error) {
-        console.warn("Members API returned error:", data.error);
-        return demoMembers;
-      }
-
-      return data.map(this.transformMember);
-    } catch (error) {
-      console.warn("Members API failed, falling back to demo data:", error);
-      return demoMembers;
-    }
+    return demoMembers;
   },
 
   // Get upcoming birthdays
