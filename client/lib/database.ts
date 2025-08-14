@@ -194,62 +194,24 @@ export const usersAPI = {
     email: string,
     password: string,
   ): Promise<AuthUser | null> {
-    if (!checkDatabaseConnection()) {
-      // Demo mode authentication
-      if (email === "admin@gmail.com" && password === "admin123") {
-        return {
-          id: "1",
-          email: "admin@gmail.com",
-          name: "Admin User",
-          role: "admin",
-        };
-      }
-      if (email === "user@gmail.com" && password === "user123") {
-        return {
-          id: "2",
-          email: "user@gmail.com",
-          name: "Demo User",
-          role: "user",
-        };
-      }
-      return null; // Invalid credentials in demo mode
+    // Demo authentication
+    if (email === "admin@gmail.com" && password === "admin123") {
+      return {
+        id: "1",
+        email: "admin@gmail.com",
+        name: "Admin User",
+        role: "admin",
+      };
     }
-
-    try {
-      const response = await apiCall(`${baseURL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.status === 401) {
-        return null;
-      }
-
-      if (!response.ok) {
-        console.warn("Authentication API failed, falling back to demo");
-        return null;
-      }
-
-      return response.json();
-    } catch (error) {
-      console.warn(
-        "Authentication API failed, falling back to demo auth:",
-        error,
-      );
-      // Fallback to demo authentication if API fails
-      if (email === "admin@gmail.com" && password === "admin123") {
-        return {
-          id: "1",
-          email: "admin@gmail.com",
-          name: "Admin User",
-          role: "admin",
-        };
-      }
-      return null;
+    if (email === "user@gmail.com" && password === "user123") {
+      return {
+        id: "2",
+        email: "user@gmail.com",
+        name: "Demo User",
+        role: "user",
+      };
     }
+    return null; // Invalid credentials
   },
 
   // Create new user (admin only)
@@ -259,18 +221,25 @@ export const usersAPI = {
     role: "admin" | "user";
     name: string;
   }): Promise<AuthUser> {
-    // This would need to be implemented as a separate function
-    throw new Error("User creation not implemented yet");
+    throw new Error("User creation not implemented in demo mode");
   },
 
   // Get all users (admin only)
   async getAll(): Promise<AuthUser[]> {
-    checkDatabaseConnection();
-    const response = await apiCall(`${baseURL}/api/auth/users`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch users");
-    }
-    return response.json();
+    return [
+      {
+        id: "1",
+        email: "admin@gmail.com",
+        name: "Admin User",
+        role: "admin",
+      },
+      {
+        id: "2",
+        email: "user@gmail.com",
+        name: "Demo User",
+        role: "user",
+      },
+    ];
   },
 };
 
