@@ -29,11 +29,11 @@ const realMembers: Member[] = [
   { id: 20, name: "Deepkumar Pravinchandra Patel", zone: "Pathri", mandal: "Pathri Mandal", dateOfBirth: "1986-08-07", phoneNumber: "+91 99091 62728", email: "deep.patel@gmail.com" },
 
   // Dhakwada Mandal Members
-  { id: 21, name: "Jagdishbhai Narsinhbhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1978-04-12", phoneNumber: "+91 98259 66506", email: "jagdish.patel@gmail.com" },
-  { id: 22, name: "Natubhai Chhotubhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1982-09-28", phoneNumber: "+91 82004 66150", email: "natu.patel@gmail.com" },
-  { id: 23, name: "Savanbhai Khandubhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1985-01-15", phoneNumber: "+91 99791 78378", email: "savan.patel@gmail.com" },
-  { id: 24, name: "Manharbhai Shantilal Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1980-06-22", phoneNumber: "+91 63554 37998", email: "manhar.shanti@gmail.com" },
-  { id: 25, name: "Pravinbhai Maganbhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1983-11-05", phoneNumber: "+91 84698 05105", email: "pravin.patel@gmail.com" },
+  { id: 21, name: "Jagdishbhai Narsinhbhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1978-04-12", phoneNumber: "+91 98259 66506", email: "jagdish.patel@gmail.com", address: "Main Road, Dhakwada", dixaDate: "2008-02-18", category: "ambrish", reference: "Narsinh Patel", bloodGroup: "O+", education: "Graduate", occupation: "Farmer", memberId: "DM001" },
+  { id: 22, name: "Natubhai Chhotubhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1982-09-28", phoneNumber: "+91 82004 66150", email: "natu.patel@gmail.com", address: "Village Square, Dhakwada", dixaDate: "2010-06-12", category: "Karyakarta", reference: "Chhotu Patel", bloodGroup: "A+", education: "12th Pass", occupation: "Business", memberId: "DM002" },
+  { id: 23, name: "Savanbhai Khandubhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1985-01-15", phoneNumber: "+91 99791 78378", email: "savan.patel@gmail.com", address: "New Area, Dhakwada", dixaDate: "2013-04-20", category: "Sadbhav", reference: "Khandu Patel", bloodGroup: "B+", education: "Graduate", occupation: "Service", memberId: "DM003" },
+  { id: 24, name: "Manharbhai Shantilal Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1980-06-22", phoneNumber: "+91 63554 37998", email: "manhar.shanti@gmail.com", address: "Temple Road, Dhakwada", dixaDate: "2009-08-15", category: "ambrish", reference: "Shantilal Patel", bloodGroup: "AB+", education: "Graduate", occupation: "Government", memberId: "DM004" },
+  { id: 25, name: "Pravinbhai Maganbhai Patel", zone: "Dhakwada", mandal: "Dhakwada Mandal", dateOfBirth: "1983-11-05", phoneNumber: "+91 84698 05105", email: "pravin.patel@gmail.com", address: "Station Area, Dhakwada", dixaDate: "2011-12-08", category: "Karyakarta", reference: "Magan Patel", bloodGroup: "O-", education: "Graduate", occupation: "Banking", memberId: "DM005" },
 
   // Amalsad Mandal Members
   { id: 26, name: "Rameshbhai Manubhai Patel", zone: "Amalsad", mandal: "Amalsad Mandal", dateOfBirth: "1979-03-18", phoneNumber: "+91 89808 06403", email: "ramesh.patel@gmail.com" },
