@@ -80,7 +80,7 @@ const realMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    return demoMembers;
+    return realMembers;
   },
 
   // Get upcoming birthdays
