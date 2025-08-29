@@ -6,6 +6,14 @@ export interface Member {
   dateOfBirth: string;
   phoneNumber: string;
   email: string;
+  address: string;
+  dixaDate: string;
+  category: "ambrish" | "Sadbhav" | "Karyakarta";
+  reference: string;
+  bloodGroup: string;
+  education: string;
+  occupation: string;
+  memberId: string;
 }
 
 // Helper function to get birthday info with days remaining
