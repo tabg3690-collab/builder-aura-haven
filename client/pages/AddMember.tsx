@@ -159,7 +159,9 @@ const AddMember = () => {
                     id="memberId"
                     placeholder="Enter unique member ID"
                     value={formData.memberId}
-                    onChange={(e) => handleInputChange("memberId", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("memberId", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -238,7 +240,9 @@ const AddMember = () => {
                     id="address"
                     placeholder="Enter full address"
                     value={formData.address}
-                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("address", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -247,7 +251,9 @@ const AddMember = () => {
 
             {/* Location & Organization */}
             <div>
-              <h3 className="text-lg font-medium mb-4">Location & Organization</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Location & Organization
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="zone">Zone *</Label>
@@ -272,7 +278,9 @@ const AddMember = () => {
                   <Label htmlFor="mandal">Mandal *</Label>
                   <Select
                     value={formData.mandal}
-                    onValueChange={(value) => handleInputChange("mandal", value)}
+                    onValueChange={(value) =>
+                      handleInputChange("mandal", value)
+                    }
                     disabled={!formData.zone}
                   >
                     <SelectTrigger>
@@ -293,9 +301,9 @@ const AddMember = () => {
                   <Label htmlFor="category">Category *</Label>
                   <Select
                     value={formData.category}
-                    onValueChange={(value: "ambrish" | "Sadbhav" | "Karyakarta") =>
-                      handleInputChange("category", value)
-                    }
+                    onValueChange={(
+                      value: "ambrish" | "Sadbhav" | "Karyakarta",
+                    ) => handleInputChange("category", value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
@@ -314,7 +322,9 @@ const AddMember = () => {
                     id="reference"
                     placeholder="Enter reference person"
                     value={formData.reference}
-                    onChange={(e) => handleInputChange("reference", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("reference", e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -322,13 +332,17 @@ const AddMember = () => {
 
             {/* Additional Information */}
             <div>
-              <h3 className="text-lg font-medium mb-4">Additional Information</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Additional Information
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="bloodGroup">Blood Group</Label>
                   <Select
                     value={formData.bloodGroup}
-                    onValueChange={(value) => handleInputChange("bloodGroup", value)}
+                    onValueChange={(value) =>
+                      handleInputChange("bloodGroup", value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select blood group" />
@@ -352,7 +366,9 @@ const AddMember = () => {
                     id="education"
                     placeholder="Enter education level"
                     value={formData.education}
-                    onChange={(e) => handleInputChange("education", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("education", e.target.value)
+                    }
                   />
                 </div>
 
@@ -362,7 +378,9 @@ const AddMember = () => {
                     id="occupation"
                     placeholder="Enter occupation"
                     value={formData.occupation}
-                    onChange={(e) => handleInputChange("occupation", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("occupation", e.target.value)
+                    }
                   />
                 </div>
               </div>

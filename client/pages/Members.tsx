@@ -2,7 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -12,7 +18,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Plus, Upload, AlertCircle, Loader2, Search, Filter } from "lucide-react";
+import {
+  Plus,
+  Upload,
+  AlertCircle,
+  Loader2,
+  Search,
+  Filter,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Member } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
@@ -64,24 +77,32 @@ const Members = () => {
 
   // Get unique zones and mandals for filter dropdowns
   const { uniqueZones, uniqueMandals } = useMemo(() => {
-    const zones = Array.from(new Set(members.map(member => member.zone))).sort();
-    const mandals = Array.from(new Set(members.map(member => member.mandal))).sort();
+    const zones = Array.from(
+      new Set(members.map((member) => member.zone)),
+    ).sort();
+    const mandals = Array.from(
+      new Set(members.map((member) => member.mandal)),
+    ).sort();
     return { uniqueZones: zones, uniqueMandals: mandals };
   }, [members]);
 
   // Filter members based on search and filters
   const filteredMembers = useMemo(() => {
-    return members.filter(member => {
-      const matchesSearch = searchTerm === "" || 
+    return members.filter((member) => {
+      const matchesSearch =
+        searchTerm === "" ||
         member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.phoneNumber.includes(searchTerm) ||
         member.memberId.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesZone = selectedZone === "all" || member.zone === selectedZone;
-      const matchesMandal = selectedMandal === "all" || member.mandal === selectedMandal;
-      const matchesCategory = selectedCategory === "all" || member.category === selectedCategory;
-      
+
+      const matchesZone =
+        selectedZone === "all" || member.zone === selectedZone;
+      const matchesMandal =
+        selectedMandal === "all" || member.mandal === selectedMandal;
+      const matchesCategory =
+        selectedCategory === "all" || member.category === selectedCategory;
+
       return matchesSearch && matchesZone && matchesMandal && matchesCategory;
     });
   }, [members, searchTerm, selectedZone, selectedMandal, selectedCategory]);
@@ -176,15 +197,17 @@ const Members = () => {
                 className="pl-10"
               />
             </div>
-            
+
             <Select value={selectedZone} onValueChange={setSelectedZone}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Zone" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Zones</SelectItem>
-                {uniqueZones.map(zone => (
-                  <SelectItem key={zone} value={zone}>{zone}</SelectItem>
+                {uniqueZones.map((zone) => (
+                  <SelectItem key={zone} value={zone}>
+                    {zone}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -195,13 +218,18 @@ const Members = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Mandals</SelectItem>
-                {uniqueMandals.map(mandal => (
-                  <SelectItem key={mandal} value={mandal}>{mandal}</SelectItem>
+                {uniqueMandals.map((mandal) => (
+                  <SelectItem key={mandal} value={mandal}>
+                    {mandal}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Category" />
               </SelectTrigger>
@@ -270,11 +298,15 @@ const Members = () => {
                         {new Date(member.dixaDate).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          member.category === 'ambrish' ? 'bg-purple-100 text-purple-800' :
-                          member.category === 'Sadbhav' ? 'bg-blue-100 text-blue-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            member.category === "ambrish"
+                              ? "bg-purple-100 text-purple-800"
+                              : member.category === "Sadbhav"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-green-100 text-green-800"
+                          }`}
+                        >
                           {member.category}
                         </span>
                       </TableCell>
@@ -296,13 +328,16 @@ const Members = () => {
           ) : (
             <div className="text-center py-16">
               <div className="text-muted-foreground mb-4">
-                {members.length === 0 ? "📝 No members found in the database" : "🔍 No members match your filters"}
+                {members.length === 0
+                  ? "📝 No members found in the database"
+                  : "🔍 No members match your filters"}
               </div>
               <p className="text-sm text-muted-foreground mb-6">
-                {members.length === 0 
-                  ? (canEdit ? "Start by adding your first member or importing from Excel" : "Contact an administrator to add members to the database")
-                  : "Try adjusting your search terms or filters"
-                }
+                {members.length === 0
+                  ? canEdit
+                    ? "Start by adding your first member or importing from Excel"
+                    : "Contact an administrator to add members to the database"
+                  : "Try adjusting your search terms or filters"}
               </p>
               {canEdit && members.length === 0 && (
                 <div className="space-x-4">
