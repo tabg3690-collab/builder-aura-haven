@@ -90,7 +90,7 @@ const realMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    return realMembers;
+    return realMembers.map(ensureMemberFields);
   },
 
   // Get upcoming birthdays
