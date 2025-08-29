@@ -19,42 +19,22 @@ const DatabaseStatus = ({ showFullSetup = false }: DatabaseStatusProps) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Always show demo mode message for now
-  const showDemoMode = true;
+  if (!showFullSetup) {
+    return null;
+  }
 
   return (
     <div className="mb-6">
-      <Alert className="border-blue-200 bg-blue-50">
-        <AlertTriangle className="h-4 w-4 text-blue-600" />
-        <AlertDescription className="text-blue-800">
-          <strong>Demo Mode:</strong> Currently showing demo data. Your app is
-          ready for deployment once you set up the Neon database.
-          {!showFullSetup && (
-            <Button
-              variant="link"
-              className="p-0 h-auto ml-2 text-orange-600 underline"
-              onClick={() =>
-                window.scrollTo({
-                  top: document.body.scrollHeight,
-                  behavior: "smooth",
-                })
-              }
-            >
-              View Setup Instructions
-            </Button>
-          )}
-        </AlertDescription>
-      </Alert>
 
-      {showFullSetup && (
-        <Card className="mt-4">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Database className="h-5 w-5 mr-2" />
-              Database Setup Required
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Database className="h-5 w-5 mr-2" />
+            Database Setup Required
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h4 className="font-semibold text-blue-900 mb-3">
                 Quick Setup Steps:
@@ -141,7 +121,6 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here`}
             </div>
           </CardContent>
         </Card>
-      )}
     </div>
   );
 };
