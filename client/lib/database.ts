@@ -7,14 +7,14 @@ import { AuthUser } from "@shared/users";
 const ensureMemberFields = (member: any): Member => {
   return {
     ...member,
-    address: member.address || "Address not available",
-    dixaDate: member.dixaDate || "2010-01-01",
+    address: member.address || "",
+    dixaDate: member.dixaDate || "",
     category: member.category || "Sadbhav",
-    reference: member.reference || "Not specified",
-    bloodGroup: member.bloodGroup || "Not known",
-    education: member.education || "Not specified",
-    occupation: member.occupation || "Not specified",
-    memberId: member.memberId || `M${String(member.id).padStart(3, '0')}`
+    reference: member.reference || "",
+    bloodGroup: member.bloodGroup || "",
+    education: member.education || "",
+    occupation: member.occupation || "",
+    memberId: member.memberId || ""
   };
 };
 
