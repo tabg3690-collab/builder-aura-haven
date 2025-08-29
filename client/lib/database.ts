@@ -89,7 +89,7 @@ export const membersAPI = {
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + days);
 
-    return demoMembers.filter((member) => {
+    return realMembers.filter((member) => {
       const birthDate = new Date(member.dateOfBirth);
       const thisYear = new Date(
         today.getFullYear(),
