@@ -107,7 +107,7 @@ export const membersAPI = {
         birthDate.getDate(),
       );
       return thisYear >= today && thisYear <= futureDate;
-    });
+    }).map(ensureMemberFields);
   },
 
   // Add new member
