@@ -165,19 +165,19 @@ export const usersAPI = {
     password: string,
   ): Promise<AuthUser | null> {
     // Demo authentication
-    if (email === "admin@gmail.com" && password === "admin123") {
+    if (email === "prabhuswami@gmail.com" && password === "Prabhu!23") {
       return {
         id: "1",
-        email: "admin@gmail.com",
-        name: "Admin User",
+        email: "prabhuswami@gmail.com",
+        name: "Prabhudarshan Swami",
         role: "admin",
       };
     }
-    if (email === "user@gmail.com" && password === "user123") {
+    if (email === "sahipat@gmail.com" && password === "sahishnu!23") {
       return {
         id: "2",
-        email: "user@gmail.com",
-        name: "Demo User",
+        email: "sahipat@gmail.com",
+        name: "Sahishnu Patel",
         role: "user",
       };
     }
@@ -199,14 +199,14 @@ export const usersAPI = {
     return [
       {
         id: "1",
-        email: "admin@gmail.com",
-        name: "Admin User",
+        email: "prabhuswami@gmail.com",
+        name: "Prabhudarshan Swami",
         role: "admin",
       },
       {
         id: "2",
-        email: "user@gmail.com",
-        name: "Demo User",
+        email: "sahipat@gmail.com",
+        name: "Sahishnu Patel",
         role: "user",
       },
     ];
