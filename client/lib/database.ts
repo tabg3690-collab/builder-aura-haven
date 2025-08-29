@@ -106,7 +106,7 @@ export const membersAPI = {
       ...member,
       id: Math.floor(Math.random() * 1000000), // Generate random ID
     };
-    demoMembers.push(newMember);
+    realMembers.push(newMember);
     return newMember;
   },
 
