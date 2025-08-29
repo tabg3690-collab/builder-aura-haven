@@ -235,7 +235,7 @@ export const usersAPI = {
 export const statsAPI = {
   async getStats() {
     return {
-      totalMembers: demoMembers.length,
+      totalMembers: realMembers.length,
       totalZones: 5,
       totalMandals: 20,
       totalFeedback: 0,
