@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Database, AlertTriangle, ExternalLink, Copy } from "lucide-react";
-// Check if Neon database is configured
+import { Database, ExternalLink, Copy } from "lucide-react";
+// Check if Neon database is configured (optional)
 const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 import { useState } from "react";
 
