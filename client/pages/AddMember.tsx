@@ -91,6 +91,14 @@ const AddMember = () => {
         dateOfBirth: formData.dateOfBirth,
         phoneNumber: formData.phoneNumber,
         email: formData.email,
+        address: formData.address,
+        dixaDate: formData.dixaDate,
+        category: formData.category,
+        reference: formData.reference,
+        bloodGroup: formData.bloodGroup,
+        education: formData.education,
+        occupation: formData.occupation,
+        memberId: formData.memberId,
       });
 
       // Navigate back to members list
