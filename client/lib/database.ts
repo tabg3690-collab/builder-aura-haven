@@ -135,11 +135,11 @@ export const membersAPI = {
 
   // Delete member
   async delete(id: string): Promise<void> {
-    const index = demoMembers.findIndex((m) => m.id === parseInt(id));
+    const index = realMembers.findIndex((m) => m.id === parseInt(id));
     if (index === -1) {
       throw new Error("Member not found");
     }
-    demoMembers.splice(index, 1);
+    realMembers.splice(index, 1);
   },
 
   // Transform database member to frontend member
