@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -10,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Plus, Upload, AlertCircle, Loader2 } from "lucide-react";
+import { Plus, Upload, AlertCircle, Loader2, Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Member } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,6 +27,10 @@ const Members = () => {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedZone, setSelectedZone] = useState<string>("all");
+  const [selectedMandal, setSelectedMandal] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     loadMembers();
@@ -55,6 +61,30 @@ const Members = () => {
       setLoading(false);
     }
   };
+
+  // Get unique zones and mandals for filter dropdowns
+  const { uniqueZones, uniqueMandals } = useMemo(() => {
+    const zones = Array.from(new Set(members.map(member => member.zone))).sort();
+    const mandals = Array.from(new Set(members.map(member => member.mandal))).sort();
+    return { uniqueZones: zones, uniqueMandals: mandals };
+  }, [members]);
+
+  // Filter members based on search and filters
+  const filteredMembers = useMemo(() => {
+    return members.filter(member => {
+      const matchesSearch = searchTerm === "" || 
+        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.phoneNumber.includes(searchTerm) ||
+        member.memberId.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesZone = selectedZone === "all" || member.zone === selectedZone;
+      const matchesMandal = selectedMandal === "all" || member.mandal === selectedMandal;
+      const matchesCategory = selectedCategory === "all" || member.category === selectedCategory;
+      
+      return matchesSearch && matchesZone && matchesMandal && matchesCategory;
+    });
+  }, [members, searchTerm, selectedZone, selectedMandal, selectedCategory]);
 
   if (loading) {
     return (
@@ -127,6 +157,69 @@ const Members = () => {
         )}
       </div>
 
+      {/* Filters Section */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Filter className="h-5 w-5 mr-2" />
+            Filters & Search
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search members..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <Select value={selectedZone} onValueChange={setSelectedZone}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by Zone" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Zones</SelectItem>
+                {uniqueZones.map(zone => (
+                  <SelectItem key={zone} value={zone}>{zone}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={selectedMandal} onValueChange={setSelectedMandal}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by Mandal" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Mandals</SelectItem>
+                {uniqueMandals.map(mandal => (
+                  <SelectItem key={mandal} value={mandal}>{mandal}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="ambrish">Ambrish</SelectItem>
+                <SelectItem value="Sadbhav">Sadbhav</SelectItem>
+                <SelectItem value="Karyakarta">Karyakarta</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <div className="flex items-center text-sm text-muted-foreground">
+              Showing {filteredMembers.length} of {members.length} members
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Member Directory</CardTitle>
@@ -137,30 +230,62 @@ const Members = () => {
           </p>
         </CardHeader>
         <CardContent>
-          {members.length > 0 ? (
+          {filteredMembers.length > 0 ? (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Zone</TableHead>
                     <TableHead>Mandal</TableHead>
+                    <TableHead>Address</TableHead>
                     <TableHead>Date of Birth</TableHead>
+                    <TableHead>Dixa Date</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Reference</TableHead>
+                    <TableHead>Blood Group</TableHead>
+                    <TableHead>Education</TableHead>
+                    <TableHead>Occupation</TableHead>
                     <TableHead>Phone Number</TableHead>
                     <TableHead>Email</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {members.map((member) => (
+                  {filteredMembers.map((member) => (
                     <TableRow key={member.id}>
+                      <TableCell className="font-medium">
+                        {member.memberId}
+                      </TableCell>
                       <TableCell className="font-medium">
                         {member.name}
                       </TableCell>
                       <TableCell>{member.zone}</TableCell>
                       <TableCell>{member.mandal}</TableCell>
+                      <TableCell>{member.address}</TableCell>
                       <TableCell>
                         {new Date(member.dateOfBirth).toLocaleDateString()}
                       </TableCell>
+                      <TableCell>
+                        {new Date(member.dixaDate).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          member.category === 'ambrish' ? 'bg-purple-100 text-purple-800' :
+                          member.category === 'Sadbhav' ? 'bg-blue-100 text-blue-800' :
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          {member.category}
+                        </span>
+                      </TableCell>
+                      <TableCell>{member.reference}</TableCell>
+                      <TableCell>
+                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-medium">
+                          {member.bloodGroup}
+                        </span>
+                      </TableCell>
+                      <TableCell>{member.education}</TableCell>
+                      <TableCell>{member.occupation}</TableCell>
                       <TableCell>{member.phoneNumber}</TableCell>
                       <TableCell>{member.email}</TableCell>
                     </TableRow>
@@ -171,14 +296,15 @@ const Members = () => {
           ) : (
             <div className="text-center py-16">
               <div className="text-muted-foreground mb-4">
-                📝 No members found in the database
+                {members.length === 0 ? "📝 No members found in the database" : "🔍 No members match your filters"}
               </div>
               <p className="text-sm text-muted-foreground mb-6">
-                {canEdit
-                  ? "Start by adding your first member or importing from Excel"
-                  : "Contact an administrator to add members to the database"}
+                {members.length === 0 
+                  ? (canEdit ? "Start by adding your first member or importing from Excel" : "Contact an administrator to add members to the database")
+                  : "Try adjusting your search terms or filters"
+                }
               </p>
-              {canEdit && (
+              {canEdit && members.length === 0 && (
                 <div className="space-x-4">
                   <Button
                     onClick={() => navigate("/members/add")}
