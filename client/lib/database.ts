@@ -3,12 +3,7 @@ import { AuthUser } from "@shared/users";
 
 // Using demo data only - no database connectivity needed
 
-// Demo data for fallback
-const getNextWeekDate = () => {
-  const date = new Date();
-  date.setDate(date.getDate() + 7);
-  return date.toISOString().split("T")[0];
-};
+// Real member data from CSV
 
 const realMembers: Member[] = [
   // Gandevi Mandal Members
