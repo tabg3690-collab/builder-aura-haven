@@ -125,12 +125,12 @@ export const membersAPI = {
     id: string,
     member: Partial<Omit<Member, "id">>,
   ): Promise<Member> {
-    const index = demoMembers.findIndex((m) => m.id === parseInt(id));
+    const index = realMembers.findIndex((m) => m.id === parseInt(id));
     if (index === -1) {
       throw new Error("Member not found");
     }
-    demoMembers[index] = { ...demoMembers[index], ...member };
-    return demoMembers[index];
+    realMembers[index] = { ...realMembers[index], ...member };
+    return realMembers[index];
   },
 
   // Delete member
