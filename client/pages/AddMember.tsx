@@ -26,6 +26,14 @@ const AddMember = () => {
     dateOfBirth: "",
     phoneNumber: "",
     email: "",
+    address: "",
+    dixaDate: "",
+    category: "Sadbhav" as "ambrish" | "Sadbhav" | "Karyakarta",
+    reference: "",
+    bloodGroup: "",
+    education: "",
+    occupation: "",
+    memberId: "",
   });
 
   const zones = ["Amalsad", "Dharampur", "Gandevi", "Valsad", "Vapi"];
