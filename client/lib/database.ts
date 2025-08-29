@@ -3,6 +3,21 @@ import { AuthUser } from "@shared/users";
 
 // Using demo data only - no database connectivity needed
 
+// Helper function to ensure all members have the new fields
+const ensureMemberFields = (member: any): Member => {
+  return {
+    ...member,
+    address: member.address || "Address not available",
+    dixaDate: member.dixaDate || "2010-01-01",
+    category: member.category || "Sadbhav",
+    reference: member.reference || "Not specified",
+    bloodGroup: member.bloodGroup || "Not known",
+    education: member.education || "Not specified",
+    occupation: member.occupation || "Not specified",
+    memberId: member.memberId || `M${String(member.id).padStart(3, '0')}`
+  };
+};
+
 // Real member data from CSV
 
 const realMembers: Member[] = [
