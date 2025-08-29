@@ -117,7 +117,11 @@ const AddMember = () => {
     formData.mandal &&
     formData.dateOfBirth &&
     formData.phoneNumber &&
-    formData.email;
+    formData.email &&
+    formData.address &&
+    formData.dixaDate &&
+    formData.category &&
+    formData.memberId;
 
   return (
     <div className="px-4 py-6 sm:px-0">
