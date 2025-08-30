@@ -870,7 +870,7 @@ export const usersAPI = {
     email: string,
     password: string,
   ): Promise<AuthUser | null> {
-    // Demo authentication
+    // Admin demo login
     if (email === "prabhuswami@gmail.com" && password === "Prabhu!23") {
       return {
         id: "1",
@@ -879,14 +879,25 @@ export const usersAPI = {
         role: "admin",
       };
     }
-    if (email === "sahipat@gmail.com" && password === "sahishnu!23") {
-      return {
-        id: "2",
-        email: "sahipat@gmail.com",
-        name: "Sahishnu Patel",
-        role: "user",
-      };
+
+    // Member read-only login: email matches member.email and password is name (letters only, lowercase) + !23
+    const targetEmail = email.trim().toLowerCase();
+    const member = realMembers.find(
+      (m) => m.email.trim().toLowerCase() === targetEmail,
+    );
+    if (member) {
+      const key = member.name.toLowerCase().replace(/[^a-z]/g, "");
+      const expected = `${key}!23`;
+      if (password === expected) {
+        return {
+          id: String(member.id),
+          email: member.email,
+          name: member.name,
+          role: "user",
+        };
+      }
     }
+
     return null; // Invalid credentials
   },
 
