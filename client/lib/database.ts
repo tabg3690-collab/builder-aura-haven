@@ -123,7 +123,7 @@ const loadExcelOverlay = async () => {
 
 // Real member data from CSV
 
-const realMembers: Member[] = [
+let realMembers: Member[] = [
   // Gandevi Mandal Members
   {
     id: 1,
@@ -747,7 +747,7 @@ const realMembers: Member[] = [
     phoneNumber: "+91 97731 86226",
     email: "jayesh.raman@gmail.com",
   },
-];
+].map(ensureMemberFields);
 
 // Members API
 export const membersAPI = {
