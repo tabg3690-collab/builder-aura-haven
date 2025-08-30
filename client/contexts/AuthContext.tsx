@@ -10,6 +10,15 @@ import { usersAPI, membersAPI } from "@/lib/database";
 // Check if Neon database is configured
 const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
+const defaultAuthContext: AuthContextType = {
+  user: null,
+  login: async () => false,
+  logout: () => {},
+  isLoading: false,
+  isAdmin: false,
+  canEdit: false,
+};
+
 interface AuthContextType {
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<boolean>;
@@ -73,7 +82,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           (m) => m.email.trim().toLowerCase() === targetEmail,
         );
         if (member) {
-          const key = member.name.toLowerCase().replace(/[^a-z]/g, "");
+          const localPart = targetEmail.split("@")[0];
+          const key = localPart.replace(/[^a-z]/g, "");
           const expected = `${key}!23`;
           if (password === expected) {
             const demoUser: AuthUser = {
@@ -140,11 +150,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    // During development hot reload, context might be temporarily undefined
-    console.warn(
-      "useAuth called outside AuthProvider - this might be a hot reload issue",
-    );
-    throw new Error("useAuth must be used within an AuthProvider");
+    console.warn("useAuth called outside AuthProvider - returning defaults");
+    return defaultAuthContext;
   }
   return context;
 };
