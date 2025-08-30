@@ -292,10 +292,16 @@ const Members = () => {
                       <TableCell>{member.mandal}</TableCell>
                       <TableCell>{member.address}</TableCell>
                       <TableCell>
-                        {new Date(member.dateOfBirth).toLocaleDateString()}
+                        {(() => {
+                          const d = new Date(member.dateOfBirth);
+                          return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+                        })()}
                       </TableCell>
                       <TableCell>
-                        {new Date(member.dixaDate).toLocaleDateString()}
+                        {(() => {
+                          const d = new Date(member.dixaDate);
+                          return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+                        })()}
                       </TableCell>
                       <TableCell>
                         <span
