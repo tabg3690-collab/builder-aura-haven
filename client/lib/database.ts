@@ -822,15 +822,15 @@ export const membersAPI = {
 
   // Transform database member to frontend member
   transformMember(dbMember: any): Member {
-    return {
-      id: parseInt(dbMember.id.replace(/-/g, "").substring(0, 8), 16), // Convert UUID to number for compatibility
+    return ensureMemberFields({
+      id: parseInt(dbMember.id.replace(/-/g, "").substring(0, 8), 16),
       name: dbMember.name,
       zone: dbMember.zone,
       mandal: dbMember.mandal,
       dateOfBirth: dbMember.date_of_birth,
       phoneNumber: dbMember.phone_number,
       email: dbMember.email,
-    };
+    });
   },
 };
 
