@@ -294,13 +294,17 @@ const Members = () => {
                       <TableCell>
                         {(() => {
                           const d = new Date(member.dateOfBirth);
-                          return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+                          return isNaN(d.getTime())
+                            ? ""
+                            : d.toLocaleDateString();
                         })()}
                       </TableCell>
                       <TableCell>
                         {(() => {
                           const d = new Date(member.dixaDate);
-                          return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
+                          return isNaN(d.getTime())
+                            ? ""
+                            : d.toLocaleDateString();
                         })()}
                       </TableCell>
                       <TableCell>

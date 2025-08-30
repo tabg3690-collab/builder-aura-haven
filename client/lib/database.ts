@@ -20,7 +20,8 @@ const ensureMemberFields = (member: any): Member => {
 };
 
 // Load birthdate and reference from external Excel once and overlay onto members
-const excelSourceUrl = "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2F5c3d5790e7884f84a11c9fae9ab33fe0?alt=media&token=4c45fa7d-6d61-4963-ba50-1fbfd2db51e4&apiKey=e8a4cf259e0444609aac214d5cbaad39";
+const excelSourceUrl =
+  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2F5c3d5790e7884f84a11c9fae9ab33fe0?alt=media&token=4c45fa7d-6d61-4963-ba50-1fbfd2db51e4&apiKey=e8a4cf259e0444609aac214d5cbaad39";
 let excelOverlayApplied = false;
 let excelOverlayInFlight: Promise<void> | null = null;
 
@@ -93,9 +94,18 @@ const loadExcelOverlay = async () => {
         let refVal = "";
         for (const k of keys) {
           const nk = normalizeKey(k);
-          if (!nameVal && (nk === "name" || nk === "fullname")) nameVal = String(row[k]).trim();
-          if (!dobRaw && (nk === "dateofbirth" || nk === "birthdate" || nk === "dob")) dobRaw = row[k];
-          if (!refVal && (nk === "reference" || nk === "ref" || nk === "referredby")) refVal = String(row[k] ?? "").trim();
+          if (!nameVal && (nk === "name" || nk === "fullname"))
+            nameVal = String(row[k]).trim();
+          if (
+            !dobRaw &&
+            (nk === "dateofbirth" || nk === "birthdate" || nk === "dob")
+          )
+            dobRaw = row[k];
+          if (
+            !refVal &&
+            (nk === "reference" || nk === "ref" || nk === "referredby")
+          )
+            refVal = String(row[k] ?? "").trim();
         }
         if (!nameVal) continue;
         const dob = parseExcelDate(dobRaw);
