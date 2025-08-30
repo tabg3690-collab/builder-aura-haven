@@ -59,14 +59,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             name: "Demo Administrator",
           };
           setUser(demoAdmin);
-          localStorage.setItem("haricharan_auth_user", JSON.stringify(demoAdmin));
+          localStorage.setItem(
+            "haricharan_auth_user",
+            JSON.stringify(demoAdmin),
+          );
           setIsLoading(false);
           return true;
         }
 
         const members = await membersAPI.getAll();
         const targetEmail = email.trim().toLowerCase();
-        const member = members.find((m) => m.email.trim().toLowerCase() === targetEmail);
+        const member = members.find(
+          (m) => m.email.trim().toLowerCase() === targetEmail,
+        );
         if (member) {
           const key = member.name.toLowerCase().replace(/[^a-z]/g, "");
           const expected = `${key}!23`;
@@ -78,7 +83,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               name: member.name,
             };
             setUser(demoUser);
-            localStorage.setItem("haricharan_auth_user", JSON.stringify(demoUser));
+            localStorage.setItem(
+              "haricharan_auth_user",
+              JSON.stringify(demoUser),
+            );
             setIsLoading(false);
             return true;
           }
