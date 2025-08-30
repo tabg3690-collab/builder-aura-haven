@@ -1,5 +1,6 @@
 import { Member } from "@shared/members";
 import { AuthUser } from "@shared/users";
+import * as XLSX from "xlsx";
 
 // Using demo data only - no database connectivity needed
 
@@ -16,6 +17,105 @@ const ensureMemberFields = (member: any): Member => {
     occupation: member.occupation || "",
     memberId: member.memberId || "",
   };
+};
+
+// Load birthdate and reference from external Excel once and overlay onto members
+const excelSourceUrl = "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2F5c3d5790e7884f84a11c9fae9ab33fe0?alt=media&token=4c45fa7d-6d61-4963-ba50-1fbfd2db51e4&apiKey=e8a4cf259e0444609aac214d5cbaad39";
+let excelOverlayApplied = false;
+let excelOverlayInFlight: Promise<void> | null = null;
+
+const parseExcelDate = (value: unknown): string => {
+  if (typeof value === "number") {
+    // Excel serial date (assuming 1900 date system)
+    const date = new Date((value - 25569) * 86400 * 1000);
+    if (!isNaN(date.getTime())) return date.toISOString().split("T")[0];
+    return "";
+  }
+  if (typeof value === "string") {
+    const raw = value.trim();
+    if (!raw) return "";
+    // Try ISO first
+    const iso = new Date(raw);
+    if (!isNaN(iso.getTime())) return iso.toISOString().split("T")[0];
+    // Try common DD/MM/YYYY or DD-MM-YYYY
+    const m = raw.match(/^([0-3]?\d)[\/\-]([0-1]?\d)[\/\-](\d{4})$/);
+    if (m) {
+      const d = parseInt(m[1], 10);
+      const mo = parseInt(m[2], 10) - 1;
+      const y = parseInt(m[3], 10);
+      const dt = new Date(y, mo, d);
+      if (!isNaN(dt.getTime())) return dt.toISOString().split("T")[0];
+    }
+    // Try YYYY/MM/DD or YYYY-MM-DD when not parsed by Date()
+    const m2 = raw.match(/^(\d{4})[\/\-]([0-1]?\d)[\/\-]([0-3]?\d)$/);
+    if (m2) {
+      const y = parseInt(m2[1], 10);
+      const mo = parseInt(m2[2], 10) - 1;
+      const d = parseInt(m2[3], 10);
+      const dt = new Date(y, mo, d);
+      if (!isNaN(dt.getTime())) return dt.toISOString().split("T")[0];
+    }
+  }
+  return "";
+};
+
+const normalizeKey = (s: string) => s.replace(/\s+/g, "").toLowerCase();
+const normalizeName = (s: string) => s.trim().toLowerCase();
+
+const loadExcelOverlay = async () => {
+  if (excelOverlayApplied) return;
+  if (excelOverlayInFlight) return excelOverlayInFlight;
+  excelOverlayInFlight = (async () => {
+    try {
+      const resp = await fetch(excelSourceUrl);
+      if (!resp.ok) {
+        excelOverlayApplied = true;
+        return;
+      }
+      const buf = await resp.arrayBuffer();
+      const wb = XLSX.read(buf);
+      const sheetName = wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+      const rows: any[] = XLSX.utils.sheet_to_json(ws, { defval: "" });
+
+      // Build map by name
+      const map = new Map<string, { dob: string; ref: string }>();
+      for (const row of rows) {
+        // Support multiple header variants
+        const keys = Object.keys(row);
+        let nameVal = "";
+        let dobRaw: unknown = "";
+        let refVal = "";
+        for (const k of keys) {
+          const nk = normalizeKey(k);
+          if (!nameVal && (nk === "name" || nk === "fullname")) nameVal = String(row[k]).trim();
+          if (!dobRaw && (nk === "dateofbirth" || nk === "birthdate" || nk === "dob")) dobRaw = row[k];
+          if (!refVal && (nk === "reference" || nk === "ref" || nk === "referredby")) refVal = String(row[k] ?? "").trim();
+        }
+        if (!nameVal) continue;
+        const dob = parseExcelDate(dobRaw);
+        const ref = refVal;
+        map.set(normalizeName(nameVal), { dob, ref });
+      }
+
+      // Overlay onto realMembers: blank out fields first, then fill where available
+      for (const m of realMembers) {
+        const key = normalizeName(m.name);
+        m.dateOfBirth = "";
+        m.reference = "";
+        const entry = map.get(key);
+        if (entry) {
+          if (entry.dob) m.dateOfBirth = entry.dob;
+          if (entry.ref) m.reference = entry.ref;
+        }
+      }
+    } catch (e) {
+      // On failure, still mark as applied to avoid repeated attempts
+    } finally {
+      excelOverlayApplied = true;
+    }
+  })();
+  return excelOverlayInFlight;
 };
 
 // Real member data from CSV
@@ -650,11 +750,13 @@ const realMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
+    await loadExcelOverlay();
     return realMembers.map(ensureMemberFields);
   },
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
+    await loadExcelOverlay();
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + days);
@@ -662,6 +764,7 @@ export const membersAPI = {
     return realMembers
       .filter((member) => {
         const birthDate = new Date(member.dateOfBirth);
+        if (isNaN(birthDate.getTime())) return false;
         const thisYear = new Date(
           today.getFullYear(),
           birthDate.getMonth(),
