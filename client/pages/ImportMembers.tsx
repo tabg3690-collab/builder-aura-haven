@@ -226,6 +226,14 @@ const ImportMembers = () => {
         dateOfBirth: member.dateOfBirth,
         phoneNumber: member.phoneNumber,
         email: member.email,
+        address: "",
+        dixaDate: "",
+        category: "Sadbhav" as const,
+        reference: "",
+        bloodGroup: "",
+        education: "",
+        occupation: "",
+        memberId: "",
       }));
 
       setProgress(25);
