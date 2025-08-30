@@ -886,7 +886,8 @@ export const usersAPI = {
       (m) => m.email.trim().toLowerCase() === targetEmail,
     );
     if (member) {
-      const key = member.name.toLowerCase().replace(/[^a-z]/g, "");
+      const localPart = targetEmail.split("@")[0];
+      const key = localPart.replace(/[^a-z]/g, "");
       const expected = `${key}!23`;
       if (password === expected) {
         return {
