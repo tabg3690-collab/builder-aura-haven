@@ -6,7 +6,7 @@ import {
   ReactNode,
 } from "react";
 import { AuthUser } from "@shared/users";
-import { usersAPI } from "@/lib/database";
+import { usersAPI, membersAPI } from "@/lib/database";
 // Check if Neon database is configured
 const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
@@ -48,9 +48,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
 
     try {
-      // If database is not configured, use demo authentication
+      // If database is not configured, authenticate against members for read-only access
       if (!isNeonConfigured) {
-        // Demo credentials for testing
+        // Admin backdoor (optional)
         if (email === "admin@gmail.com" && password === "admin123") {
           const demoAdmin: AuthUser = {
             id: "demo-admin",
@@ -59,30 +59,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             name: "Demo Administrator",
           };
           setUser(demoAdmin);
-          localStorage.setItem(
-            "haricharan_auth_user",
-            JSON.stringify(demoAdmin),
-          );
+          localStorage.setItem("haricharan_auth_user", JSON.stringify(demoAdmin));
           setIsLoading(false);
           return true;
-        } else if (email === "user@gmail.com" && password === "user123") {
-          const demoUser: AuthUser = {
-            id: "demo-user",
-            email: "user@gmail.com",
-            role: "user",
-            name: "Demo User",
-          };
-          setUser(demoUser);
-          localStorage.setItem(
-            "haricharan_auth_user",
-            JSON.stringify(demoUser),
-          );
-          setIsLoading(false);
-          return true;
-        } else {
-          setIsLoading(false);
-          return false;
         }
+
+        const members = await membersAPI.getAll();
+        const targetEmail = email.trim().toLowerCase();
+        const member = members.find((m) => m.email.trim().toLowerCase() === targetEmail);
+        if (member) {
+          const key = member.name.toLowerCase().replace(/[^a-z]/g, "");
+          const expected = `${key}!23`;
+          if (password === expected) {
+            const demoUser: AuthUser = {
+              id: String(member.id),
+              email: member.email,
+              role: "user",
+              name: member.name,
+            };
+            setUser(demoUser);
+            localStorage.setItem("haricharan_auth_user", JSON.stringify(demoUser));
+            setIsLoading(false);
+            return true;
+          }
+        }
+        setIsLoading(false);
+        return false;
       }
 
       // Use database authentication
