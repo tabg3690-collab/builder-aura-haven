@@ -66,6 +66,11 @@ const loadExcelOverlay = async () => {
   if (excelOverlayApplied) return;
   if (excelOverlayInFlight) return excelOverlayInFlight;
   excelOverlayInFlight = (async () => {
+    // Always start by blanking out DOB and reference; then fill from Excel if available
+    for (const m of realMembers) {
+      m.dateOfBirth = "";
+      m.reference = "";
+    }
     try {
       const resp = await fetch(excelSourceUrl);
       if (!resp.ok) {
@@ -98,11 +103,9 @@ const loadExcelOverlay = async () => {
         map.set(normalizeName(nameVal), { dob, ref });
       }
 
-      // Overlay onto realMembers: blank out fields first, then fill where available
+      // Fill where available
       for (const m of realMembers) {
         const key = normalizeName(m.name);
-        m.dateOfBirth = "";
-        m.reference = "";
         const entry = map.get(key);
         if (entry) {
           if (entry.dob) m.dateOfBirth = entry.dob;
@@ -110,7 +113,7 @@ const loadExcelOverlay = async () => {
         }
       }
     } catch (e) {
-      // On failure, still mark as applied to avoid repeated attempts
+      // On failure, fields remain blank
     } finally {
       excelOverlayApplied = true;
     }
