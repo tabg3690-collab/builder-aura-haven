@@ -54,14 +54,17 @@ const Members = () => {
       setLoading(true);
       setError(null);
 
-      // If database is not configured, show empty state
-      if (!isNeonConfigured) {
+      // If database is not configured, show empty state for regular users
+    if (!isNeonConfigured) {
+      if (!canEdit) {
         setMembers([]);
         setLoading(false);
         return;
       }
+      // allow demo admin to access the in-memory members
+    }
 
-      const data = await membersAPI.getAll();
+    const data = await membersAPI.getAll();
       setMembers(data);
     } catch (err) {
       console.error("Error loading members:", err);
