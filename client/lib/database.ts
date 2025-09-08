@@ -880,6 +880,16 @@ export const usersAPI = {
       };
     }
 
+    // Demo admin: sahipat / sahishnu
+    if (email === "sahipat@gmail.com" && password === "sahishnu!23") {
+      return {
+        id: "2",
+        email: "sahipat@gmail.com",
+        name: "Sahishnu Patel",
+        role: "admin",
+      };
+    }
+
     // Member read-only login: email matches member.email and password is name (letters only, lowercase) + !23
     const targetEmail = email.trim().toLowerCase();
     const member = realMembers.find(
@@ -925,7 +935,7 @@ export const usersAPI = {
         id: "2",
         email: "sahipat@gmail.com",
         name: "Sahishnu Patel",
-        role: "user",
+        role: "admin",
       },
     ];
   },
