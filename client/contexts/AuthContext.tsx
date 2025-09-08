@@ -60,21 +60,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       // If database is not configured, authenticate against members for read-only access
       if (!isNeonConfigured) {
         // Admin backdoor (optional)
-        if (email === "admin@gmail.com" && password === "admin123") {
-          const demoAdmin: AuthUser = {
-            id: "demo-admin",
-            email: "admin@gmail.com",
-            role: "admin",
-            name: "Demo Administrator",
-          };
-          setUser(demoAdmin);
-          localStorage.setItem(
-            "haricharan_auth_user",
-            JSON.stringify(demoAdmin),
-          );
-          setIsLoading(false);
-          return true;
-        }
+      if (email === "admin@gmail.com" && password === "admin123") {
+        const demoAdmin: AuthUser = {
+          id: "demo-admin",
+          email: "admin@gmail.com",
+          role: "admin",
+          name: "Demo Administrator",
+        };
+        setUser(demoAdmin);
+        localStorage.setItem(
+          "haricharan_auth_user",
+          JSON.stringify(demoAdmin),
+        );
+        setIsLoading(false);
+        return true;
+      }
+
+      // Demo admin: sahipat / sahishnu
+      if (email === "sahipat@gmail.com" && password === "sahishnu!23") {
+        const demoAdmin2: AuthUser = {
+          id: "demo-admin-2",
+          email: "sahipat@gmail.com",
+          role: "admin",
+          name: "Sahishnu Patel",
+        };
+        setUser(demoAdmin2);
+        localStorage.setItem(
+          "haricharan_auth_user",
+          JSON.stringify(demoAdmin2),
+        );
+        setIsLoading(false);
+        return true;
+      }
 
         const members = await membersAPI.getAll();
         const targetEmail = email.trim().toLowerCase();
