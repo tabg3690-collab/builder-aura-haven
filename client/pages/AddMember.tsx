@@ -13,11 +13,13 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import { membersAPI } from "@/lib/database";
+import { useAuth } from "@/contexts/AuthContext";
 // Check if Neon database is configured
 const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 
 const AddMember = () => {
   const navigate = useNavigate();
+  const { canEdit } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -74,8 +76,8 @@ const AddMember = () => {
     try {
       setLoading(true);
 
-      // Check if database is configured
-      if (!isNeonConfigured) {
+      // Check if database is configured. Allow demo admin to add members in demo mode.
+      if (!isNeonConfigured && !canEdit) {
         alert(
           "Database not configured. Please set up your Neon database connection.",
         );
@@ -83,7 +85,7 @@ const AddMember = () => {
         return;
       }
 
-      // Save member to database
+      // Save member to database (in demo mode this will persist in memory)
       await membersAPI.create({
         name: formData.name,
         zone: formData.zone,
