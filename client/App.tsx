@@ -15,6 +15,7 @@ import Zones from "./pages/Zones";
 import Members from "./pages/Members";
 import AddMember from "./pages/AddMember";
 import ImportMembers from "./pages/ImportMembers";
+import EditMember from "./pages/EditMember";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import DebugTest from "./pages/DebugTest";
@@ -60,6 +61,14 @@ const App = () => (
                 element={
                   <ProtectedRoute requireAdmin>
                     <ImportMembers />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="members/:id/edit"
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <EditMember />
                   </ProtectedRoute>
                 }
               />
