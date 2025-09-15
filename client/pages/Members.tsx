@@ -280,6 +280,7 @@ const Members = () => {
                     <TableHead>Occupation</TableHead>
                     <TableHead>Phone Number</TableHead>
                     <TableHead>Email</TableHead>
+                  {canEdit && <TableHead>Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -333,6 +334,17 @@ const Members = () => {
                       <TableCell>{member.occupation}</TableCell>
                       <TableCell>{member.phoneNumber}</TableCell>
                       <TableCell>{member.email}</TableCell>
+                      {canEdit && (
+                        <TableCell>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => navigate(`/members/${member.id}/edit`)}
+                          >
+                            Edit
+                          </Button>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
