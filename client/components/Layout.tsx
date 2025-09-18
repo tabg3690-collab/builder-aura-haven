@@ -120,7 +120,7 @@ const Layout = () => {
                     className="flex items-center space-x-2"
                   >
                     <User className="h-4 w-4" />
-                    <span className="hidden sm:block">{user?.name}</span>
+                    <span className="hidden lg:block">{user?.name}</span>
                     {user?.role === "admin" && (
                       <Badge
                         variant="secondary"
