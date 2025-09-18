@@ -863,6 +863,69 @@ export const feedbackAPI = {
   },
 };
 
+// Seva (donations) in-memory store and API
+import type { SevaRecord, SevaType } from "@shared/seva";
+import { SEVA_TYPES } from "@shared/seva";
+
+const defaultSevaRecord = (): SevaRecord => {
+  const rec: Partial<SevaRecord> = {};
+  for (const t of SEVA_TYPES) {
+    rec[t as SevaType] = { amount: 0, date: "", note: "" };
+  }
+  return rec as SevaRecord;
+};
+
+const memberSevaStore: Record<number, SevaRecord> = {};
+
+export const sevaAPI = {
+  async getByMember(memberId: string): Promise<SevaRecord> {
+    const id = parseInt(memberId, 10);
+    if (!memberSevaStore[id]) memberSevaStore[id] = defaultSevaRecord();
+    return JSON.parse(JSON.stringify(memberSevaStore[id]));
+  },
+  async update(memberId: string, data: SevaRecord): Promise<SevaRecord> {
+    const id = parseInt(memberId, 10);
+    memberSevaStore[id] = JSON.parse(JSON.stringify(data));
+    return JSON.parse(JSON.stringify(memberSevaStore[id]));
+  },
+  types(): SevaType[] {
+    return [...SEVA_TYPES];
+  },
+};
+
+// Prasad packets in-memory store and API
+import type { PrasadRecord } from "@shared/prasad";
+
+let prasadStore: Record<string, PrasadRecord> | null = null;
+
+const ensurePrasadSeeded = () => {
+  if (prasadStore) return;
+  prasadStore = {};
+  const mandals = Array.from(new Set(realMembers.map((m) => m.mandal)));
+  for (const mandal of mandals) {
+    prasadStore[mandal] = {
+      mandal,
+      pouch: 0,
+      smallBox: 0,
+      bigBox: 0,
+    };
+  }
+};
+
+export const prasadAPI = {
+  async getAll(): Promise<PrasadRecord[]> {
+    ensurePrasadSeeded();
+    return Object.values(prasadStore!);
+  },
+  async update(mandal: string, changes: Partial<Omit<PrasadRecord, "mandal">>): Promise<PrasadRecord> {
+    ensurePrasadSeeded();
+    const current = prasadStore![mandal] || { mandal, pouch: 0, smallBox: 0, bigBox: 0 };
+    const updated: PrasadRecord = { ...current, ...changes } as PrasadRecord;
+    prasadStore![mandal] = updated;
+    return updated;
+  },
+};
+
 // Users API
 export const usersAPI = {
   // Authenticate user
