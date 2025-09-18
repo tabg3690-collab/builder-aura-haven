@@ -23,7 +23,7 @@ const Layout = () => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-2xl font-bold text-primary">
+                <h1 className="text-xl sm:text-2xl font-bold text-primary truncate max-w-[160px] sm:max-w-[260px]">
                   Haricharan Database
                 </h1>
               </div>
