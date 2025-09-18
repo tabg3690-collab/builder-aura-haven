@@ -27,7 +27,7 @@ const Layout = () => {
                   Haricharan Database
                 </h1>
               </div>
-              <div className="ml-6 flex space-x-8">
+              <div className="ml-2 sm:ml-6 flex space-x-4 sm:space-x-8 overflow-x-auto whitespace-nowrap">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
