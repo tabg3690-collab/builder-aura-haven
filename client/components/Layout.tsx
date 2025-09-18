@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { NavLink, Outlet } from "react-router-dom";
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -79,6 +80,34 @@ const Layout = () => {
                   }
                 >
                   Feedback
+                </NavLink>
+                {user?.role === "admin" && (
+                  <NavLink
+                    to="/seva"
+                    className={({ isActive }) =>
+                      cn(
+                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors",
+                        isActive
+                          ? "border-primary text-primary"
+                          : "border-transparent text-muted-foreground hover:border-gray-300 hover:text-gray-700",
+                      )
+                    }
+                  >
+                    Seva
+                  </NavLink>
+                )}
+                <NavLink
+                  to="/prasad"
+                  className={({ isActive }) =>
+                    cn(
+                      "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors",
+                      isActive
+                        ? "border-primary text-primary"
+                        : "border-transparent text-muted-foreground hover:border-gray-300 hover:text-gray-700",
+                    )
+                  }
+                >
+                  Prasad
                 </NavLink>
               </div>
             </div>
