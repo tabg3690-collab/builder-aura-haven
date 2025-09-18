@@ -917,9 +917,17 @@ export const prasadAPI = {
     ensurePrasadSeeded();
     return Object.values(prasadStore!);
   },
-  async update(mandal: string, changes: Partial<Omit<PrasadRecord, "mandal">>): Promise<PrasadRecord> {
+  async update(
+    mandal: string,
+    changes: Partial<Omit<PrasadRecord, "mandal">>,
+  ): Promise<PrasadRecord> {
     ensurePrasadSeeded();
-    const current = prasadStore![mandal] || { mandal, pouch: 0, smallBox: 0, bigBox: 0 };
+    const current = prasadStore![mandal] || {
+      mandal,
+      pouch: 0,
+      smallBox: 0,
+      bigBox: 0,
+    };
     const updated: PrasadRecord = { ...current, ...changes } as PrasadRecord;
     prasadStore![mandal] = updated;
     return updated;

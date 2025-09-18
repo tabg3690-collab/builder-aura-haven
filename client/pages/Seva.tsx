@@ -1,10 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { membersAPI, sevaAPI } from "@/lib/database";
 import type { Member } from "@shared/members";
@@ -35,10 +48,20 @@ const Seva = () => {
     load();
   }, [selectedId]);
 
-  const onChange = (type: SevaType, field: keyof SevaRecord[SevaType], value: string) => {
+  const onChange = (
+    type: SevaType,
+    field: keyof SevaRecord[SevaType],
+    value: string,
+  ) => {
     setRecord((prev) => {
       if (!prev) return prev;
-      const next = { ...prev, [type]: { ...prev[type], [field]: field === "amount" ? Number(value || 0) : value } } as SevaRecord;
+      const next = {
+        ...prev,
+        [type]: {
+          ...prev[type],
+          [field]: field === "amount" ? Number(value || 0) : value,
+        },
+      } as SevaRecord;
       return next;
     });
   };
@@ -59,7 +82,9 @@ const Seva = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Seva (Donations)</h1>
-        <p className="mt-2 text-gray-600">Manage donation entries per member. Admins only.</p>
+        <p className="mt-2 text-gray-600">
+          Manage donation entries per member. Admins only.
+        </p>
       </div>
 
       <Card>
@@ -82,7 +107,11 @@ const Seva = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={save} disabled={!record || loading} className="ml-auto bg-primary hover:bg-primary/90">
+          <Button
+            onClick={save}
+            disabled={!record || loading}
+            className="ml-auto bg-primary hover:bg-primary/90"
+          >
             {loading ? "Saving..." : "Save"}
           </Button>
         </CardContent>
@@ -104,33 +133,40 @@ const Seva = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {record && (Object.keys(record) as SevaType[]).map((type) => (
-                  <TableRow key={type}>
-                    <TableCell className="font-medium">{type}</TableCell>
-                    <TableCell className="max-w-40">
-                      <Input
-                        type="number"
-                        value={record[type].amount}
-                        onChange={(e) => onChange(type, "amount", e.target.value)}
-                        min={0}
-                      />
-                    </TableCell>
-                    <TableCell className="max-w-40">
-                      <Input
-                        type="date"
-                        value={record[type].date}
-                        onChange={(e) => onChange(type, "date", e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        placeholder="Add a note"
-                        value={record[type].note}
-                        onChange={(e) => onChange(type, "note", e.target.value)}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {record &&
+                  (Object.keys(record) as SevaType[]).map((type) => (
+                    <TableRow key={type}>
+                      <TableCell className="font-medium">{type}</TableCell>
+                      <TableCell className="max-w-40">
+                        <Input
+                          type="number"
+                          value={record[type].amount}
+                          onChange={(e) =>
+                            onChange(type, "amount", e.target.value)
+                          }
+                          min={0}
+                        />
+                      </TableCell>
+                      <TableCell className="max-w-40">
+                        <Input
+                          type="date"
+                          value={record[type].date}
+                          onChange={(e) =>
+                            onChange(type, "date", e.target.value)
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Input
+                          placeholder="Add a note"
+                          value={record[type].note}
+                          onChange={(e) =>
+                            onChange(type, "note", e.target.value)
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>

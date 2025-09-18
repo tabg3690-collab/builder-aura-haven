@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,7 +27,11 @@ const Prasad = () => {
     load();
   }, []);
 
-  const updateCell = (idx: number, field: keyof Omit<PrasadRecord, "mandal">, value: string) => {
+  const updateCell = (
+    idx: number,
+    field: keyof Omit<PrasadRecord, "mandal">,
+    value: string,
+  ) => {
     setRows((prev) => {
       const next = [...prev];
       // @ts-expect-error - narrowing
@@ -46,8 +57,13 @@ const Prasad = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Prasad Distribution</h1>
-        <p className="mt-2 text-gray-600">Counts per mandal for Pouch, Small Box, and Big Box. Users can view; admins can edit.</p>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Prasad Distribution
+        </h1>
+        <p className="mt-2 text-gray-600">
+          Counts per mandal for Pouch, Small Box, and Big Box. Users can view;
+          admins can edit.
+        </p>
       </div>
 
       <Card>
@@ -72,28 +88,53 @@ const Prasad = () => {
                     <TableCell className="font-medium">{r.mandal}</TableCell>
                     <TableCell className="max-w-36">
                       {canEdit ? (
-                        <Input type="number" min={0} value={r.pouch} onChange={(e) => updateCell(idx, "pouch", e.target.value)} />
+                        <Input
+                          type="number"
+                          min={0}
+                          value={r.pouch}
+                          onChange={(e) =>
+                            updateCell(idx, "pouch", e.target.value)
+                          }
+                        />
                       ) : (
                         r.pouch
                       )}
                     </TableCell>
                     <TableCell className="max-w-36">
                       {canEdit ? (
-                        <Input type="number" min={0} value={r.smallBox} onChange={(e) => updateCell(idx, "smallBox", e.target.value)} />
+                        <Input
+                          type="number"
+                          min={0}
+                          value={r.smallBox}
+                          onChange={(e) =>
+                            updateCell(idx, "smallBox", e.target.value)
+                          }
+                        />
                       ) : (
                         r.smallBox
                       )}
                     </TableCell>
                     <TableCell className="max-w-36">
                       {canEdit ? (
-                        <Input type="number" min={0} value={r.bigBox} onChange={(e) => updateCell(idx, "bigBox", e.target.value)} />
+                        <Input
+                          type="number"
+                          min={0}
+                          value={r.bigBox}
+                          onChange={(e) =>
+                            updateCell(idx, "bigBox", e.target.value)
+                          }
+                        />
                       ) : (
                         r.bigBox
                       )}
                     </TableCell>
                     {canEdit && (
                       <TableCell>
-                        <Button size="sm" onClick={() => saveRow(idx)} disabled={loading}>
+                        <Button
+                          size="sm"
+                          onClick={() => saveRow(idx)}
+                          disabled={loading}
+                        >
                           {loading ? "Saving..." : "Save"}
                         </Button>
                       </TableCell>
