@@ -19,6 +19,8 @@ import EditMember from "./pages/EditMember";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import DebugTest from "./pages/DebugTest";
+import Seva from "./pages/Seva";
+import Prasad from "./pages/Prasad";
 import ApiTest from "./pages/ApiTest";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -48,6 +50,15 @@ const App = () => (
               <Route path="debug" element={<DebugTest />} />
               <Route path="zones" element={<Zones />} />
               <Route path="members" element={<Members />} />
+              <Route
+                path="seva"
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <Seva />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="prasad" element={<Prasad />} />
               <Route
                 path="members/add"
                 element={
