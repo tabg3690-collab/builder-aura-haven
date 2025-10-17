@@ -769,7 +769,7 @@ export const membersAPI = {
 
   // Get upcoming birthdays
   async getUpcomingBirthdays(days: number = 30): Promise<Member[]> {
-    await loadExcelOverlay();
+    await loadMembersFromExcel();
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + days);
