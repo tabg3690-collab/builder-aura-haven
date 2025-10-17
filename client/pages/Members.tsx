@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { Member } from "@shared/members";
 import { useAuth } from "@/contexts/AuthContext";
 import { membersAPI } from "@/lib/database";
+import * as XLSX from "xlsx";
 // Check if Neon database is configured
 const isNeonConfigured = !!import.meta.env.VITE_NEON_DATABASE_URL;
 import DatabaseStatus from "@/components/DatabaseStatus";
@@ -48,6 +49,33 @@ const Members = () => {
   useEffect(() => {
     loadMembers();
   }, []);
+
+  const handleExportAll = () => {
+    try {
+      const rows = members.map((m) => ({
+        "Member ID": m.memberId,
+        Name: m.name,
+        Zone: m.zone,
+        Mandal: m.mandal,
+        Address: m.address,
+        "Date of Birth": m.dateOfBirth,
+        "Dixa Date": m.dixaDate,
+        Category: m.category,
+        Reference: m.reference,
+        "Blood Group": m.bloodGroup,
+        Education: m.education,
+        Occupation: m.occupation,
+        "Phone Number": m.phoneNumber,
+        Email: m.email,
+      }));
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Members");
+      XLSX.writeFile(wb, "members_export.xlsx");
+    } catch (e) {
+      console.error("Export failed", e);
+    }
+  };
 
   const loadMembers = async () => {
     try {
@@ -152,6 +180,9 @@ const Members = () => {
         </div>
         {canEdit ? (
           <div className="flex space-x-3">
+            <Button onClick={handleExportAll} variant="outline">
+              Export Excel
+            </Button>
             <Button
               onClick={() => navigate("/members/import")}
               variant="outline"
