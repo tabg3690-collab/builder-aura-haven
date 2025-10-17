@@ -22,7 +22,7 @@ const ensureMemberFields = (member: any): Member => {
 
 // Load members from external Excel once, replacing demo data
 const excelSourceUrl =
-  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2Fab5df002c9b94e51aca98947c7ae8407?alt=media&token=2347f8f0-d2d6-4ae6-9fc8-b7f9d96aa06a&apiKey=e8a4cf259e0444609aac214d5cbaad39";
+  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2Fa619b58885464ee4b75e0de50d84d88b?alt=media&token=110ed248-9212-4169-8f0e-4595bf394037&apiKey=e8a4cf259e0444609aac214d5cbaad39";
 let excelLoaded = false;
 let excelLoadInFlight: Promise<void> | null = null;
 
@@ -85,10 +85,17 @@ const loadMembersFromExcel = async () => {
       for (const row of rows) {
         const obj: any = {};
         // Map common fields by normalized header
+        let first = "";
+        let middle = "";
+        let last = "";
+        let full = "";
         for (const [k, v] of Object.entries(row)) {
           const nk = normalizeKey(String(k));
           const val = typeof v === "string" ? v.trim() : v;
-          if (nk.includes("name")) obj.name = String(v).trim();
+          if (nk === "name" || nk === "fullname") full = String(v).trim();
+          else if (nk === "firstname" || nk === "first" || nk === "fname") first = String(v).trim();
+          else if (nk === "middlename" || nk === "middle" || nk === "mname") middle = String(v).trim();
+          else if (nk === "surname" || nk === "lastname" || nk === "last" || nk === "lname") last = String(v).trim();
           else if (nk.includes("zone")) obj.zone = String(v).trim();
           else if (nk.includes("mandal")) obj.mandal = String(v).trim();
           else if (nk === "dateofbirth" || nk === "birthdate" || nk === "dob") obj.dateOfBirth = parseExcelDate(v);
@@ -105,6 +112,8 @@ const loadMembersFromExcel = async () => {
           else if (nk.includes("category") || nk.includes("type")) obj.category = String(v).trim();
           else if (nk.includes("status")) obj.status = String(v).trim();
         }
+        const combined = (full || [first, middle, last].filter(Boolean).join(" ")).replace(/\s+/g, " ").trim();
+        obj.name = combined;
         if (!obj.name) continue; // skip invalid rows
         obj.id = idCounter++;
         // Normalize category values and mapping rule: if category is 'ambrish', set to 'Karyakarta'
