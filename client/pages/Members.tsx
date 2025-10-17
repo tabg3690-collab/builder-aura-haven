@@ -61,6 +61,7 @@ const Members = () => {
         "Date of Birth": m.dateOfBirth,
         "Dixa Date": m.dixaDate,
         Category: m.category,
+        Status: m.status,
         Reference: m.reference,
         "Blood Group": m.bloodGroup,
         Education: m.education,
