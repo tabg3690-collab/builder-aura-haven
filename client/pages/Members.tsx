@@ -109,13 +109,23 @@ const Members = () => {
 
   // Get unique zones and mandals for filter dropdowns
   const { uniqueZones, uniqueMandals } = useMemo(() => {
-    const zones = Array.from(new Set(members.map((m) => m.zone))).sort();
+    const zones = Array.from(
+      new Set(
+        members
+          .map((m) => (m.zone || "").trim())
+          .filter((z) => z.length > 0),
+      ),
+    ).sort();
     const mandalSource =
       selectedZone === "all"
         ? members
         : members.filter((m) => m.zone === selectedZone);
     const mandals = Array.from(
-      new Set(mandalSource.map((m) => m.mandal)),
+      new Set(
+        mandalSource
+          .map((m) => (m.mandal || "").trim())
+          .filter((z) => z.length > 0),
+      ),
     ).sort();
     return { uniqueZones: zones, uniqueMandals: mandals };
   }, [members, selectedZone]);
