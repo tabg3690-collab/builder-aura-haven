@@ -364,6 +364,7 @@ const Members = () => {
                           {member.category}
                         </span>
                       </TableCell>
+                      <TableCell>{member.status || ""}</TableCell>
                       <TableCell>{member.reference}</TableCell>
                       <TableCell>
                         <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-medium">
