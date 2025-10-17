@@ -83,16 +83,16 @@ const Members = () => {
       setError(null);
 
       // If database is not configured, show empty state for regular users
-    if (!isNeonConfigured) {
-      if (!canEdit) {
-        setMembers([]);
-        setLoading(false);
-        return;
+      if (!isNeonConfigured) {
+        if (!canEdit) {
+          setMembers([]);
+          setLoading(false);
+          return;
+        }
+        // allow demo admin to access the in-memory members
       }
-      // allow demo admin to access the in-memory members
-    }
 
-    const data = await membersAPI.getAll();
+      const data = await membersAPI.getAll();
       setMembers(data);
     } catch (err) {
       console.error("Error loading members:", err);
@@ -109,8 +109,13 @@ const Members = () => {
   // Get unique zones and mandals for filter dropdowns
   const { uniqueZones, uniqueMandals } = useMemo(() => {
     const zones = Array.from(new Set(members.map((m) => m.zone))).sort();
-    const mandalSource = selectedZone === "all" ? members : members.filter((m) => m.zone === selectedZone);
-    const mandals = Array.from(new Set(mandalSource.map((m) => m.mandal))).sort();
+    const mandalSource =
+      selectedZone === "all"
+        ? members
+        : members.filter((m) => m.zone === selectedZone);
+    const mandals = Array.from(
+      new Set(mandalSource.map((m) => m.mandal)),
+    ).sort();
     return { uniqueZones: zones, uniqueMandals: mandals };
   }, [members, selectedZone]);
 
@@ -314,7 +319,7 @@ const Members = () => {
                     <TableHead>Occupation</TableHead>
                     <TableHead>Phone Number</TableHead>
                     <TableHead>Email</TableHead>
-                  {canEdit && <TableHead>Actions</TableHead>}
+                    {canEdit && <TableHead>Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -373,7 +378,9 @@ const Members = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => navigate(`/members/${member.id}/edit`)}
+                            onClick={() =>
+                              navigate(`/members/${member.id}/edit`)
+                            }
                           >
                             Edit
                           </Button>
