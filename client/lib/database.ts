@@ -10,20 +10,21 @@ const ensureMemberFields = (member: any): Member => {
     ...member,
     address: member.address || "",
     dixaDate: member.dixaDate || "",
-    category: member.category || "Sadbhav",
+    category: (member.category as Member["category"]) || "Sadbhav",
+    status: member.status || "",
     reference: member.reference || "",
     bloodGroup: member.bloodGroup || "",
     education: member.education || "",
     occupation: member.occupation || "",
     memberId: member.memberId || "",
-  };
+  } as Member;
 };
 
-// Load birthdate and reference from external Excel once and overlay onto members
+// Load members from external Excel once, replacing demo data
 const excelSourceUrl =
-  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2F5c3d5790e7884f84a11c9fae9ab33fe0?alt=media&token=4c45fa7d-6d61-4963-ba50-1fbfd2db51e4&apiKey=e8a4cf259e0444609aac214d5cbaad39";
-let excelOverlayApplied = false;
-let excelOverlayInFlight: Promise<void> | null = null;
+  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2Fab5df002c9b94e51aca98947c7ae8407?alt=media&token=2347f8f0-d2d6-4ae6-9fc8-b7f9d96aa06a&apiKey=e8a4cf259e0444609aac214d5cbaad39";
+let excelLoaded = false;
+let excelLoadInFlight: Promise<void> | null = null;
 
 const parseExcelDate = (value: unknown): string => {
   if (typeof value === "number") {
@@ -63,19 +64,14 @@ const parseExcelDate = (value: unknown): string => {
 const normalizeKey = (s: string) => s.replace(/\s+/g, "").toLowerCase();
 const normalizeName = (s: string) => s.trim().toLowerCase();
 
-const loadExcelOverlay = async () => {
-  if (excelOverlayApplied) return;
-  if (excelOverlayInFlight) return excelOverlayInFlight;
-  excelOverlayInFlight = (async () => {
-    // Always start by blanking out DOB and reference; then fill from Excel if available
-    for (const m of realMembers) {
-      m.dateOfBirth = "";
-      m.reference = "";
-    }
+const loadMembersFromExcel = async () => {
+  if (excelLoaded) return;
+  if (excelLoadInFlight) return excelLoadInFlight;
+  excelLoadInFlight = (async () => {
     try {
       const resp = await fetch(excelSourceUrl);
       if (!resp.ok) {
-        excelOverlayApplied = true;
+        excelLoaded = true;
         return;
       }
       const buf = await resp.arrayBuffer();
@@ -84,51 +80,55 @@ const loadExcelOverlay = async () => {
       const ws = wb.Sheets[sheetName];
       const rows: any[] = XLSX.utils.sheet_to_json(ws, { defval: "" });
 
-      // Build map by name
-      const map = new Map<string, { dob: string; ref: string }>();
+      const parsed: Member[] = [];
+      let idCounter = 1;
       for (const row of rows) {
-        // Support multiple header variants
-        const keys = Object.keys(row);
-        let nameVal = "";
-        let dobRaw: unknown = "";
-        let refVal = "";
-        for (const k of keys) {
-          const nk = normalizeKey(k);
-          if (!nameVal && (nk === "name" || nk === "fullname"))
-            nameVal = String(row[k]).trim();
-          if (
-            !dobRaw &&
-            (nk === "dateofbirth" || nk === "birthdate" || nk === "dob")
-          )
-            dobRaw = row[k];
-          if (
-            !refVal &&
-            (nk === "reference" || nk === "ref" || nk === "referredby")
-          )
-            refVal = String(row[k] ?? "").trim();
+        const obj: any = {};
+        // Map common fields by normalized header
+        for (const [k, v] of Object.entries(row)) {
+          const nk = normalizeKey(String(k));
+          const val = typeof v === "string" ? v.trim() : v;
+          if (nk.includes("name")) obj.name = String(v).trim();
+          else if (nk.includes("zone")) obj.zone = String(v).trim();
+          else if (nk.includes("mandal")) obj.mandal = String(v).trim();
+          else if (nk === "dateofbirth" || nk === "birthdate" || nk === "dob") obj.dateOfBirth = parseExcelDate(v);
+          else if (nk.includes("dixa")) obj.dixaDate = parseExcelDate(v);
+          else if (nk.includes("phone")) obj.phoneNumber = String(v).trim();
+          else if (nk.includes("mobile")) obj.phoneNumber = String(v).trim();
+          else if (nk.includes("email")) obj.email = String(v).trim().toLowerCase();
+          else if (nk.includes("address")) obj.address = String(v).trim();
+          else if (nk.includes("reference") || nk === "ref" || nk === "referredby") obj.reference = String(v).trim();
+          else if (nk.includes("blood")) obj.bloodGroup = String(v).trim();
+          else if (nk.includes("education")) obj.education = String(v).trim();
+          else if (nk.includes("occupation") || nk.includes("job")) obj.occupation = String(v).trim();
+          else if (nk.includes("memberid") || nk === "id" || nk === "memberno") obj.memberId = String(v).trim();
+          else if (nk.includes("category") || nk.includes("type")) obj.category = String(v).trim();
+          else if (nk.includes("status")) obj.status = String(v).trim();
         }
-        if (!nameVal) continue;
-        const dob = parseExcelDate(dobRaw);
-        const ref = refVal;
-        map.set(normalizeName(nameVal), { dob, ref });
+        if (!obj.name) continue; // skip invalid rows
+        obj.id = idCounter++;
+        // Normalize category values and mapping rule: if category is 'ambrish', set to 'Karyakarta'
+        const rawCat = (obj.category || "").toString().toLowerCase();
+        let cat: Member["category"] = "Sadbhav";
+        if (rawCat.includes("karyakarta")) cat = "Karyakarta";
+        else if (rawCat.includes("ambrish")) cat = "Karyakarta"; // treat ambrish as Karyakarta per request
+        else if (rawCat.includes("sadbhav")) cat = "Sadbhav";
+        obj.category = cat;
+        parsed.push(ensureMemberFields(obj));
       }
-
-      // Fill where available
-      for (const m of realMembers) {
-        const key = normalizeName(m.name);
-        const entry = map.get(key);
-        if (entry) {
-          if (entry.dob) m.dateOfBirth = entry.dob;
-          if (entry.ref) m.reference = entry.ref;
-        }
+      if (parsed.length) {
+        realMembers = parsed;
+      } else {
+        // If parsing yielded nothing, keep existing but blank out unmapped fields
+        realMembers = realMembers.map(ensureMemberFields);
       }
     } catch (e) {
-      // On failure, fields remain blank
+      // On failure, keep existing data
     } finally {
-      excelOverlayApplied = true;
+      excelLoaded = true;
     }
   })();
-  return excelOverlayInFlight;
+  return excelLoadInFlight;
 };
 
 // Real member data from CSV
@@ -763,7 +763,7 @@ let realMembers: Member[] = [
 export const membersAPI = {
   // Get all members
   async getAll(): Promise<Member[]> {
-    await loadExcelOverlay();
+    await loadMembersFromExcel();
     return realMembers.map(ensureMemberFields);
   },
 
