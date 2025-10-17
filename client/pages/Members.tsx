@@ -111,9 +111,7 @@ const Members = () => {
   const { uniqueZones, uniqueMandals } = useMemo(() => {
     const zones = Array.from(
       new Set(
-        members
-          .map((m) => (m.zone || "").trim())
-          .filter((z) => z.length > 0),
+        members.map((m) => (m.zone || "").trim()).filter((z) => z.length > 0),
       ),
     ).sort();
     const mandalSource =

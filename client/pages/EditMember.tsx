@@ -4,7 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import { membersAPI } from "@/lib/database";
 import { useAuth } from "@/contexts/AuthContext";
@@ -48,26 +54,29 @@ const EditMember = () => {
 
   const zones = ["Amalsad", "Dharampur", "Gandevi", "Valsad", "Vapi"];
 
-  const mandalsByZone: Record<string, string[]> = useMemo(() => ({
-    Amalsad: ["Amalsad Central", "Amalsad North", "Amalsad South"],
-    Dharampur: [
-      "Dharampur East",
-      "Dharampur West",
-      "Dharampur Central",
-      "Dharampur North",
-      "Dharampur South",
-    ],
-    Gandevi: [
-      "Gandevi North",
-      "Gandevi South",
-      "Gandevi East",
-      "Gandevi West",
-      "Gandevi Central",
-      "Gandevi Industrial",
-    ],
-    Valsad: ["Valsad Central", "Valsad East"],
-    Vapi: ["Vapi Central", "Vapi Industrial", "Vapi North", "Vapi South"],
-  }), []);
+  const mandalsByZone: Record<string, string[]> = useMemo(
+    () => ({
+      Amalsad: ["Amalsad Central", "Amalsad North", "Amalsad South"],
+      Dharampur: [
+        "Dharampur East",
+        "Dharampur West",
+        "Dharampur Central",
+        "Dharampur North",
+        "Dharampur South",
+      ],
+      Gandevi: [
+        "Gandevi North",
+        "Gandevi South",
+        "Gandevi East",
+        "Gandevi West",
+        "Gandevi Central",
+        "Gandevi Industrial",
+      ],
+      Valsad: ["Valsad Central", "Valsad East"],
+      Vapi: ["Vapi Central", "Vapi Industrial", "Vapi North", "Vapi South"],
+    }),
+    [],
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -78,7 +87,9 @@ const EditMember = () => {
         }
         // In demo mode, allow admin to edit using in-memory data
         if (!isNeonConfigured && !canEdit) {
-          alert("Database not configured. Please set up your Neon database connection.");
+          alert(
+            "Database not configured. Please set up your Neon database connection.",
+          );
           navigate("/members");
           return;
         }
@@ -132,7 +143,9 @@ const EditMember = () => {
       setLoading(true);
       if (!id) return;
       if (!isNeonConfigured && !canEdit) {
-        alert("Database not configured. Please set up your Neon database connection.");
+        alert(
+          "Database not configured. Please set up your Neon database connection.",
+        );
         navigate("/members");
         return;
       }
@@ -190,7 +203,11 @@ const EditMember = () => {
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="mb-8">
-        <Button variant="ghost" onClick={() => navigate("/members")} className="mb-4">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/members")}
+          className="mb-4"
+        >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Members
         </Button>
@@ -201,7 +218,9 @@ const EditMember = () => {
       <Card className="max-w-2xl">
         <CardHeader>
           <CardTitle className="text-xl">Member Information</CardTitle>
-          <p className="text-sm text-muted-foreground">All fields are required</p>
+          <p className="text-sm text-muted-foreground">
+            All fields are required
+          </p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -214,7 +233,9 @@ const EditMember = () => {
                     id="memberId"
                     placeholder="Enter unique member ID"
                     value={formData.memberId}
-                    onChange={(e) => handleInputChange("memberId", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("memberId", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -236,7 +257,9 @@ const EditMember = () => {
                     id="dateOfBirth"
                     type="date"
                     value={formData.dateOfBirth}
-                    onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("dateOfBirth", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -247,7 +270,9 @@ const EditMember = () => {
                     id="dixaDate"
                     type="date"
                     value={formData.dixaDate}
-                    onChange={(e) => handleInputChange("dixaDate", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("dixaDate", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -263,7 +288,9 @@ const EditMember = () => {
                     id="phone"
                     placeholder="Enter phone number"
                     value={formData.phoneNumber}
-                    onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("phoneNumber", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -286,7 +313,9 @@ const EditMember = () => {
                     id="address"
                     placeholder="Enter full address"
                     value={formData.address}
-                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("address", e.target.value)
+                    }
                     required
                   />
                 </div>
@@ -294,11 +323,16 @@ const EditMember = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-medium mb-4">Location & Organization</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Location & Organization
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="zone">Zone *</Label>
-                  <Select value={formData.zone} onValueChange={(value) => handleInputChange("zone", value)}>
+                  <Select
+                    value={formData.zone}
+                    onValueChange={(value) => handleInputChange("zone", value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a zone" />
                     </SelectTrigger>
@@ -316,7 +350,9 @@ const EditMember = () => {
                   <Label htmlFor="mandal">Mandal *</Label>
                   <Select
                     value={formData.mandal}
-                    onValueChange={(value) => handleInputChange("mandal", value)}
+                    onValueChange={(value) =>
+                      handleInputChange("mandal", value)
+                    }
                     disabled={!formData.zone}
                   >
                     <SelectTrigger>
@@ -337,9 +373,9 @@ const EditMember = () => {
                   <Label htmlFor="category">Category *</Label>
                   <Select
                     value={formData.category}
-                    onValueChange={(value: "ambrish" | "Sadbhav" | "Karyakarta") =>
-                      handleInputChange("category", value)
-                    }
+                    onValueChange={(
+                      value: "ambrish" | "Sadbhav" | "Karyakarta",
+                    ) => handleInputChange("category", value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
@@ -358,7 +394,9 @@ const EditMember = () => {
                     id="status"
                     placeholder="Enter status"
                     value={formData.status}
-                    onChange={(e) => handleInputChange("status", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("status", e.target.value)
+                    }
                   />
                 </div>
 
@@ -368,20 +406,26 @@ const EditMember = () => {
                     id="reference"
                     placeholder="Enter reference person"
                     value={formData.reference}
-                    onChange={(e) => handleInputChange("reference", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("reference", e.target.value)
+                    }
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg font-medium mb-4">Additional Information</h3>
+              <h3 className="text-lg font-medium mb-4">
+                Additional Information
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="bloodGroup">Blood Group</Label>
                   <Select
                     value={formData.bloodGroup}
-                    onValueChange={(value) => handleInputChange("bloodGroup", value)}
+                    onValueChange={(value) =>
+                      handleInputChange("bloodGroup", value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select blood group" />
@@ -405,7 +449,9 @@ const EditMember = () => {
                     id="education"
                     placeholder="Enter education level"
                     value={formData.education}
-                    onChange={(e) => handleInputChange("education", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("education", e.target.value)
+                    }
                   />
                 </div>
 
@@ -415,17 +461,27 @@ const EditMember = () => {
                     id="occupation"
                     placeholder="Enter occupation"
                     value={formData.occupation}
-                    onChange={(e) => handleInputChange("occupation", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("occupation", e.target.value)
+                    }
                   />
                 </div>
               </div>
             </div>
 
             <div className="flex justify-end space-x-4 pt-6">
-              <Button type="button" variant="outline" onClick={() => navigate("/members")}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate("/members")}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={!isFormValid || loading} className="bg-primary hover:bg-primary/90">
+              <Button
+                type="submit"
+                disabled={!isFormValid || loading}
+                className="bg-primary hover:bg-primary/90"
+              >
                 {loading ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />

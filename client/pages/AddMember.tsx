@@ -326,7 +326,9 @@ const AddMember = () => {
                     id="status"
                     placeholder="Enter status"
                     value={formData.status}
-                    onChange={(e) => handleInputChange("status", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("status", e.target.value)
+                    }
                   />
                 </div>
 

@@ -93,26 +93,48 @@ const loadMembersFromExcel = async () => {
           const nk = normalizeKey(String(k));
           const val = typeof v === "string" ? v.trim() : v;
           if (nk === "name" || nk === "fullname") full = String(v).trim();
-          else if (nk === "firstname" || nk === "first" || nk === "fname") first = String(v).trim();
-          else if (nk === "middlename" || nk === "middle" || nk === "mname") middle = String(v).trim();
-          else if (nk === "surname" || nk === "lastname" || nk === "last" || nk === "lname") last = String(v).trim();
+          else if (nk === "firstname" || nk === "first" || nk === "fname")
+            first = String(v).trim();
+          else if (nk === "middlename" || nk === "middle" || nk === "mname")
+            middle = String(v).trim();
+          else if (
+            nk === "surname" ||
+            nk === "lastname" ||
+            nk === "last" ||
+            nk === "lname"
+          )
+            last = String(v).trim();
           else if (nk.includes("zone")) obj.zone = String(v).trim();
           else if (nk.includes("mandal")) obj.mandal = String(v).trim();
-          else if (nk === "dateofbirth" || nk === "birthdate" || nk === "dob") obj.dateOfBirth = parseExcelDate(v);
+          else if (nk === "dateofbirth" || nk === "birthdate" || nk === "dob")
+            obj.dateOfBirth = parseExcelDate(v);
           else if (nk.includes("dixa")) obj.dixaDate = parseExcelDate(v);
           else if (nk.includes("phone")) obj.phoneNumber = String(v).trim();
           else if (nk.includes("mobile")) obj.phoneNumber = String(v).trim();
-          else if (nk.includes("email")) obj.email = String(v).trim().toLowerCase();
+          else if (nk.includes("email"))
+            obj.email = String(v).trim().toLowerCase();
           else if (nk.includes("address")) obj.address = String(v).trim();
-          else if (nk.includes("reference") || nk === "ref" || nk === "referredby") obj.reference = String(v).trim();
+          else if (
+            nk.includes("reference") ||
+            nk === "ref" ||
+            nk === "referredby"
+          )
+            obj.reference = String(v).trim();
           else if (nk.includes("blood")) obj.bloodGroup = String(v).trim();
           else if (nk.includes("education")) obj.education = String(v).trim();
-          else if (nk.includes("occupation") || nk.includes("job")) obj.occupation = String(v).trim();
-          else if (nk.includes("memberid") || nk === "id" || nk === "memberno") obj.memberId = String(v).trim();
-          else if (nk.includes("category") || nk.includes("type")) obj.category = String(v).trim();
+          else if (nk.includes("occupation") || nk.includes("job"))
+            obj.occupation = String(v).trim();
+          else if (nk.includes("memberid") || nk === "id" || nk === "memberno")
+            obj.memberId = String(v).trim();
+          else if (nk.includes("category") || nk.includes("type"))
+            obj.category = String(v).trim();
           else if (nk.includes("status")) obj.status = String(v).trim();
         }
-        const combined = (full || [first, middle, last].filter(Boolean).join(" ")).replace(/\s+/g, " ").trim();
+        const combined = (
+          full || [first, middle, last].filter(Boolean).join(" ")
+        )
+          .replace(/\s+/g, " ")
+          .trim();
         obj.name = combined;
         if (!obj.name) continue; // skip invalid rows
         obj.id = idCounter++;
@@ -120,7 +142,8 @@ const loadMembersFromExcel = async () => {
         const rawCat = (obj.category || "").toString().toLowerCase();
         let cat: Member["category"] = "Sadbhav";
         if (rawCat.includes("karyakarta")) cat = "Karyakarta";
-        else if (rawCat.includes("ambrish")) cat = "Karyakarta"; // treat ambrish as Karyakarta per request
+        else if (rawCat.includes("ambrish"))
+          cat = "Karyakarta"; // treat ambrish as Karyakarta per request
         else if (rawCat.includes("sadbhav")) cat = "Sadbhav";
         obj.category = cat;
         parsed.push(ensureMemberFields(obj));
