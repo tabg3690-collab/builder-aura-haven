@@ -38,6 +38,7 @@ const EditMember = () => {
     address: "",
     dixaDate: "",
     category: "Sadbhav" as "ambrish" | "Sadbhav" | "Karyakarta",
+    status: "",
     reference: "",
     bloodGroup: "",
     education: "",
@@ -99,6 +100,7 @@ const EditMember = () => {
           address: found.address,
           dixaDate: formatForDateInput(found.dixaDate),
           category: found.category as "ambrish" | "Sadbhav" | "Karyakarta",
+          status: found.status || "",
           reference: found.reference,
           bloodGroup: found.bloodGroup,
           education: found.education,
@@ -144,6 +146,7 @@ const EditMember = () => {
         address: formData.address,
         dixaDate: formData.dixaDate,
         category: formData.category,
+        status: formData.status,
         reference: formData.reference,
         bloodGroup: formData.bloodGroup,
         education: formData.education,
@@ -347,6 +350,16 @@ const EditMember = () => {
                       <SelectItem value="Karyakarta">Karyakarta</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Input
+                    id="status"
+                    placeholder="Enter status"
+                    value={formData.status}
+                    onChange={(e) => handleInputChange("status", e.target.value)}
+                  />
                 </div>
 
                 <div className="space-y-2">
