@@ -31,6 +31,7 @@ const AddMember = () => {
     address: "",
     dixaDate: "",
     category: "Sadbhav" as "ambrish" | "Sadbhav" | "Karyakarta",
+    status: "",
     reference: "",
     bloodGroup: "",
     education: "",
@@ -96,6 +97,7 @@ const AddMember = () => {
         address: formData.address,
         dixaDate: formData.dixaDate,
         category: formData.category,
+        status: formData.status,
         reference: formData.reference,
         bloodGroup: formData.bloodGroup,
         education: formData.education,
@@ -316,6 +318,16 @@ const AddMember = () => {
                       <SelectItem value="Karyakarta">Karyakarta</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Input
+                    id="status"
+                    placeholder="Enter status"
+                    value={formData.status}
+                    onChange={(e) => handleInputChange("status", e.target.value)}
+                  />
                 </div>
 
                 <div className="space-y-2">
