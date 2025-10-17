@@ -80,14 +80,11 @@ const Members = () => {
 
   // Get unique zones and mandals for filter dropdowns
   const { uniqueZones, uniqueMandals } = useMemo(() => {
-    const zones = Array.from(
-      new Set(members.map((member) => member.zone)),
-    ).sort();
-    const mandals = Array.from(
-      new Set(members.map((member) => member.mandal)),
-    ).sort();
+    const zones = Array.from(new Set(members.map((m) => m.zone))).sort();
+    const mandalSource = selectedZone === "all" ? members : members.filter((m) => m.zone === selectedZone);
+    const mandals = Array.from(new Set(mandalSource.map((m) => m.mandal))).sort();
     return { uniqueZones: zones, uniqueMandals: mandals };
-  }, [members]);
+  }, [members, selectedZone]);
 
   // Filter members based on search and filters
   const filteredMembers = useMemo(() => {
@@ -201,7 +198,13 @@ const Members = () => {
               />
             </div>
 
-            <Select value={selectedZone} onValueChange={setSelectedZone}>
+            <Select
+              value={selectedZone}
+              onValueChange={(v) => {
+                setSelectedZone(v);
+                setSelectedMandal("all");
+              }}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Zone" />
               </SelectTrigger>
