@@ -9,6 +9,7 @@ export interface Member {
   address: string;
   dixaDate: string;
   category: "ambrish" | "Sadbhav" | "Karyakarta";
+  status: string;
   reference: string;
   bloodGroup: string;
   education: string;
