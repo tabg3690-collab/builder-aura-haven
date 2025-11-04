@@ -22,7 +22,7 @@ const ensureMemberFields = (member: any): Member => {
 
 // Load members from external Excel once, replacing demo data
 const excelSourceUrl =
-  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2Fa619b58885464ee4b75e0de50d84d88b?alt=media&token=110ed248-9212-4169-8f0e-4595bf394037&apiKey=e8a4cf259e0444609aac214d5cbaad39";
+  "https://cdn.builder.io/o/assets%2Fe8a4cf259e0444609aac214d5cbaad39%2Fe8016aeac9f247d09d9d6e0e3046d401?alt=media&token=1c82ca52-32fb-4f53-8048-8ab6d0502a27&apiKey=e8a4cf259e0444609aac214d5cbaad39";
 let excelLoaded = false;
 let excelLoadInFlight: Promise<void> | null = null;
 
