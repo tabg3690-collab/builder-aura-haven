@@ -359,19 +359,6 @@ const Members = () => {
                             : d.toLocaleDateString();
                         })()}
                       </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            member.category === "ambrish"
-                              ? "bg-purple-100 text-purple-800"
-                              : member.category === "Sadbhav"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-green-100 text-green-800"
-                          }`}
-                        >
-                          {member.category}
-                        </span>
-                      </TableCell>
                       <TableCell>{member.status || ""}</TableCell>
                       <TableCell>{member.reference}</TableCell>
                       <TableCell>
