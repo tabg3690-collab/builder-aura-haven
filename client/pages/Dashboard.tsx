@@ -210,7 +210,6 @@ const Dashboard = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Login ID</TableHead>
                   <TableHead>Mandal</TableHead>
                   <TableHead>Date of Birth</TableHead>
                   <TableHead>Days Remaining</TableHead>
