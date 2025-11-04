@@ -820,8 +820,16 @@ export const membersAPI = {
       .sort((a, b) => {
         const aDate = new Date(a.dateOfBirth);
         const bDate = new Date(b.dateOfBirth);
-        const aNext = new Date(today.getFullYear(), aDate.getMonth(), aDate.getDate());
-        const bNext = new Date(today.getFullYear(), bDate.getMonth(), bDate.getDate());
+        const aNext = new Date(
+          today.getFullYear(),
+          aDate.getMonth(),
+          aDate.getDate(),
+        );
+        const bNext = new Date(
+          today.getFullYear(),
+          bDate.getMonth(),
+          bDate.getDate(),
+        );
         return aNext.getTime() - bNext.getTime();
       })
       .map(ensureMemberFields);

@@ -220,7 +220,9 @@ const Dashboard = () => {
                   const birthdayInfo = getBirthdayInfo(member);
                   return (
                     <TableRow key={member.id}>
-                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {member.name}
+                      </TableCell>
                       <TableCell>{member.mandal}</TableCell>
                       <TableCell>
                         {birthdayInfo.birthday.toLocaleDateString("en-US", {
