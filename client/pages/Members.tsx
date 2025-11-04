@@ -129,7 +129,11 @@ const Members = () => {
         members.map((m) => (m.status ?? "").trim()).filter((s) => s.length > 0),
       ),
     ).sort();
-    return { uniqueZones: zones, uniqueMandals: mandals, uniqueStatuses: statuses };
+    return {
+      uniqueZones: zones,
+      uniqueMandals: mandals,
+      uniqueStatuses: statuses,
+    };
   }, [members, selectedZone]);
 
   // Filter members based on search and filters
