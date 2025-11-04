@@ -346,17 +346,21 @@ const Members = () => {
                       <TableCell>
                         {(() => {
                           const d = new Date(member.dateOfBirth);
-                          return isNaN(d.getTime())
-                            ? ""
-                            : d.toLocaleDateString();
+                          if (isNaN(d.getTime())) return "";
+                          const dd = String(d.getDate()).padStart(2, "0");
+                          const mm = String(d.getMonth() + 1).padStart(2, "0");
+                          const yyyy = d.getFullYear();
+                          return `${dd}/${mm}/${yyyy}`;
                         })()}
                       </TableCell>
                       <TableCell>
                         {(() => {
                           const d = new Date(member.dixaDate);
-                          return isNaN(d.getTime())
-                            ? ""
-                            : d.toLocaleDateString();
+                          if (isNaN(d.getTime())) return "";
+                          const dd = String(d.getDate()).padStart(2, "0");
+                          const mm = String(d.getMonth() + 1).padStart(2, "0");
+                          const yyyy = d.getFullYear();
+                          return `${dd}/${mm}/${yyyy}`;
                         })()}
                       </TableCell>
                       <TableCell>{member.status || ""}</TableCell>
