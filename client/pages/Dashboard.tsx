@@ -221,15 +221,6 @@ const Dashboard = () => {
                   return (
                     <TableRow key={member.id}>
                       <TableCell className="font-medium">{member.name}</TableCell>
-                      <TableCell>
-                        {(() => {
-                          const parts = (member.name || "").trim().split(/\s+/);
-                          const first = (parts[0] || "").toLowerCase().replace(/[^a-z]/g, "");
-                          const last = (parts[parts.length - 1] || "").toLowerCase().replace(/[^a-z]/g, "");
-                          const login = first && last ? `${first}.${last}@gmail.com` : first ? `${first}@gmail.com` : "";
-                          return login;
-                        })()}
-                      </TableCell>
                       <TableCell>{member.mandal}</TableCell>
                       <TableCell>
                         {birthdayInfo.birthday.toLocaleDateString("en-US", {
