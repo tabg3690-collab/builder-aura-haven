@@ -329,7 +329,6 @@ const Members = () => {
                   <TableRow>
                     <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead>Login ID</TableHead>
                     <TableHead>Zone</TableHead>
                     <TableHead>Mandal</TableHead>
                     <TableHead>Address</TableHead>
@@ -342,6 +341,7 @@ const Members = () => {
                     <TableHead>Occupation</TableHead>
                     <TableHead>Phone Number</TableHead>
                     <TableHead>Email</TableHead>
+                    <TableHead>Login ID</TableHead>
                     {canEdit && <TableHead>Actions</TableHead>}
                   </TableRow>
                 </TableHeader>
@@ -352,15 +352,6 @@ const Members = () => {
                         {member.memberId}
                       </TableCell>
                       <TableCell className="font-medium">{member.name}</TableCell>
-                      <TableCell>
-                        {(() => {
-                          const parts = (member.name || "").trim().split(/\s+/);
-                          const first = (parts[0] || "").toLowerCase().replace(/[^a-z]/g, "");
-                          const last = (parts[parts.length - 1] || "").toLowerCase().replace(/[^a-z]/g, "");
-                          const login = first && last ? `${first}.${last}@gmail.com` : first ? `${first}@gmail.com` : "";
-                          return login;
-                        })()}
-                      </TableCell>
                       <TableCell>{member.zone}</TableCell>
                       <TableCell>{member.mandal}</TableCell>
                       <TableCell>{member.address}</TableCell>
@@ -395,6 +386,15 @@ const Members = () => {
                       <TableCell>{member.occupation}</TableCell>
                       <TableCell>{member.phoneNumber}</TableCell>
                       <TableCell>{member.email}</TableCell>
+                      <TableCell>
+                        {(() => {
+                          const parts = (member.name || "").trim().split(/\s+/);
+                          const first = (parts[0] || "").toLowerCase().replace(/[^a-z]/g, "");
+                          const last = (parts[parts.length - 1] || "").toLowerCase().replace(/[^a-z]/g, "");
+                          const login = first && last ? `${first}.${last}@gmail.com` : first ? `${first}@gmail.com` : "";
+                          return login;
+                        })()}
+                      </TableCell>
                       {canEdit && (
                         <TableCell>
                           <Button
