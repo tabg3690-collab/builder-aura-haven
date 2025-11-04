@@ -147,10 +147,15 @@ const Members = () => {
         selectedZone === "all" || member.zone === selectedZone;
       const matchesMandal =
         selectedMandal === "all" || member.mandal === selectedMandal;
-      const matchesCategory =
-        selectedCategory === "all" || member.category === selectedCategory;
+      const statusVal = (member.status ?? "").trim();
+      const matchesStatus =
+        selectedStatus === "all"
+          ? true
+          : selectedStatus === "__none__"
+            ? statusVal === ""
+            : statusVal === selectedStatus;
 
-      return matchesSearch && matchesZone && matchesMandal && matchesCategory;
+      return matchesSearch && matchesZone && matchesMandal && matchesStatus;
     });
   }, [members, searchTerm, selectedZone, selectedMandal, selectedCategory]);
 
