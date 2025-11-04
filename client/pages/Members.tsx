@@ -321,7 +321,6 @@ const Members = () => {
                     <TableHead>Address</TableHead>
                     <TableHead>Date of Birth</TableHead>
                     <TableHead>Dixa Date</TableHead>
-                    <TableHead>Category</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Reference</TableHead>
                     <TableHead>Blood Group</TableHead>
