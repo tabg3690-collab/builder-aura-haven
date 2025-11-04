@@ -60,7 +60,6 @@ const Members = () => {
         Address: m.address,
         "Date of Birth": m.dateOfBirth,
         "Dixa Date": m.dixaDate,
-        Category: m.category,
         Status: m.status,
         Reference: m.reference,
         "Blood Group": m.bloodGroup,
