@@ -157,7 +157,7 @@ const Members = () => {
 
       return matchesSearch && matchesZone && matchesMandal && matchesStatus;
     });
-  }, [members, searchTerm, selectedZone, selectedMandal, selectedCategory]);
+  }, [members, searchTerm, selectedZone, selectedMandal, selectedStatus]);
 
   if (loading) {
     return (
