@@ -351,14 +351,14 @@ const Members = () => {
                       <TableCell className="font-medium">
                         {member.memberId}
                       </TableCell>
-                      <TableCell className="font-medium">
-                        {member.name}
+                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell>
                         {(() => {
                           const parts = (member.name || "").trim().split(/\s+/);
                           const first = (parts[0] || "").toLowerCase().replace(/[^a-z]/g, "");
                           const last = (parts[parts.length - 1] || "").toLowerCase().replace(/[^a-z]/g, "");
                           const login = first && last ? `${first}.${last}@gmail.com` : first ? `${first}@gmail.com` : "";
-                          return login ? <span className="text-muted-foreground"> — {login}</span> : null;
+                          return login;
                         })()}
                       </TableCell>
                       <TableCell>{member.zone}</TableCell>
