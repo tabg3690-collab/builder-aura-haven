@@ -108,7 +108,7 @@ const Members = () => {
   };
 
   // Get unique zones and mandals for filter dropdowns
-  const { uniqueZones, uniqueMandals } = useMemo(() => {
+  const { uniqueZones, uniqueMandals, uniqueStatuses } = useMemo(() => {
     const zones = Array.from(
       new Set(
         members.map((m) => (m.zone || "").trim()).filter((z) => z.length > 0),
@@ -125,7 +125,12 @@ const Members = () => {
           .filter((z) => z.length > 0),
       ),
     ).sort();
-    return { uniqueZones: zones, uniqueMandals: mandals };
+    const statuses = Array.from(
+      new Set(
+        members.map((m) => (m.status ?? "").trim()).filter((s) => s.length > 0),
+      ),
+    ).sort();
+    return { uniqueZones: zones, uniqueMandals: mandals, uniqueStatuses: statuses };
   }, [members, selectedZone]);
 
   // Filter members based on search and filters
