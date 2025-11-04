@@ -282,18 +282,18 @@ const Members = () => {
               </SelectContent>
             </Select>
 
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
+            <Select value={selectedStatus} onValueChange={setSelectedStatus}>
               <SelectTrigger>
-                <SelectValue placeholder="Filter by Category" />
+                <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="ambrish">Ambrish</SelectItem>
-                <SelectItem value="Sadbhav">Sadbhav</SelectItem>
-                <SelectItem value="Karyakarta">Karyakarta</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="__none__">No Status</SelectItem>
+                {uniqueStatuses.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
